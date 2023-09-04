@@ -1,7 +1,7 @@
 #ifndef __MAP_INFO_H__
 #define __MAP_INFO_H__
 
-#include "aoi_const.h"
+#include "aoi_define.h"
 
 /**
  * @brief 
@@ -33,7 +33,7 @@ public:
 	unsigned int GetWidthViweRadius(){return m_dwWidthViweRadius;}
 	unsigned int GetHightViweRadius(){return m_dwHightViweRadius;}
 
-	//先只处理2d的
+	//先只处理2d�?
 	unsigned int GetMapPos(unsigned int x, unsigned int y, unsigned int z)
 	{
 	}
@@ -42,17 +42,17 @@ protected:
 private:
 	/**
 	 * @brief 
-	 * 视野半径 长 如果地图过大 视野半径也会变大
+	 * 视野半径 �? 如果地图过大 视野半径也会变大
 	 */
 	unsigned int m_dwLengthViweRadius;
 	/**
 	 * @brief 
-	 * 视野半径 宽 如果地图过大 视野半径也会变大
+	 * 视野半径 �? 如果地图过大 视野半径也会变大
 	 */
 	unsigned int m_dwWidthViweRadius;
 	/**
 	 * @brief 
-	 * 视野半径 高 如果地图过大 视野半径也会变大
+	 * 视野半径 �? 如果地图过大 视野半径也会变大
 	 */
 	unsigned int m_dwHightViweRadius;
 };
