@@ -5,6 +5,6 @@
 
 int main()
 {
-	FXAOI::g_AoiUnits.DebugInfo();
+	FXAOI::AOIUnits::Instance().DebugInfo();
 	return 0;
 }

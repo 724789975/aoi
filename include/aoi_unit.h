@@ -13,7 +13,7 @@ namespace FXAOI
 		AOIUnits()
 		{
 			Divide(0, 0
-#ifdef USE_Y_AXIS
+#if AOI_USE_Y_AXIS
 				, 0
 #endif
 				, 0, 0);
@@ -24,12 +24,12 @@ namespace FXAOI
 		public:
 			friend class AOICoordinateLess;
 			AOICoordinate(unsigned int dwX
-#ifdef USE_Y_AXIS
+#if AOI_USE_Y_AXIS
 				, unsigned int dwY
 #endif
 				, unsigned int dwZ)
 				: m_dwX(dwX)
-#ifdef USE_Y_AXIS
+#if AOI_USE_Y_AXIS
 				, m_dwY(dwY)
 #endif
 				, m_dwZ(dwZ)
@@ -38,7 +38,7 @@ namespace FXAOI
 		protected:
 		private:
 			unsigned int m_dwX;
-#ifdef USE_Y_AXIS
+#if AOI_USE_Y_AXIS
 			unsigned int m_dwY;
 #endif
 			unsigned int m_dwZ;
@@ -51,7 +51,7 @@ namespace FXAOI
 			{
 				if (l.m_dwX == r.m_dwX)
 				{
-#ifdef USE_Y_AXIS
+#if AOI_USE_Y_AXIS
 					if(l.m_dwY == r.m_dwY)
 						return l.m_dwZ < r.m_dwZ;
 					return l.m_dwY < r.m_dwY;
@@ -63,25 +63,35 @@ namespace FXAOI
 			}
 		};
 
+		const static AOIUnits& Instance() {return s_oInstace;}
+
+		AOI_UNIT_SUB_SCRIPT GetMapPos(unsigned int x
+#if AOI_USE_Y_AXIS
+		, unsigned int y
+#endif
+		, unsigned int z) const;
+
 		void DebugInfo()const;
 	protected:
 	private:
 		void Divide(unsigned int dwX
-#ifdef USE_Y_AXIS
+#if AOI_USE_Y_AXIS
 			, unsigned int dwY
 #endif
 			, unsigned int dwZ
 			, unsigned int dwDivideNum
 			, AOI_UNIT_SUB_SCRIPT lPosIdx
-			);
+		);
 
 		typedef std::map<AOICoordinate
 			, AOI_UNIT_SUB_SCRIPT
 			, AOICoordinateLess> AOIUnitMap;
+
 			AOIUnitMap m_mapUnits;
+
+			static AOIUnits s_oInstace;
 	};
 
-	static AOIUnits g_AoiUnits;
 }
 
 #endif	//! __AOI_UNIT_H__

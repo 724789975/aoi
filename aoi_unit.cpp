@@ -6,8 +6,10 @@
 
 namespace FXAOI
 {
+	AOIUnits AOIUnits::s_oInstace;
+
 	void AOIUnits::Divide(unsigned int dwX
-#ifdef USE_Y_AXIS
+#if AOI_USE_Y_AXIS
 		, unsigned int dwY
 #endif
 		, unsigned int dwZ
@@ -18,7 +20,7 @@ namespace FXAOI
 		//最后一次分裂
 		if (AOI_MAX_DIVIDE_NUM - 1 == dwDivideNum)
 		{
-#ifdef USE_Y_AXIS
+#if AOI_USE_Y_AXIS
 			//左下底
 			m_mapUnits[AOICoordinate(dwX, dwY, dwZ)] = (lPosIdx << AOI_BIT_OFFSET | 0x1);
 			//左上底
@@ -48,7 +50,7 @@ namespace FXAOI
 		}
 		else
 		{
-#ifdef USE_Y_AXIS
+#if AOI_USE_Y_AXIS
 			//左下底
 			Divide(dwX, dwY, dwZ
 				, dwDivideNum + 1, lPosIdx << AOI_BIT_OFFSET | 0x1);
@@ -86,9 +88,29 @@ namespace FXAOI
 		}
 	}
 
+		AOI_UNIT_SUB_SCRIPT AOIUnits::GetMapPos(unsigned int x
+#if AOI_USE_Y_AXIS
+		, unsigned int y
+#endif
+		, unsigned int z) const
+		{
+			AOIUnitMap::const_iterator it = this->m_mapUnits.find(AOICoordinate(x
+#if AOI_USE_Y_AXIS
+				, y
+#endif
+				, z));
+
+			if (it == this->m_mapUnits.cend())
+			{
+				return 0;
+			}
+
+			return it->second;
+		}
+
 	void AOIUnits::DebugInfo()const
 	{
-#ifdef USE_Y_AXIS
+#if AOI_USE_Y_AXIS
 		for (int y = 0; y < 1 << AOI_MAX_DIVIDE_NUM; ++y)
 		{
 			for (int z = (1 << AOI_MAX_DIVIDE_NUM) - 1; z >= 0; --z)
