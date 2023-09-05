@@ -15,15 +15,15 @@ public:
 		, m_dwWidthViweRadius(dwViweRadius)
 		, m_dwHightViweRadius(dwViweRadius)
 	{
-		if(m_dwLengthViweRadius << MAX_DIVIDE_NUM < dwLength)
+		if(m_dwLengthViweRadius << AOI_MAX_DIVIDE_NUM < dwLength)
 		{
 			m_dwLengthViweRadius = dwLength >> 8 + 1;
 		}
-		if(m_dwWidthViweRadius << MAX_DIVIDE_NUM < dwWidth)
+		if(m_dwWidthViweRadius << AOI_MAX_DIVIDE_NUM < dwWidth)
 		{
 			m_dwWidthViweRadius = dwWidth >> 8 + 1;
 		}
-		if(m_dwHightViweRadius << MAX_DIVIDE_NUM < dwHight)
+		if(m_dwHightViweRadius << AOI_MAX_DIVIDE_NUM < dwHight)
 		{
 			m_dwHightViweRadius = dwHight >> 8 + 1;
 		}
@@ -33,7 +33,7 @@ public:
 	unsigned int GetWidthViweRadius(){return m_dwWidthViweRadius;}
 	unsigned int GetHightViweRadius(){return m_dwHightViweRadius;}
 
-	//鍏堝彧澶勭悊2d鐨?
+	//先只处理2d??
 	unsigned int GetMapPos(unsigned int x, unsigned int y, unsigned int z)
 	{
 	}
@@ -42,17 +42,17 @@ protected:
 private:
 	/**
 	 * @brief 
-	 * 瑙嗛噹鍗婂緞 闀? 濡傛灉鍦板浘杩囧ぇ 瑙嗛噹鍗婂緞涔熶細鍙樺ぇ
+	 * 视野半径 长 如果地图过大 视野半径也会变大
 	 */
 	unsigned int m_dwLengthViweRadius;
 	/**
 	 * @brief 
-	 * 瑙嗛噹鍗婂緞 瀹? 濡傛灉鍦板浘杩囧ぇ 瑙嗛噹鍗婂緞涔熶細鍙樺ぇ
+	 * 视野半径 宽 如果地图过大 视野半径也会变大
 	 */
 	unsigned int m_dwWidthViweRadius;
 	/**
 	 * @brief 
-	 * 瑙嗛噹鍗婂緞 楂? 濡傛灉鍦板浘杩囧ぇ 瑙嗛噹鍗婂緞涔熶細鍙樺ぇ
+	 * 视野半径 高 如果地图过大 视野半径也会变大
 	 */
 	unsigned int m_dwHightViweRadius;
 };
