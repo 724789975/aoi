@@ -1,6 +1,6 @@
 #include "include/map_info.h"
 
-namespace AOI
+namespace FXAOI
 {
 	MapInfo::MapInfo(unsigned int dwViweRadius, unsigned int dwLength, unsigned int dwWidth
 #if AOI_USE_Y_AXIS

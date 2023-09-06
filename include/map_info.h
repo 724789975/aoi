@@ -4,7 +4,7 @@
 #include "aoi_define.h"
 #include "aoi_unit.h"
 
-namespace AOI
+namespace FXAOI
 {
 	class MapInfo
 	{

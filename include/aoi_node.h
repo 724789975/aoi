@@ -1,7 +1,7 @@
 #ifndef __AOI_NODE_H__
 #define __AOI_NODE_H__
 
-namespace AOI
+namespace FXAOI
 {
 	class AOINode
 	{
@@ -11,6 +11,6 @@ namespace AOI
 	private:
 		/* data */
 	};
-} // namespace AOI
+} // namespace FXAOI
 
 #endif	//!__AOI_NODE_H__

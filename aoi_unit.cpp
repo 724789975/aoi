@@ -22,30 +22,30 @@ namespace FXAOI
 		{
 #if AOI_USE_Y_AXIS
 			//左下底
-			m_mapUnits[AOICoordinate(dwX, dwY, dwZ)] = (lPosIdx << AOI_BIT_OFFSET | 0x1);
+			m_mapUnits[AOICoordinate(dwX, dwY, dwZ)]				= (lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_DOWN_BOTTOM);
 			//左上底
-			m_mapUnits[AOICoordinate(dwX, dwY, dwZ + 1)] = (lPosIdx << AOI_BIT_OFFSET | 0x2);
+			m_mapUnits[AOICoordinate(dwX, dwY, dwZ + 1)]			= (lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_UP_BOTTOM);
 			//右下底
-			m_mapUnits[AOICoordinate(dwX + 1, dwY, dwZ)] = (lPosIdx << AOI_BIT_OFFSET | 0x4);
+			m_mapUnits[AOICoordinate(dwX + 1, dwY, dwZ)]			= (lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_DOWN_BOTTOM);
 			//右上底
-			m_mapUnits[AOICoordinate(dwX + 1, dwY, dwZ + 1)] = (lPosIdx << AOI_BIT_OFFSET | 0x8);
+			m_mapUnits[AOICoordinate(dwX + 1, dwY, dwZ + 1)]		= (lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_UP_BOTTOM);
 			//左下顶
-			m_mapUnits[AOICoordinate(dwX, dwY + 1, dwZ)] = (lPosIdx << AOI_BIT_OFFSET | 0x10);
+			m_mapUnits[AOICoordinate(dwX, dwY + 1, dwZ)]			= (lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_DOWN_TOP);
 			//左上顶
-			m_mapUnits[AOICoordinate(dwX, dwY + 1, dwZ + 1)] = (lPosIdx << AOI_BIT_OFFSET | 0x20);
+			m_mapUnits[AOICoordinate(dwX, dwY + 1, dwZ + 1)]		= (lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_UP_TOP);
 			//右下顶
-			m_mapUnits[AOICoordinate(dwX + 1, dwY + 1, dwZ)] = (lPosIdx << AOI_BIT_OFFSET | 0x40);
+			m_mapUnits[AOICoordinate(dwX + 1, dwY + 1, dwZ)]		= (lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_DOWN_TOP);
 			//右上顶
-			m_mapUnits[AOICoordinate(dwX + 1, dwY + 1, dwZ + 1)] = (lPosIdx << AOI_BIT_OFFSET | 0x80);
+			m_mapUnits[AOICoordinate(dwX + 1, dwY + 1, dwZ + 1)]	= (lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_UP_TOP);
 #else
 			//左下
-			m_mapUnits[AOICoordinate(dwX, dwZ)] = (lPosIdx << AOI_BIT_OFFSET | 0x1);
+			m_mapUnits[AOICoordinate(dwX, dwZ)]				= (lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_DOWN_BOTTOM);
 			//左上
-			m_mapUnits[AOICoordinate(dwX, dwZ + 1)] = (lPosIdx << AOI_BIT_OFFSET | 0x2);
+			m_mapUnits[AOICoordinate(dwX, dwZ + 1)]			= (lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_UP_BOTTOM);
 			//右下
-			m_mapUnits[AOICoordinate(dwX + 1, dwZ)] = (lPosIdx << AOI_BIT_OFFSET | 0x4);
+			m_mapUnits[AOICoordinate(dwX + 1, dwZ)]			= (lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_DOWN_BOTTOM);
 			//右上
-			m_mapUnits[AOICoordinate(dwX + 1, dwZ + 1)] = (lPosIdx << AOI_BIT_OFFSET | 0x8);
+			m_mapUnits[AOICoordinate(dwX + 1, dwZ + 1)]		= (lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_UP_BOTTOM);
 #endif
 		}
 		else
@@ -53,60 +53,66 @@ namespace FXAOI
 #if AOI_USE_Y_AXIS
 			//左下底
 			Divide(dwX, dwY, dwZ
-				, dwDivideNum + 1, lPosIdx << AOI_BIT_OFFSET | 0x1);
+				, dwDivideNum + 1, lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_DOWN_BOTTOM);
 			//左上底
 			Divide(dwX, dwY, dwZ + (1 << (AOI_MAX_DIVIDE_NUM - 1 - dwDivideNum))
-				, dwDivideNum + 1, lPosIdx << AOI_BIT_OFFSET | 0x2);
+				, dwDivideNum + 1, lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_UP_BOTTOM);
 			//右下底
 			Divide(dwX + (1 << (AOI_MAX_DIVIDE_NUM - 1 - dwDivideNum)), dwY, dwZ
-				, dwDivideNum + 1, lPosIdx << AOI_BIT_OFFSET | 0x4);
+				, dwDivideNum + 1, lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_DOWN_BOTTOM);
 			//右上底
 			Divide(dwX + (1 << (AOI_MAX_DIVIDE_NUM - 1 - dwDivideNum)), dwY, dwZ + (1 << (AOI_MAX_DIVIDE_NUM - 1 - dwDivideNum))
-				, dwDivideNum + 1, lPosIdx << AOI_BIT_OFFSET | 0x8);
+				, dwDivideNum + 1, lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_UP_BOTTOM);
 			//左下顶
 			Divide(dwX, dwY + (1 << (AOI_MAX_DIVIDE_NUM - 1 - dwDivideNum)), dwZ
-				, dwDivideNum + 1, lPosIdx << AOI_BIT_OFFSET | 0x10);
+				, dwDivideNum + 1, lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_DOWN_TOP);
 			//左上顶
 			Divide(dwX, dwY + (1 << (AOI_MAX_DIVIDE_NUM - 1 - dwDivideNum)), dwZ + (1 << (AOI_MAX_DIVIDE_NUM - 1 - dwDivideNum))
-				, dwDivideNum + 1, lPosIdx << AOI_BIT_OFFSET | 0x20);
+				, dwDivideNum + 1, lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_UP_TOP);
 			//右下顶
 			Divide(dwX + (1 << (AOI_MAX_DIVIDE_NUM - 1 - dwDivideNum)), dwY + (1 << (AOI_MAX_DIVIDE_NUM - 1 - dwDivideNum)), dwZ
-				, dwDivideNum + 1, lPosIdx << AOI_BIT_OFFSET | 0x40);
+				, dwDivideNum + 1, lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_DOWN_TOP);
 			//右上顶
 			Divide(dwX + (1 << (AOI_MAX_DIVIDE_NUM - 1 - dwDivideNum)), dwY + (1 << (AOI_MAX_DIVIDE_NUM - 1 - dwDivideNum)), dwZ + (1 << (AOI_MAX_DIVIDE_NUM - 1 - dwDivideNum))
-				, dwDivideNum + 1, lPosIdx << AOI_BIT_OFFSET | 0x80);
+				, dwDivideNum + 1, lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_UP_TOP);
 #else
 			//左下
-			Divide(dwX, dwZ, dwDivideNum + 1, lPosIdx << AOI_BIT_OFFSET | 0x1);
+			Divide(dwX, dwZ, dwDivideNum + 1, lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_DOWN_BOTTOM);
 			//左上
-			Divide(dwX, dwZ + (1 << (AOI_MAX_DIVIDE_NUM - 1 - dwDivideNum)), dwDivideNum + 1, lPosIdx << AOI_BIT_OFFSET | 0x2);
+			Divide(dwX, dwZ + (1 << (AOI_MAX_DIVIDE_NUM - 1 - dwDivideNum)), dwDivideNum + 1, lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_UP_BOTTOM);
 			//右下
-			Divide(dwX + (1 << (AOI_MAX_DIVIDE_NUM - 1 - dwDivideNum)), dwZ, dwDivideNum + 1, lPosIdx << AOI_BIT_OFFSET | 0x4);
+			Divide(dwX + (1 << (AOI_MAX_DIVIDE_NUM - 1 - dwDivideNum)), dwZ, dwDivideNum + 1, lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_DOWN_BOTTOM);
 			//右上
-			Divide(dwX + (1 << (AOI_MAX_DIVIDE_NUM - 1 - dwDivideNum)), dwZ + (1 << (AOI_MAX_DIVIDE_NUM - 1 - dwDivideNum)), dwDivideNum + 1, lPosIdx << AOI_BIT_OFFSET | 0x8);
+			Divide(dwX + (1 << (AOI_MAX_DIVIDE_NUM - 1 - dwDivideNum)), dwZ + (1 << (AOI_MAX_DIVIDE_NUM - 1 - dwDivideNum)), dwDivideNum + 1, lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_UP_BOTTOM);
 #endif
 		}
 	}
 
-		AOI_UNIT_SUB_SCRIPT AOIUnits::GetMapPos(unsigned int x
+	bool AOIUnits::GetMapPos(unsigned int x
 #if AOI_USE_Y_AXIS
 		, unsigned int y
 #endif
-		, unsigned int z) const
-		{
-			AOIUnitMap::const_iterator it = this->m_mapUnits.find(AOICoordinate(x
+		, unsigned int z, AOI_UNIT_SUB_SCRIPT& reflPos) const
+	{
+		return this->GetMapPos(AOICoordinate(x
 #if AOI_USE_Y_AXIS
-				, y
+			, y
 #endif
-				, z));
+			, z), reflPos);
+	}
 
-			if (it == this->m_mapUnits.cend())
-			{
-				return 0;
-			}
+	bool AOIUnits::GetMapPos(const AOICoordinate& refCoordinate, AOI_UNIT_SUB_SCRIPT& reflPos)const
+	{
+		AOIUnitMap::const_iterator it = this->m_mapUnits.find(refCoordinate);
 
-			return it->second;
+		if (it == this->m_mapUnits.cend())
+		{
+			return false;
 		}
+
+		reflPos = it->second;
+		return true;
+	}
 
 	void AOIUnits::DebugInfo()const
 	{
