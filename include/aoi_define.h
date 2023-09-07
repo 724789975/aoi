@@ -13,12 +13,12 @@ typedef unsigned long long NODE_ID;
  * @brief 
  * 分裂阈值
  */
-#define AOI_THRESHOLD_FOR_DIVIDE 128
+#define AOI_THRESHOLD_FOR_DIVIDE 2
 /**
  * @brief 
  * 归并阈值
  */
-#define AOI_THRESHOLD_FOR_MERGE 16
+#define AOI_THRESHOLD_FOR_MERGE 1
 
 /**
  * @brief 
@@ -29,11 +29,11 @@ typedef unsigned long long NODE_ID;
 #if AOI_USE_Y_AXIS
 #define AOI_BIT_OFFSET 8
 #define AOI_UNIT_SUB_SCRIPT unsigned long long
-#define AOI_FLAF_MASK 0xFFll
+#define AOI_FLAG_MASK 0xFFll
 #else
 #define AOI_BIT_OFFSET 4
 #define AOI_UNIT_SUB_SCRIPT unsigned int
-#define AOI_FLAF_MASK 0xF
+#define AOI_FLAG_MASK 0xF
 #endif
 
 #define AOI_LEFT_DOWN_BOTTOM		AOI_UNIT_SUB_SCRIPT(0x1)

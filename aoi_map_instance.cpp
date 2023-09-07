@@ -10,7 +10,9 @@ namespace FXAOI
 		, m_dwDivideNum(dwDivideNum)
 		, m_bDivided(false)
 		, m_pRoot(pRoot)
-	{}
+	{
+		if (0 == m_pRoot){m_pRoot = this;}
+	}
 
 	MapInstance* MapInstance::GetInstance(const AOICoordinate& refCoordinate)
 	{
@@ -28,7 +30,7 @@ namespace FXAOI
 			return this;
 		}
 		
-		unsigned int lChunk = unsigned int((lPos >> ((AOI_MAX_DIVIDE_NUM - 1 - this->m_dwDivideNum) * AOI_BIT_OFFSET)) & AOI_FLAF_MASK);
+		unsigned int lChunk = unsigned int((lPos >> ((AOI_MAX_DIVIDE_NUM - 1 - this->m_dwDivideNum) * AOI_BIT_OFFSET)) & AOI_FLAG_MASK);
 		assert(this->m_mapDividedMap.find(lChunk) != this->m_mapDividedMap.end());
 
 		return this->m_mapDividedMap[lChunk].GetInstance(lPos);
@@ -56,7 +58,7 @@ namespace FXAOI
 		for (std::unordered_map<NODE_ID, AOI_UNIT_SUB_SCRIPT>::iterator it = this->m_mapNodeChunk.begin();
 			it != this->m_mapNodeChunk.end(); ++it)
 		{
-			unsigned int lChunk = unsigned int((it->second >> ((AOI_MAX_DIVIDE_NUM - 1 - this->m_dwDivideNum) * AOI_BIT_OFFSET)) & AOI_FLAF_MASK);
+			unsigned int lChunk = unsigned int((it->second >> ((AOI_MAX_DIVIDE_NUM - 1 - this->m_dwDivideNum) * AOI_BIT_OFFSET)) & AOI_FLAG_MASK);
 			assert(this->m_mapDividedMap.find(lChunk) != this->m_mapDividedMap.end());
 
 			this->m_mapDividedMap[lChunk].m_mapNodeChunk[it->first] = it->second;
@@ -66,7 +68,7 @@ namespace FXAOI
 		for (std::unordered_map<AOI_UNIT_SUB_SCRIPT, std::unordered_set<NODE_ID> >::iterator it = this->m_mapWatched.begin();
 			it != this->m_mapWatched.end(); ++it)
 		{
-			unsigned int lChunk = unsigned int((it->first >> ((AOI_MAX_DIVIDE_NUM - 1 - this->m_dwDivideNum) * AOI_BIT_OFFSET)) & AOI_FLAF_MASK);
+			unsigned int lChunk = unsigned int((it->first >> ((AOI_MAX_DIVIDE_NUM - 1 - this->m_dwDivideNum) * AOI_BIT_OFFSET)) & AOI_FLAG_MASK);
 			assert(this->m_mapDividedMap.find(lChunk) != this->m_mapDividedMap.end());
 
 			this->m_mapDividedMap[lChunk].m_mapWatched[it->first].swap(it->second);
@@ -76,7 +78,7 @@ namespace FXAOI
 		for (std::unordered_map<AOI_UNIT_SUB_SCRIPT, std::unordered_set<NODE_ID> >::iterator it = this->m_mapWatching.begin();
 			it != this->m_mapWatching.end(); ++it)
 		{
-			unsigned int lChunk = unsigned int((it->first >> ((AOI_MAX_DIVIDE_NUM - 1 - this->m_dwDivideNum) * AOI_BIT_OFFSET)) & AOI_FLAF_MASK);
+			unsigned int lChunk = unsigned int((it->first >> ((AOI_MAX_DIVIDE_NUM - 1 - this->m_dwDivideNum) * AOI_BIT_OFFSET)) & AOI_FLAG_MASK);
 			assert(this->m_mapDividedMap.find(lChunk) != this->m_mapDividedMap.end());
 
 			this->m_mapDividedMap[lChunk].m_mapWatching[it->first].swap(it->second);
@@ -91,11 +93,19 @@ namespace FXAOI
 	void MapInstance::Enter(NODE_ID lNodeId, const AOICoordinate& refCoordinate
 		, unsigned int dwWatchedRadius, unsigned int dwWatchingRadius)
 	{
-		if (!this->m_bDivided)
+		AOI_UNIT_SUB_SCRIPT lPos = 0;
+		bool bRet = AOIUnits::Instance().GetMapPos(refCoordinate, lPos);
+		assert(bRet);
+		if (this->m_bDivided)
 		{
-			bool bRet = AOIUnits::Instance().GetMapPos(refCoordinate, this->m_mapNodeChunk[lNodeId]);
-			assert(bRet);
+			unsigned int lChunk = unsigned int((lPos >> ((AOI_MAX_DIVIDE_NUM - 1 - this->m_dwDivideNum) * AOI_BIT_OFFSET)) & AOI_FLAG_MASK);
+			assert(this->m_mapDividedMap.find(lChunk) != this->m_mapDividedMap.end());
+
+			this->m_mapDividedMap[lChunk].Enter(lNodeId, refCoordinate, dwWatchedRadius, dwWatchingRadius);
+			return;
 		}
+
+		this->m_mapNodeChunk[lNodeId] = lPos;
 		for (unsigned int x = (refCoordinate.GetX() > dwWatchedRadius ? refCoordinate.GetX() - dwWatchedRadius : 0)
 			; x < (refCoordinate.GetX() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refCoordinate.GetX() + dwWatchedRadius); ++x)
 		{
@@ -150,7 +160,11 @@ namespace FXAOI
 			}
 		}
 		
-
+		if (AOI_THRESHOLD_FOR_DIVIDE < this->m_mapNodeChunk.size())
+		{
+			this->Divide();
+		}
+		
 	}
 
 	void MapInstance::Leave(NODE_ID lNodeId, const AOICoordinate& refCoordinate
