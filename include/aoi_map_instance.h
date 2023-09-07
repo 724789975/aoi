@@ -16,11 +16,20 @@ namespace FXAOI
 		MapInstance(){}
 		MapInstance(unsigned int dwMapId, AOI_UNIT_SUB_SCRIPT lSubScript, unsigned int dwDivideNum, MapInstance* pRoot);
 
+		/**
+		 * @brief Get the Instance object
+		 * 这个函数只能从root地块开始调用
+		 * @param refCoordinate 坐标
+		 * @return MapInstance* 地块实例
+		 */
 		MapInstance* GetInstance(const AOICoordinate& refCoordinate);
+		/**
+		 * @brief Get the Instance object
+		 * 这个函数只能从root地块开始调用
+		 * @param lPos 地块下标
+		 * @return MapInstance* 地块实例
+		 */
 		MapInstance* GetInstance(AOI_UNIT_SUB_SCRIPT lPos);
-
-		void Divide();
-		void Merge();
 
 		void Enter(NODE_ID lNodeId, const AOICoordinate& refCoordinate
 			, unsigned int dwWatchedRadius, unsigned int dwWatchingRadius);
@@ -29,6 +38,9 @@ namespace FXAOI
 
 	protected:
 	private:
+		void Divide();
+		void Merge();
+
 		unsigned int m_dwMapId;
 		/**
 		 * @brief 

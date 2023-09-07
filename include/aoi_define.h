@@ -13,25 +13,27 @@ typedef unsigned long long NODE_ID;
  * @brief 
  * 分裂阈值
  */
-#define AOI_THRESHOLD_FOR_DIVIDE 2
+#define AOI_THRESHOLD_FOR_DIVIDE 20
 /**
  * @brief 
  * 归并阈值
  */
-#define AOI_THRESHOLD_FOR_MERGE 1
+#define AOI_THRESHOLD_FOR_MERGE 10
 
 /**
  * @brief 
  * 是否使用Y轴
  */
-#define AOI_USE_Y_AXIS 1
+#define AOI_USE_Y_AXIS 0
 
 #if AOI_USE_Y_AXIS
 #define AOI_BIT_OFFSET 8
+#define AOI_DIVIDE_CHILDREN_NUM 8
 #define AOI_UNIT_SUB_SCRIPT unsigned long long
 #define AOI_FLAG_MASK 0xFFll
 #else
 #define AOI_BIT_OFFSET 4
+#define AOI_DIVIDE_CHILDREN_NUM 4
 #define AOI_UNIT_SUB_SCRIPT unsigned int
 #define AOI_FLAG_MASK 0xF
 #endif
