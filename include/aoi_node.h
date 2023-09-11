@@ -4,7 +4,7 @@
 #include "aoi_define.h"
 #include "aoi_unit.h"
 
-#include <set>
+#include <unordered_set>
 
 namespace FXAOI
 {
@@ -45,6 +45,12 @@ namespace FXAOI
 		AOICoordinate m_oCoordinate;
 		unsigned int m_dwWatchedRadius;
 		unsigned int m_dwWatchingRadius;
+
+		/**
+		 * @brief 
+		 * 子节点 共享跟此节点相同的 可见 被观察列表 视野与本节点相同
+		 */
+		std::unordered_set<NODE_ID> m_setChildrenNode;
 	};
 } // namespace FXAOI
 
