@@ -24,7 +24,7 @@ typedef unsigned long long NODE_ID;
  * @brief 
  *  «∑Ò π”√Y÷·
  */
-#define AOI_USE_Y_AXIS 0
+#define AOI_USE_Y_AXIS 1
 
 #if AOI_USE_Y_AXIS
 #define AOI_BIT_OFFSET 8

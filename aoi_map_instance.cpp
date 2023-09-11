@@ -74,7 +74,8 @@ namespace FXAOI
 
 					assert(pInstance);
 
-					pInstance->m_mapWatched[lPos].insert(lNodeId);
+					// pInstance->m_mapWatched[lPos].insert(lNodeId);
+					pInstance->AddWatched(lNodeId, lPos);
 				}
 			}
 		}
@@ -101,7 +102,8 @@ namespace FXAOI
 
 					assert(pInstance);
 
-					pInstance->m_mapWatching[lPos].insert(lNodeId);
+					// pInstance->m_mapWatching[lPos].insert(lNodeId);
+					pInstance->AddWatching(lNodeId, lPos);
 				}
 			}
 		}
@@ -149,9 +151,10 @@ namespace FXAOI
 						MapInstance* pInstance = this->m_pRoot->GetInstance(lPos);
 
 						assert(pInstance);
-						assert(pInstance->m_mapWatching[lPos].end() != pInstance->m_mapWatching[lPos].find(lNodeId));
-						pInstance->m_mapWatching[lPos].erase(lNodeId);
-						if(0 == pInstance->m_mapWatching[lPos].size()){pInstance->m_mapWatching.erase(lPos);}
+						// assert(pInstance->m_mapWatching[lPos].end() != pInstance->m_mapWatching[lPos].find(lNodeId));
+						// pInstance->m_mapWatching[lPos].erase(lNodeId);
+						// if(0 == pInstance->m_mapWatching[lPos].size()){pInstance->m_mapWatching.erase(lPos);}
+						pInstance->RemoveWatched(lNodeId, lPos);
 					}
 				}
 			}
@@ -176,9 +179,10 @@ namespace FXAOI
 						MapInstance* pInstance = this->m_pRoot->GetInstance(lPos);
 
 						assert(pInstance);
-						assert(pInstance->m_mapWatched[lPos].end() != pInstance->m_mapWatched[lPos].find(lNodeId));
-						pInstance->m_mapWatched[lPos].erase(lNodeId);
-						if(0 == pInstance->m_mapWatched[lPos].size()){pInstance->m_mapWatched.erase(lPos);}
+						// assert(pInstance->m_mapWatched[lPos].end() != pInstance->m_mapWatched[lPos].find(lNodeId));
+						// pInstance->m_mapWatched[lPos].erase(lNodeId);
+						// if(0 == pInstance->m_mapWatched[lPos].size()){pInstance->m_mapWatched.erase(lPos);}
+						pInstance->RemoveWatching(lNodeId, lPos);
 					}
 				}
 			}
@@ -192,7 +196,7 @@ namespace FXAOI
 			return;
 		}
 		
-		unsigned int dwNodeCount = 0;
+		size_t dwNodeCount = 0;
 
 		for (std::unordered_map<unsigned int, MapInstance>::iterator it = this->m_mapDividedMap.begin();
 			it != this->m_mapDividedMap.end(); ++it)
@@ -297,5 +301,38 @@ namespace FXAOI
 		this->m_bDivided = false;
 	}
 
+	void MapInstance::AddWatched(NODE_ID lNodeId, AOI_UNIT_SUB_SCRIPT lPos)
+	{
+		assert(this->m_mapWatched[lPos].find(lNodeId) == this->m_mapWatched[lPos].end());
+		this->m_mapWatched[lPos].insert(lNodeId);
+		this->AfterAddWatched(lNodeId, lPos);
+	}
+	void MapInstance::AddWatching(NODE_ID lNodeId, AOI_UNIT_SUB_SCRIPT lPos)
+	{
+		assert(this->m_mapWatching[lPos].find(lNodeId) == this->m_mapWatching[lPos].end());
+		this->m_mapWatching[lPos].insert(lNodeId);
+		this->AfterAddWatching(lNodeId, lPos);
+	}
+	void MapInstance::RemoveWatched(NODE_ID lNodeId, AOI_UNIT_SUB_SCRIPT lPos)
+	{
+		assert(this->m_mapWatched[lPos].end() != this->m_mapWatched[lPos].find(lNodeId));
+		assert(this->m_mapWatched[lPos].find(lNodeId) != this->m_mapWatched[lPos].end());
+		this->m_mapWatched[lPos].erase(lNodeId);
+		if (0 == this->m_mapWatched[lPos].size()){this->m_mapWatched.erase(lPos);}
+		this->AfterRemoveWatched(lNodeId, lPos);
+	}
+	void MapInstance::RemoveWatching(NODE_ID lNodeId, AOI_UNIT_SUB_SCRIPT lPos)
+	{
+		assert(this->m_mapWatching[lPos].end() != this->m_mapWatching[lPos].find(lNodeId));
+		assert(this->m_mapWatching[lPos].find(lNodeId) != this->m_mapWatching[lPos].end());
+		this->m_mapWatching[lPos].erase(lNodeId);
+		if (0 == this->m_mapWatching[lPos].size()){this->m_mapWatching.erase(lPos);}
+		this->AfterRemoveWatching(lNodeId, lPos);
+	}
+
+	void MapInstance::AfterAddWatched(NODE_ID lNodeId, AOI_UNIT_SUB_SCRIPT lPos){}
+	void MapInstance::AfterAddWatching(NODE_ID lNodeId, AOI_UNIT_SUB_SCRIPT lPos){}
+	void MapInstance::AfterRemoveWatched(NODE_ID lNodeId, AOI_UNIT_SUB_SCRIPT lPos){}
+	void MapInstance::AfterRemoveWatching(NODE_ID lNodeId, AOI_UNIT_SUB_SCRIPT lPos){}
 
 } // namespace FXAOI

@@ -40,6 +40,15 @@ namespace FXAOI
 	private:
 		void Divide();
 		void Merge();
+		void AddWatched(NODE_ID lNodeId, AOI_UNIT_SUB_SCRIPT lPos);
+		void AddWatching(NODE_ID lNodeId, AOI_UNIT_SUB_SCRIPT lPos);
+		void RemoveWatched(NODE_ID lNodeId, AOI_UNIT_SUB_SCRIPT lPos);
+		void RemoveWatching(NODE_ID lNodeId, AOI_UNIT_SUB_SCRIPT lPos);
+
+		void AfterAddWatched(NODE_ID lNodeId, AOI_UNIT_SUB_SCRIPT lPos);
+		void AfterAddWatching(NODE_ID lNodeId, AOI_UNIT_SUB_SCRIPT lPos);
+		void AfterRemoveWatched(NODE_ID lNodeId, AOI_UNIT_SUB_SCRIPT lPos);
+		void AfterRemoveWatching(NODE_ID lNodeId, AOI_UNIT_SUB_SCRIPT lPos);
 
 		unsigned int m_dwMapId;
 		/**
