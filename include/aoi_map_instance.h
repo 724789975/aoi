@@ -31,9 +31,29 @@ namespace FXAOI
 		 */
 		MapInstance* GetInstance(AOI_UNIT_SUB_SCRIPT lPos);
 
+		/**
+		 * @brief 
+		 * 进入地块
+		 * @param lNodeId 节点id
+		 * @param refCoordinate 进入点坐标
+		 * @param dwWatchedRadius 被观察半径
+		 * @param dwWatchingRadius 观察半径
+		 */
 		void Enter(NODE_ID lNodeId, const AOICoordinate& refCoordinate
 			, unsigned int dwWatchedRadius, unsigned int dwWatchingRadius);
+
+		/**
+		 * @brief 
+		 * 离开地块
+		 * @param lNodeId 节点id
+		 * @param refCoordinate 离开的坐标
+		 * @param dwWatchedRadius 被观察半径
+		 * @param dwWatchingRadius 观察半径
+		 */
 		void Leave(NODE_ID lNodeId, const AOICoordinate& refCoordinate
+			, unsigned int dwWatchedRadius, unsigned int dwWatchingRadius);
+
+		void Move(NODE_ID lNodeId, const AOICoordinate& refFromCoordinate, const AOICoordinate& refToCoordinate
 			, unsigned int dwWatchedRadius, unsigned int dwWatchingRadius);
 
 	protected:
