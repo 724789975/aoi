@@ -1,5 +1,7 @@
 #include "include/aoi_map_instance.h"
 #include "include/aoi_unit.h"
+#include "include/aoi_define.h"
+#include "include/aoi_node_mgr.h"
 
 #include <assert.h>
 #include "aoi_map_instance.h"
@@ -428,13 +430,30 @@ namespace FXAOI
 
 	}
 
-	void MapInstance::GetNodeInPos(AOI_UNIT_SUB_SCRIPT lPos, std::unordered_set<NODE_ID>& setRet)
+	void MapInstance::GetNodeInPos(AOI_UNIT_SUB_SCRIPT lPos, std::unordered_map<unsigned int, std::unordered_set<NODE_ID>> &refWatchingNode)
 	{
 		for (std::unordered_map<NODE_ID, AOI_UNIT_SUB_SCRIPT>::iterator it = this->m_mapNodeChunk.begin();
 			it != this->m_mapNodeChunk.end(); ++it)
 		{
-			if (lPos == it->second){setRet.insert(it->first);}
+			if (lPos == it->second)
+			{
+				if (AOINode* pNode = AOINodeMgr::Instance().GetNode(it->first))
+				{
+					refWatchingNode[pNode->GetAOIType()].insert(it->first);
+				}
+			}
 		}
+	}
+
+	bool MapInstance::CanWatching(NODE_ID lNodeId, AOI_UNIT_SUB_SCRIPT lPos)
+	{
+		std::unordered_map<AOI_UNIT_SUB_SCRIPT, std::unordered_set<NODE_ID> >::iterator it = this->m_mapWatching.find(lPos);
+		if (it == this->m_mapWatching.end())
+		{
+			return false;
+		}
+		
+		return it->second.end() != it->second.find(lNodeId);
 	}
 
 	void MapInstance::Divide()

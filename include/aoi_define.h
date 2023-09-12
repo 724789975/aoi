@@ -22,6 +22,12 @@ typedef unsigned long long NODE_ID;
 
 /**
  * @brief 
+ * 视野中实体上限(仅需互相看见实体需要)
+ */
+#define AOI_MAX_NODE_IN_VIEW 50
+
+/**
+ * @brief 
  * 是否使用Y轴
  */
 #define AOI_USE_Y_AXIS 1

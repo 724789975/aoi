@@ -29,6 +29,15 @@ namespace FXAOI
 		return g_mapAOINodeLimit[dwAOIType1][dwAOIType2];
 	}
 
+	double Distance(const NodePosition &l, const NodePosition &r)
+	{
+		return (l.x - r.x) * (l.x - r.x) + (l.z - r.z) * (l.z - r.z)
+#if AOI_USE_Y_AXIS
+			+ (l.y - r.y) * (l.y - r.y)
+#endif
+		;
+	}
+
 	AOINode::AOINode(NODE_ID lNodeId, unsigned int dwAOIType, unsigned int dwWatchedRadius, unsigned int dwWatchingRadius)
 		: m_lNodeId(lNodeId)
 		, m_dwAOIType(dwAOIType)
@@ -55,50 +64,100 @@ namespace FXAOI
 		std::unordered_set<AOI_UNIT_SUB_SCRIPT> setTemp;
 		setTemp.swap(this->m_setTempWatchingMap);
 
-		std::unordered_set<NODE_ID> setWatchingNodes;
+		std::unordered_map<unsigned int, std::unordered_set<NODE_ID> > mapWatchingNodes;
 		//获取观察范围内地块中node
 		for (std::unordered_set<AOI_UNIT_SUB_SCRIPT>::iterator it = setTemp.begin()
 			; it != setTemp.end(); ++it)
 		{
-			if (MapInstance* pInstance = pMapRoot->GetInstance(*it))
-			{
-				pInstance->GetNodeInPos(*it, setWatchingNodes);
-			}
+			MapInstance* pInstance = pMapRoot->GetInstance(*it);
+			assert(pInstance);
+			pInstance->GetNodeInPos(*it, mapWatchingNodes);
 		}
 		
 		//获取当前地块中 能被观察到的node
 		AOI_UNIT_SUB_SCRIPT lPos;
 		bool bRet = AOIUnits::Instance().GetMapPos(this->m_oCoordinate, lPos);
 		assert(bRet);
-		if (MapInstance* pInstance = pMapRoot->GetInstance(this->m_oCoordinate))
-		{
-			pInstance->GetNodeInPos(lPos, setWatchingNodes);
-		}
+		MapInstance* pInstance = pMapRoot->GetInstance(this->m_oCoordinate);
+		assert(pInstance);
+		pInstance->GetNodeInPos(lPos, mapWatchingNodes);
 
-		setWatchingNodes.erase(this->m_lNodeId);
+		mapWatchingNodes[this->m_dwAOIType].erase(this->m_lNodeId);
 
 		//新增进入视野
-		std::unordered_set<NODE_ID> setAddWatching;
-		for (std::unordered_set<NODE_ID>::iterator it = setWatchingNodes.begin()
-			; it != setWatchingNodes.end(); ++it)
+		std::unordered_map<unsigned int, std::unordered_set<NODE_ID> > mapAddWatching;
+		for (std::unordered_map<unsigned int, std::unordered_set<NODE_ID> >::iterator it1 = mapWatchingNodes.begin()
+			; it1 != mapWatchingNodes.end(); ++it1)
 		{
-			//已经在视野中的 不再做处理
-			if (this->m_setWatching.end() == this->m_setWatching.find(*it))
+			if (GetAOIVisibilityType(this->m_dwAOIType, it1->first) >= AOIVisibilityType::AOIVisibilityType_Invisible)
 			{
-				setAddWatching.insert(*it);
+				continue;
+			}
+			
+			if (GetAOIVisibilityType(this->m_dwAOIType, it1->first) == AOIVisibilityType::AOIVisibilityType_Mutual_Visibility)
+			{
+				//优先级队列
+				std::map<double, NODE_ID> mapFirstNode;
+				for (std::unordered_set<NODE_ID>::iterator it2 = it1->second.begin()
+					; it2 != it1->second.end();)
+				{
+					std::unordered_set<NODE_ID>::iterator tmpIt2 = it2++;
+					//被观察者视野可及范围内才能加入
+					if (!pInstance->CanWatching(*tmpIt2, lPos))
+					{
+						continue;
+					}
+					
+					if (AOINode* pNode = AOINodeMgr::Instance().GetNode(*tmpIt2))
+					{
+						if (AOI_MAX_NODE_IN_VIEW > pNode->m_mapWatching[it1->first].size())
+						{
+							mapAddWatching[it1->first].insert(*tmpIt2);
+							mapFirstNode[Distance(pNode->m_oPosition, this->m_oPosition)] = *tmpIt2;
+						}
+					}
+				}
+
+				if (this->m_mapWatching[it1->first].size() + mapAddWatching[it1->first].size() > AOI_MAX_NODE_IN_VIEW)
+				{
+					int dwNum = this->m_mapWatching[it1->first].size() + mapAddWatching[it1->first].size() - AOI_MAX_NODE_IN_VIEW;
+					for (std::map<double, NODE_ID>::iterator it3 = mapFirstNode.begin()
+						; it3 != mapFirstNode.end() && 0 < dwNum; ++it3, --dwNum)
+					{
+						mapAddWatching[it1->first].erase(it3->second);
+					}
+				}
+			}
+			else
+			{
+				for (std::unordered_set<NODE_ID>::iterator it2 = it1->second.begin()
+					; it2 != it1->second.end(); ++it2)
+				{
+					if (this->m_mapWatching[it1->first].end() == this->m_mapWatching[it1->first].find(*it2))
+					{
+						mapAddWatching[it1->first].insert(*it2);
+					}
+				}
 			}
 		}
-		
+
 		//离开视野
-		std::unordered_set<NODE_ID> setDelWatching;
-		for (std::unordered_set<NODE_ID>::iterator it = this->m_setWatching.begin()
-			; it != m_setWatching.end(); ++it)
+		std::unordered_map<unsigned int, std::unordered_set<NODE_ID> > mapDelWatching;
+		for (std::unordered_map<unsigned int, std::unordered_set<NODE_ID> >::iterator it1 = this->m_mapWatching.begin()
+			; it1 != this->m_mapWatching.end(); ++it1)
 		{
-			if (setWatchingNodes.end() == setWatchingNodes.find(*it))
+			for (std::unordered_set<NODE_ID>::iterator it2 = it1->second.begin()
+				; it2 != it1->second.end(); ++it2)
 			{
-				setDelWatching.insert(*it);
+				if (mapWatchingNodes[it1->first].end() == mapWatchingNodes[it1->first].find(*it2))
+				{
+					mapDelWatching[it1->first].insert(*it2);
+				}
 			}
 		}
+
+		//TODO 处理被观察列表
+		
 	}
 
 } // namespace FXAOI

@@ -56,7 +56,16 @@ namespace FXAOI
 		void Move(NODE_ID lNodeId, const AOICoordinate& refFromCoordinate, const AOICoordinate& refToCoordinate
 			, unsigned int dwWatchedRadius, unsigned int dwWatchingRadius);
 
-		void GetNodeInPos(AOI_UNIT_SUB_SCRIPT lPos, std::unordered_set<NODE_ID>& setRet);
+		void GetNodeInPos(AOI_UNIT_SUB_SCRIPT lPos, std::unordered_map<unsigned int, std::unordered_set< NODE_ID> >& refWatchingNode);
+		/**
+		 * @brief 
+		 * 目标点是否在节点可见范围内
+		 * @param lNodeId 
+		 * @param lPos 
+		 * @return true 
+		 * @return false 
+		 */
+		bool CanWatching(NODE_ID lNodeId, AOI_UNIT_SUB_SCRIPT lPos);
 
 	protected:
 	private:

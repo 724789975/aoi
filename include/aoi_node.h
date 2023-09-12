@@ -5,6 +5,7 @@
 #include "aoi_unit.h"
 
 #include <unordered_set>
+#include <unordered_map>
 
 namespace FXAOI
 {
@@ -35,6 +36,17 @@ namespace FXAOI
 	void SetAOINodeLimit(unsigned int dwAOIType1, unsigned int dwAOIType2, unsigned int dwNum);
 	unsigned int GetAOINodeLimit(unsigned int dwAOIType1, unsigned int dwAOIType2);
 
+	struct NodePosition
+	{
+		double x;
+#if AOI_USE_Y_AXIS
+		double y;
+#endif
+		double z;
+	};
+
+	double Distance(const NodePosition& l, const NodePosition& r);
+
 	class AOINode
 	{
 	public:
@@ -43,6 +55,8 @@ namespace FXAOI
 		~AOINode() {}
 
 		void SetCoordinate(const AOICoordinate& refCoordinate){m_oCoordinate = refCoordinate;}
+		void SetPosition(const NodePosition& refPosition){m_oPosition = refPosition;}
+		unsigned int GetAOIType(){return this->m_dwAOIType;}
 		/**
 		 * @brief 
 		 * 用于保存计算视野用的正在观察的格子
@@ -66,9 +80,14 @@ namespace FXAOI
 		unsigned int m_dwAOIType;
 		/**
 		 * @brief 
-		 * 坐标
+		 * 地块坐标
 		 */
 		AOICoordinate m_oCoordinate;
+		/**
+		 * @brief 
+		 * 在世界中的位置
+		 */
+		NodePosition m_oPosition;
 		/**
 		 * @brief 
 		 * 被观察半径
@@ -87,8 +106,9 @@ namespace FXAOI
 		/**
 		 * @brief 
 		 * 正在观察的节点
+		 * <视野类型, 视野列表>
 		 */
-		std::unordered_set<NODE_ID> m_setWatching;
+		std::unordered_map<unsigned int, std::unordered_set< NODE_ID> > m_mapWatching;
 
 		std::unordered_set<AOI_UNIT_SUB_SCRIPT> m_setTempWatchingMap;
 
