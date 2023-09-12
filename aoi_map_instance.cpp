@@ -2,6 +2,7 @@
 #include "include/aoi_unit.h"
 
 #include <assert.h>
+#include "aoi_map_instance.h"
 
 namespace FXAOI
 {
@@ -427,6 +428,15 @@ namespace FXAOI
 
 	}
 
+	void MapInstance::GetNodeInPos(AOI_UNIT_SUB_SCRIPT lPos, std::unordered_set<NODE_ID>& setRet)
+	{
+		for (std::unordered_map<NODE_ID, AOI_UNIT_SUB_SCRIPT>::iterator it = this->m_mapNodeChunk.begin();
+			it != this->m_mapNodeChunk.end(); ++it)
+		{
+			if (lPos == it->second){setRet.insert(it->first);}
+		}
+	}
+
 	void MapInstance::Divide()
 	{
 		if (AOI_MAX_DIVIDE_NUM <= m_dwDivideNum)
@@ -542,6 +552,7 @@ namespace FXAOI
 		this->AfterRemoveWatching(lNodeId, lPos);
 	}
 
+	//TODO
 	void MapInstance::AfterAddWatched(NODE_ID lNodeId, AOI_UNIT_SUB_SCRIPT lPos){}
 	void MapInstance::AfterAddWatching(NODE_ID lNodeId, AOI_UNIT_SUB_SCRIPT lPos){}
 	void MapInstance::AfterRemoveWatched(NODE_ID lNodeId, AOI_UNIT_SUB_SCRIPT lPos){}

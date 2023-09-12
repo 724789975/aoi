@@ -56,6 +56,8 @@ namespace FXAOI
 		void Move(NODE_ID lNodeId, const AOICoordinate& refFromCoordinate, const AOICoordinate& refToCoordinate
 			, unsigned int dwWatchedRadius, unsigned int dwWatchingRadius);
 
+		void GetNodeInPos(AOI_UNIT_SUB_SCRIPT lPos, std::unordered_set<NODE_ID>& setRet);
+
 	protected:
 	private:
 		void Divide();
