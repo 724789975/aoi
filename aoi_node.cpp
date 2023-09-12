@@ -1,9 +1,13 @@
 #include "aoi_node.h"
+<<<<<<< HEAD
 #include "aoi_map_instance.h"
 #include "aoi_node_mgr.h"
 
 #include <unordered_map>
 #include <assert.h>
+=======
+#include <unordered_map>
+>>>>>>> e55fc8cf05832cbaa748f60e4586af63e10f431a
 
 namespace FXAOI
 {
@@ -18,6 +22,7 @@ namespace FXAOI
 		return g_mapAOIVisibilityTypes[dwAOIType1][dwAOIType2];
 	}
 
+<<<<<<< HEAD
 	std::unordered_map<unsigned int, std::unordered_map<unsigned int, unsigned int> > g_mapAOINodeLimit;
 	void SetAOINodeLimit(unsigned int dwAOIType1, unsigned int dwAOIType2, unsigned int dwNum)
 	{
@@ -29,6 +34,8 @@ namespace FXAOI
 		return g_mapAOINodeLimit[dwAOIType1][dwAOIType2];
 	}
 
+=======
+>>>>>>> e55fc8cf05832cbaa748f60e4586af63e10f431a
 	AOINode::AOINode(NODE_ID lNodeId, unsigned int dwAOIType, unsigned int dwWatchedRadius, unsigned int dwWatchingRadius)
 		: m_lNodeId(lNodeId)
 		, m_dwAOIType(dwAOIType)
@@ -37,6 +44,7 @@ namespace FXAOI
 		, m_dwWatchingRadius(dwWatchingRadius)
 	{}
 
+<<<<<<< HEAD
 	AOINode::AOINode()
 		: m_lNodeId(0)
 		, m_dwAOIType(0)
@@ -100,5 +108,7 @@ namespace FXAOI
 			}
 		}
 	}
+=======
+>>>>>>> e55fc8cf05832cbaa748f60e4586af63e10f431a
 
 } // namespace FXAOI
