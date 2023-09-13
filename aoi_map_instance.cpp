@@ -587,9 +587,13 @@ namespace FXAOI
 		this->AfterRemoveWatching(lNodeId, lPos);
 	}
 
-	//TODO
 	void MapInstance::AfterAddWatched(NODE_ID lNodeId, AOI_UNIT_SUB_SCRIPT lPos){}
-	void MapInstance::AfterAddWatching(NODE_ID lNodeId, AOI_UNIT_SUB_SCRIPT lPos){}
+	void MapInstance::AfterAddWatching(NODE_ID lNodeId, AOI_UNIT_SUB_SCRIPT lPos)
+	{
+		AOINode* pNode = AOINodeMgr::Instance().GetNode(lNodeId);
+		assert(pNode);
+		pNode->AddWatching(lPos);
+	}
 	void MapInstance::AfterRemoveWatched(NODE_ID lNodeId, AOI_UNIT_SUB_SCRIPT lPos){}
 	void MapInstance::AfterRemoveWatching(NODE_ID lNodeId, AOI_UNIT_SUB_SCRIPT lPos){}
 

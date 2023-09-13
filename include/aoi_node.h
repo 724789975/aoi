@@ -80,6 +80,11 @@ namespace FXAOI
 		unsigned int m_dwAOIType;
 		/**
 		 * @brief 
+		 * 地图id
+		 */
+		unsigned int m_dwMapId;
+		/**
+		 * @brief 
 		 * 地块坐标
 		 */
 		AOICoordinate m_oCoordinate;
@@ -110,7 +115,10 @@ namespace FXAOI
 		 * <视野类型, 视野列表>
 		 */
 		std::unordered_map<unsigned int, std::unordered_set< NODE_ID> > m_mapWatching;
-
+		/**
+		 * @brief 
+		 * 记录玩家移动或进入地图时能够看到的地块
+		 */
 		std::unordered_set<AOI_UNIT_SUB_SCRIPT> m_setTempWatchingMap;
 
 		/**

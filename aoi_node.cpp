@@ -201,16 +201,67 @@ namespace FXAOI
 			}
 		}
 
-		//TODO 计算视野
-		// mapAddWatching;
-		// mapDelWatching;
-		// this->m_mapWatching;
-		
-		// mapAddMutualWatching;
+		//计算视野
+		for (std::unordered_map<unsigned int, std::unordered_set<NODE_ID> >::iterator it = mapAddMutualWatching.begin()
+			; it != mapAddMutualWatching.end(); ++it)
+		{
+			mapAddWatching[it->first] = it->second;
+			mapAddWatched[it->first] = it->second;
+		}
 
+		for (std::unordered_map<unsigned int, std::unordered_set<NODE_ID>>::iterator it1 = mapDelWatching.begin()
+			; it1 != mapDelWatching.end(); ++it1)
+		{
+			for (std::unordered_set<NODE_ID>::iterator it2 = it1->second.begin();
+				it2 != it1->second.end(); ++it2)
+			{
+				assert(this->m_mapWatching[it1->first].end() != this->m_mapWatching[it1->first].find(*it2));
+				this->m_mapWatching[it1->first].erase(*it2);
+			}
+		}
+
+		for (std::unordered_map<unsigned int, std::unordered_set<NODE_ID>>::iterator it1 = mapAddWatching.begin()
+			; it1 != mapAddWatching.end(); ++it1)
+		{
+			for (std::unordered_set<NODE_ID>::iterator it2 = it1->second.begin();
+				it2 != it1->second.end(); ++it2)
+			{
+				assert(this->m_mapWatching[it1->first].end() == this->m_mapWatching[it1->first].find(*it2));
+				this->m_mapWatching[it1->first].insert(*it2);
+			}
+		}
+
+		for (std::unordered_map<unsigned int, std::unordered_set<NODE_ID>>::iterator it1 = mapDelWatched.begin()
+			; it1 != mapDelWatched.end(); ++it1)
+		{
+			for (std::unordered_set<NODE_ID>::iterator it2 = it1->second.begin();
+				it2 != it1->second.end(); ++it2)
+			{
+				assert(this->m_mapWatched[it1->first].end() != this->m_mapWatched[it1->first].find(*it2));
+				this->m_mapWatched[it1->first].erase(*it2);
+			}
+		}
+
+		for (std::unordered_map<unsigned int, std::unordered_set<NODE_ID>>::iterator it1 = mapAddWatched.begin()
+			; it1 != mapAddWatched.end(); ++it1)
+		{
+			for (std::unordered_set<NODE_ID>::iterator it2 = it1->second.begin();
+				it2 != it1->second.end(); ++it2)
+			{
+				assert(this->m_mapWatched[it1->first].end() == this->m_mapWatched[it1->first].find(*it2));
+				this->m_mapWatched[it1->first].insert(*it2);
+			}
+		}
+		
+		//此节点收到的出现包
+		// mapAddWatching;
+		//此节点收到的消失包
+		// mapDelWatching;
+		
+		//其他节点收到的出现包
 		// mapAddWatched;
+		//其他节点收到的消失包
 		// mapDelWatched;
-		// this->m_mapWatched;
 	}
 
 } // namespace FXAOI
