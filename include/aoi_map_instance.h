@@ -58,6 +58,13 @@ namespace FXAOI
 
 		void GetNodeInPos(AOI_UNIT_SUB_SCRIPT lPos, std::unordered_map<unsigned int, std::unordered_set< NODE_ID> >& refWatchingNode);
 		/**
+		 * @brief Get the Watching In Pos object
+		 * 获取正在观察某个格子的节点
+		 * @param lPos 
+		 * @param refWatchingNode 
+		 */
+		void GetWatchingInPos(AOI_UNIT_SUB_SCRIPT lPos, std::unordered_map<unsigned int, std::unordered_set< NODE_ID> >& refWatchingNode);
+		/**
 		 * @brief 
 		 * 目标点是否在节点可见范围内
 		 * @param lNodeId 

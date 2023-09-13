@@ -101,8 +101,9 @@ namespace FXAOI
 		/**
 		 * @brief 
 		 * 被节点看见
+		 * <视野类型, 视野列表>
 		 */
-		std::unordered_set<NODE_ID> m_setWatched;
+		std::unordered_map<unsigned int, std::unordered_set< NODE_ID> > m_mapWatched;
 		/**
 		 * @brief 
 		 * 正在观察的节点

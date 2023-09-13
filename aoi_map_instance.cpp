@@ -437,11 +437,27 @@ namespace FXAOI
 		{
 			if (lPos == it->second)
 			{
-				if (AOINode* pNode = AOINodeMgr::Instance().GetNode(it->first))
-				{
-					refWatchingNode[pNode->GetAOIType()].insert(it->first);
-				}
+				AOINode* pNode = AOINodeMgr::Instance().GetNode(it->first);
+				assert(pNode);
+				refWatchingNode[pNode->GetAOIType()].insert(it->first);
 			}
+		}
+	}
+
+	void MapInstance::GetWatchingInPos(AOI_UNIT_SUB_SCRIPT lPos, std::unordered_map<unsigned int, std::unordered_set<NODE_ID>> &refWatchingNode)
+	{
+		std::unordered_map<AOI_UNIT_SUB_SCRIPT, std::unordered_set<NODE_ID> >::iterator it = this->m_mapWatching.find(lPos);
+		if (it == this->m_mapWatching.end())
+		{
+			return;
+		}
+
+		for (std::unordered_set<NODE_ID>::iterator it2 = it->second.begin();
+			it2 != it->second.end(); ++it2)
+		{
+			AOINode* pNode = AOINodeMgr::Instance().GetNode(*it2);
+			assert(pNode);
+			refWatchingNode[pNode->GetAOIType()].insert(*it2);
 		}
 	}
 
