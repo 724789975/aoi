@@ -160,6 +160,7 @@ namespace FXAOI
 		//处理被其他节点观察列表
 		std::unordered_map<unsigned int, std::unordered_set<NODE_ID> > mapWatchedNodes;
 		pInstance->GetWatchingInPos(lPos, mapWatchedNodes);
+		mapWatchedNodes[this->m_dwAOIType].erase(this->m_lNodeId);
 		
 		//新增的可以看见当前节点的节点
 		std::unordered_map<unsigned int, std::unordered_set<NODE_ID>> mapAddWatched;
@@ -242,6 +243,7 @@ namespace FXAOI
 			}
 		}
 
+		//处理关联视野
 		for (std::unordered_map<unsigned int, std::unordered_set<NODE_ID>>::iterator it1 = mapAddWatched.begin()
 			; it1 != mapAddWatched.end(); ++it1)
 		{
@@ -250,6 +252,24 @@ namespace FXAOI
 			{
 				assert(this->m_mapWatched[it1->first].end() == this->m_mapWatched[it1->first].find(*it2));
 				this->m_mapWatched[it1->first].insert(*it2);
+
+				AOINode* pNode = AOINodeMgr::Instance().GetNode(*it2);
+				assert(pNode);
+				pNode->m_mapWatching[it1->first].insert(this->m_lNodeId);
+			}
+		}
+		for (std::unordered_map<unsigned int, std::unordered_set<NODE_ID>>::iterator it1 = mapDelWatched.begin()
+			; it1 != mapDelWatched.end(); ++it1)
+		{
+			for (std::unordered_set<NODE_ID>::iterator it2 = it1->second.begin();
+				it2 != it1->second.end(); ++it2)
+			{
+				assert(this->m_mapWatched[it1->first].end() != this->m_mapWatched[it1->first].find(*it2));
+				this->m_mapWatched[it1->first].erase(*it2);
+
+				AOINode* pNode = AOINodeMgr::Instance().GetNode(*it2);
+				assert(pNode);
+				pNode->m_mapWatching[it1->first].erase(this->m_lNodeId);
 			}
 		}
 		
