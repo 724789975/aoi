@@ -8,12 +8,22 @@ namespace FXAOI
 #if AOI_USE_Y_AXIS
 			, unsigned int dwHight
 #endif
+			, double dOffsetX
+#if AOI_USE_Y_AXIS
+			, double dOffsetY
+#endif
+			, double dOffsetZ
 		)
 	{
 		return &(this->m_mapMaps[dwMapId] = MapInfo(dwMapId, dwViweRadius, dwLength, dwWidth
 #if AOI_USE_Y_AXIS
 			, dwHight
 #endif
+			, dOffsetX
+#if AOI_USE_Y_AXIS
+			, dOffsetY
+#endif
+			, dOffsetZ
 		));
 	}
 

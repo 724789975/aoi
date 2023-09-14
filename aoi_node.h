@@ -36,15 +36,6 @@ namespace FXAOI
 	void SetAOINodeLimit(unsigned int dwAOIType1, unsigned int dwAOIType2, unsigned int dwNum);
 	unsigned int GetAOINodeLimit(unsigned int dwAOIType1, unsigned int dwAOIType2);
 
-	struct NodePosition
-	{
-		double x;
-#if AOI_USE_Y_AXIS
-		double y;
-#endif
-		double z;
-	};
-
 	double Distance(const NodePosition& l, const NodePosition& r);
 
 	class AOINode
@@ -55,8 +46,13 @@ namespace FXAOI
 		~AOINode() {}
 
 		void SetCoordinate(const AOICoordinate& refCoordinate){m_oCoordinate = refCoordinate;}
+		const AOICoordinate& GetCoordinate(){return m_oCoordinate;}
 		void SetPosition(const NodePosition& refPosition){m_oPosition = refPosition;}
 		unsigned int GetAOIType(){return this->m_dwAOIType;}
+		void SetMapId(unsigned int dwMapId){this->m_dwMapId = dwMapId;}
+		unsigned int GetMapId(){return this->m_dwMapId;}
+		unsigned int GetWatchedRadius(){return this->m_dwWatchedRadius;}
+		unsigned int GetWatchingRadius(){return this->m_dwWatchingRadius;}
 		/**
 		 * @brief 
 		 * 用于保存计算视野用的正在观察的格子

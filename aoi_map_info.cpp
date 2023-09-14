@@ -16,6 +16,11 @@ namespace FXAOI
 #if AOI_USE_Y_AXIS
 		, unsigned int dwHight
 #endif
+		, double dOffsetX
+#if AOI_USE_Y_AXIS
+		, double dOffsetY
+#endif
+		, double dOffsetZ
 	)
 		: m_dwMapId(dwMapId)
 		, m_dwLengthViweRadius(dwViweRadius)
@@ -23,6 +28,11 @@ namespace FXAOI
 #if AOI_USE_Y_AXIS
 		, m_dwHightViweRadius(dwViweRadius)
 #endif
+		, m_dOffsetX(dOffsetX)
+#if AOI_USE_Y_AXIS
+		, m_dOffsetY(dOffsetY)
+#endif
+		, m_dOffsetZ(dOffsetZ)
 	{
 		if((m_dwLengthViweRadius << AOI_MAX_DIVIDE_NUM) < dwLength)
 		{
@@ -40,6 +50,15 @@ namespace FXAOI
 #endif
 	}
 
+	AOICoordinate MapInfo::GetAOICoordinate(const NodePosition &refPosition)
+	{
+		return AOICoordinate(unsigned int(refPosition.x - m_dOffsetX) / m_dwLengthViweRadius
+#if AOI_USE_Y_AXIS
+			, unsigned int(refPosition.y - m_dOffsetY) / m_dwHightViweRadius
+#endif
+			, unsigned int(refPosition.z - m_dOffsetZ) / m_dwWidthViweRadius
+		);
+	}
 };
 
 

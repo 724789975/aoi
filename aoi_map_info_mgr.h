@@ -17,6 +17,11 @@ namespace FXAOI
 #if AOI_USE_Y_AXIS
 			, unsigned int dwHight
 #endif
+  			, double dOffsetX
+#if AOI_USE_Y_AXIS
+			, double dOffsetY
+#endif
+			, double dOffsetZ
 		);
 
 		MapInfo* GetMap(unsigned int dwMapId);

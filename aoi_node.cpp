@@ -121,7 +121,7 @@ namespace FXAOI
 
 				if (this->m_mapWatching[it1->first].size() + mapAddMutualWatching[it1->first].size() > AOI_MAX_NODE_IN_VIEW)
 				{
-					int dwNum = this->m_mapWatching[it1->first].size() + mapAddMutualWatching[it1->first].size() - AOI_MAX_NODE_IN_VIEW;
+					int dwNum = int(this->m_mapWatching[it1->first].size() + mapAddMutualWatching[it1->first].size() - AOI_MAX_NODE_IN_VIEW);
 					for (std::map<double, NODE_ID>::iterator it3 = mapFirstNode.begin()
 						; it3 != mapFirstNode.end() && 0 < dwNum; ++it3, --dwNum)
 					{

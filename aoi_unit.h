@@ -7,6 +7,15 @@
 
 namespace FXAOI
 {
+	struct NodePosition
+	{
+		double x;
+#if AOI_USE_Y_AXIS
+		double y;
+#endif
+		double z;
+	};
+
 	class AOICoordinateLess;
 	class AOICoordinate
 	{
