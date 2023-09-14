@@ -1,7 +1,7 @@
-#include "include/aoi_map_instance.h"
-#include "include/aoi_unit.h"
+#include "aoi_map_instance.h"
+#include "aoi_unit.h"
 #include "include/aoi_define.h"
-#include "include/aoi_node_mgr.h"
+#include "aoi_node_mgr.h"
 
 #include <assert.h>
 #include "aoi_map_instance.h"

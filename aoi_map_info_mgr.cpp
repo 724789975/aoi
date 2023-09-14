@@ -1,10 +1,10 @@
-#include "include/aoi_map_info_mgr.h"
+#include "aoi_map_info_mgr.h"
 
 namespace FXAOI
 {
-	AOIMapMgr AOIMapMgr::s_oInstace;
+	AOIMapInfoMgr AOIMapInfoMgr::s_oInstace;
 
-	MapInfo * AOIMapMgr::AddMap(unsigned int dwMapId, unsigned int dwViweRadius, unsigned int dwLength, unsigned int dwWidth
+	MapInfo * AOIMapInfoMgr::AddMap(unsigned int dwMapId, unsigned int dwViweRadius, unsigned int dwLength, unsigned int dwWidth
 #if AOI_USE_Y_AXIS
 			, unsigned int dwHight
 #endif
@@ -17,9 +17,9 @@ namespace FXAOI
 		));
 	}
 
-	MapInfo *AOIMapMgr::GetMap(unsigned int dwMapId)
+	MapInfo *AOIMapInfoMgr::GetMap(unsigned int dwMapId)
 	{
-		std::unordered_map<NODE_ID, MapInfo>::iterator it = this->m_mapMaps.find(dwMapId);
+		std::unordered_map<unsigned int, MapInfo>::iterator it = this->m_mapMaps.find(dwMapId);
 		if (this->m_mapMaps.end() != it)
 		{
 			return 0;

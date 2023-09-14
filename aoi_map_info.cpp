@@ -1,7 +1,17 @@
-#include "include/aoi_map_info.h"
+#include "aoi_map_info.h"
 
 namespace FXAOI
 {
+	MapInfo::MapInfo()
+		: m_dwMapId(-1)
+		, m_dwLengthViweRadius(-1)
+		, m_dwWidthViweRadius(-1)
+#if AOI_USE_Y_AXIS
+		, m_dwHightViweRadius(-1)
+#endif
+	{
+	}
+
 	MapInfo::MapInfo(unsigned int dwMapId, unsigned int dwViweRadius, unsigned int dwLength, unsigned int dwWidth
 #if AOI_USE_Y_AXIS
 		, unsigned int dwHight

@@ -1,5 +1,5 @@
-#include "include/aoi_unit.h"
-#include "include/aoi_map_instance.h"
+#include "aoi_unit.h"
+#include "aoi_map_instance.h"
 
 #include <iostream>
 #include <bitset>

@@ -1,7 +1,7 @@
 #ifndef __MAP_INFO_H__
 #define __MAP_INFO_H__
 
-#include "aoi_define.h"
+#include "include/aoi_define.h"
 #include "aoi_unit.h"
 
 namespace FXAOI
@@ -9,6 +9,7 @@ namespace FXAOI
 	class MapInfo
 	{
 	public:
+		MapInfo();
 		MapInfo(unsigned int dwMapId, unsigned int dwViweRadius, unsigned int dwLength, unsigned int dwWidth
 #if AOI_USE_Y_AXIS
 			, unsigned int dwHight

@@ -1,4 +1,4 @@
-#include "include/aoi_unit.h"
+#include "aoi_unit.h"
 #include "include/aoi_define.h"
 
 #include <iostream>

@@ -8,17 +8,17 @@
 
 namespace FXAOI
 {
-	class AOIMapMgr
+	class AOIMapInstanceMgr
 	{
 	public:
-		static AOIMapMgr& Instance() {return s_oInstace;}
+		static AOIMapInstanceMgr& Instance() {return s_oInstace;}
 
 		MapInstance* AddMap(unsigned int dwMapId);
 
 		MapInstance* GetMap(unsigned int dwMapId);
 	protected:
 	private:
-		static AOIMapMgr s_oInstace;
+		static AOIMapInstanceMgr s_oInstace;
 		std::unordered_map<NODE_ID, MapInstance> m_mapMaps;
 	};
 } // namespace FXAOI

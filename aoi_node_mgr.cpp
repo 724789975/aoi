@@ -1,4 +1,4 @@
-#include "include/aoi_node_mgr.h"
+#include "aoi_node_mgr.h"
 
 namespace FXAOI
 {
