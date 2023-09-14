@@ -1,5 +1,5 @@
-#ifndef __AOI_NODE_MGR_H__
-#define __AOI_NODE_MGR_H__
+#ifndef __AOI_MAP_MGR_H__
+#define __AOI_MAP_MGR_H__
 
 #include "aoi_define.h"
 #include "aoi_map_instance.h"
@@ -11,11 +11,11 @@ namespace FXAOI
 	class AOIMapMgr
 	{
 	public:
-	static AOIMapMgr& Instance() {return s_oInstace;}
+		static AOIMapMgr& Instance() {return s_oInstace;}
 
-	MapInstance* AddMap(unsigned int dwMapId);
+		MapInstance* AddMap(unsigned int dwMapId);
 
-	MapInstance* GetMap(unsigned int dwMapId);
+		MapInstance* GetMap(unsigned int dwMapId);
 	protected:
 	private:
 		static AOIMapMgr s_oInstace;

@@ -9,9 +9,9 @@ namespace FXAOI
 	class MapInfo
 	{
 	public:
-		MapInfo(unsigned int dwViweRadius, unsigned int dwLength, unsigned int dwWidth
+		MapInfo(unsigned int dwMapId, unsigned int dwViweRadius, unsigned int dwLength, unsigned int dwWidth
 #if AOI_USE_Y_AXIS
-			, unsigned dwHight
+			, unsigned int dwHight
 #endif
 		);
 
@@ -23,6 +23,7 @@ namespace FXAOI
 
 	protected:
 	private:
+		unsigned int m_dwMapId;
 		/**
 		 * @brief 
 		 * 视野半径 长 如果地图过大 视野半径也会变大

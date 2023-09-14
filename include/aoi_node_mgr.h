@@ -11,12 +11,12 @@ namespace FXAOI
 	class AOINodeMgr
 	{
 	public:
-	static AOINodeMgr& Instance() {return s_oInstace;}
+		static AOINodeMgr& Instance() {return s_oInstace;}
 
-	AOINode* AddNode(NODE_ID lNodeId, unsigned int dwAOIType, unsigned int dwWatchedRadius, unsigned int dwWatchingRadius);
+		AOINode* AddNode(NODE_ID lNodeId, unsigned int dwAOIType, unsigned int dwWatchedRadius, unsigned int dwWatchingRadius);
 
-	AOINode* GetNode(NODE_ID lNodeId);
-	bool RemoveNode(NODE_ID lNodeId);
+		AOINode* GetNode(NODE_ID lNodeId);
+		bool RemoveNode(NODE_ID lNodeId);
 	protected:
 	private:
 		static AOINodeMgr s_oInstace;
