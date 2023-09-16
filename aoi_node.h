@@ -1,7 +1,7 @@
 #ifndef __AOI_NODE_H__
 #define __AOI_NODE_H__
 
-#include "aoi_define.h"
+#include "include/aoi_define.h"
 #include "aoi_unit.h"
 
 #include <unordered_set>
@@ -11,31 +11,6 @@ namespace FXAOI
 {
 	class MapInstance;
 	
-	enum AOIVisibilityType
-	{
-		AOIVisibilityType_None,
-		/**
-		 * @brief 
-		 * 不可见
-		 */
-		AOIVisibilityType_Invisible,
-		/**
-		 * @brief 
-		 * 可见的
-		 */
-		AOIVisibilityType_Visible,
-		/**
-		 * @brief 
-		 * 必须互相可见
-		 */
-		AOIVisibilityType_Mutual_Visibility,
-	};
-
-	void SetAOIVisibilityType(unsigned int dwAOIType1, unsigned int dwAOIType2, AOIVisibilityType type);
-	AOIVisibilityType GetAOIVisibilityType(unsigned int dwAOIType1, unsigned int dwAOIType2);
-	void SetAOINodeLimit(unsigned int dwAOIType1, unsigned int dwAOIType2, unsigned int dwNum);
-	unsigned int GetAOINodeLimit(unsigned int dwAOIType1, unsigned int dwAOIType2);
-
 	double Distance(const NodePosition& l, const NodePosition& r);
 
 	class AOINode
@@ -47,7 +22,7 @@ namespace FXAOI
 
 		void SetCoordinate(const AOICoordinate& refCoordinate){m_oCoordinate = refCoordinate;}
 		const AOICoordinate& GetCoordinate(){return m_oCoordinate;}
-		void SetPosition(const NodePosition& refPosition){m_oPosition = refPosition;}
+		void SetPosition(const NodePosition& refPosition);
 		unsigned int GetAOIType(){return this->m_dwAOIType;}
 		void SetMapId(unsigned int dwMapId){this->m_dwMapId = dwMapId;}
 		unsigned int GetMapId(){return this->m_dwMapId;}

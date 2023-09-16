@@ -46,14 +46,15 @@ namespace FXAOI
 		AOI_UNIT_SUB_SCRIPT lPos = 0;
 		bool bRet = AOIUnits::Instance().GetMapPos(refCoordinate, lPos);
 		assert(bRet);
-		if (this->m_bDivided)
-		{
-			unsigned int lChunk = unsigned int((lPos >> ((AOI_MAX_DIVIDE_NUM - 1 - this->m_dwDivideNum) * AOI_BIT_OFFSET)) & AOI_FLAG_MASK);
-			assert(this->m_mapDividedMap.find(lChunk) != this->m_mapDividedMap.end());
+		assert(!this->m_bDivided);
+		// if (this->m_bDivided)
+		// {
+		// 	unsigned int lChunk = unsigned int((lPos >> ((AOI_MAX_DIVIDE_NUM - 1 - this->m_dwDivideNum) * AOI_BIT_OFFSET)) & AOI_FLAG_MASK);
+		// 	assert(this->m_mapDividedMap.find(lChunk) != this->m_mapDividedMap.end());
 
-			this->m_mapDividedMap[lChunk].Enter(lNodeId, refCoordinate, dwWatchedRadius, dwWatchingRadius);
-			return;
-		}
+		// 	this->m_mapDividedMap[lChunk].Enter(lNodeId, refCoordinate, dwWatchedRadius, dwWatchingRadius);
+		// 	return;
+		// }
 
 		this->m_mapNodeChunk[lNodeId] = lPos;
 		for (unsigned int x = (refCoordinate.GetX() > dwWatchedRadius ? refCoordinate.GetX() - dwWatchedRadius : 0)
@@ -131,6 +132,7 @@ namespace FXAOI
 			assert(this->m_mapDividedMap.find(lChunk) != this->m_mapDividedMap.end());
 
 			this->m_mapDividedMap[lChunk].Leave(lNodeId, refCoordinate, dwWatchedRadius, dwWatchingRadius);
+			return;
 		}
 		else
 		{

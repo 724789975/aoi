@@ -10,6 +10,27 @@
 
 namespace FXAOI
 {
+	std::unordered_map<unsigned int, std::unordered_map<unsigned int, AOIVisibilityType> > g_mapAOIVisibilityTypes;
+	void SetAOIVisibilityType(unsigned int dwAOIType1, unsigned int dwAOIType2, AOIVisibilityType type)
+	{
+		g_mapAOIVisibilityTypes[dwAOIType1][dwAOIType2] = type;
+	}
+
+	AOIVisibilityType GetAOIVisibilityType(unsigned int dwAOIType1, unsigned int dwAOIType2)
+	{
+		return g_mapAOIVisibilityTypes[dwAOIType1][dwAOIType2];
+	}
+
+	std::unordered_map<unsigned int, std::unordered_map<unsigned int, unsigned int> > g_mapAOINodeLimit;
+	void SetAOINodeLimit(unsigned int dwAOIType1, unsigned int dwAOIType2, unsigned int dwNum)
+	{
+		g_mapAOINodeLimit[dwAOIType1][dwAOIType2] = dwNum;
+	}
+
+	unsigned int GetAOINodeLimit(unsigned int dwAOIType1, unsigned int dwAOIType2)
+	{
+		return g_mapAOINodeLimit[dwAOIType1][dwAOIType2];
+	}
 	AOISystem AOISystem::s_oInstace;
 
 	bool AOISystem::AddMap(unsigned int dwMapId, unsigned int dwViweRadius, unsigned int dwLength, unsigned int dwWidth
@@ -63,6 +84,8 @@ namespace FXAOI
 		pNode->SetCoordinate(pInfo->GetAOICoordinate(refPosition));
 
 		MapInstance* pInstance = AOIMapInstanceMgr().Instance().AddMap(dwMapId);
+		assert(pInstance);
+		pInstance = pInstance->GetInstance(pNode->GetCoordinate());
 		assert(pInstance);
 		pInstance->Enter(lNodeId, pNode->GetCoordinate(), pNode->GetWatchedRadius(), pNode->GetWatchingRadius());
 		pNode->CalcView(pInstance);

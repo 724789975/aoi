@@ -5,7 +5,30 @@
 
 namespace FXAOI
 {
-	struct NodePosition;
+	enum AOIVisibilityType
+	{
+		AOIVisibilityType_None,
+		/**
+		 * @brief 
+		 * 不可见
+		 */
+		AOIVisibilityType_Invisible,
+		/**
+		 * @brief 
+		 * 可见的
+		 */
+		AOIVisibilityType_Visible,
+		/**
+		 * @brief 
+		 * 必须互相可见
+		 */
+		AOIVisibilityType_Mutual_Visibility,
+	};
+	
+	void SetAOIVisibilityType(unsigned int dwAOIType1, unsigned int dwAOIType2, AOIVisibilityType type);
+	AOIVisibilityType GetAOIVisibilityType(unsigned int dwAOIType1, unsigned int dwAOIType2);
+	void SetAOINodeLimit(unsigned int dwAOIType1, unsigned int dwAOIType2, unsigned int dwNum);
+	unsigned int GetAOINodeLimit(unsigned int dwAOIType1, unsigned int dwAOIType2);
 	class AOISystem
 	{
 	public:

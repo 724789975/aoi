@@ -6,6 +6,7 @@
 
 namespace FXAOI
 {
+	struct NodePosition;
 	class MapInfo
 	{
 	public:

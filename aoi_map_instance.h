@@ -45,6 +45,7 @@ namespace FXAOI
 		/**
 		 * @brief 
 		 * 离开地块
+		 * 这个需要从根节点递归调用 因为人数减少的时候 需要递归的merge
 		 * @param lNodeId 节点id
 		 * @param refCoordinate 离开的坐标
 		 * @param dwWatchedRadius 被观察半径

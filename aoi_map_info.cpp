@@ -1,4 +1,5 @@
 #include "aoi_map_info.h"
+#include "include/aoi_system.h"
 
 namespace FXAOI
 {

@@ -53,4 +53,16 @@ typedef unsigned long long NODE_ID;
 #define AOI_RIGHT_DOWN_TOP			AOI_UNIT_SUB_SCRIPT(0x40)
 #define AOI_RIGHT_UP_TOP			AOI_UNIT_SUB_SCRIPT(0x80)
 
+namespace FXAOI
+{
+	struct NodePosition
+	{
+		double x;
+#if AOI_USE_Y_AXIS
+		double y;
+#endif
+		double z;
+	};
+} // namespace FXAOI
+
 #endif  //!__AOI_CONST_H__
