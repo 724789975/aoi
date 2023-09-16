@@ -11,7 +11,7 @@ namespace FXAOI
 	class AOINodeMgr
 	{
 	public:
-		static AOINodeMgr& Instance() {return s_oInstace;}
+		static AOINodeMgr& Instance() {return s_oInstance;}
 
 		AOINode* AddNode(NODE_ID lNodeId, unsigned int dwAOIType, unsigned int dwWatchedRadius, unsigned int dwWatchingRadius);
 
@@ -19,7 +19,7 @@ namespace FXAOI
 		bool RemoveNode(NODE_ID lNodeId);
 	protected:
 	private:
-		static AOINodeMgr s_oInstace;
+		static AOINodeMgr s_oInstance;
 		std::unordered_map<NODE_ID, AOINode> m_mapNodes;
 	};
 } // namespace FXAOI

@@ -1,18 +1,21 @@
 #include "aoi_map_instance_mgr.h"
 
+#include <assert.h>
+
 namespace FXAOI
 {
-	AOIMapInstanceMgr AOIMapInstanceMgr::s_oInstace;
+	AOIMapInstanceMgr AOIMapInstanceMgr::s_oInstance;
 
 	MapInstance * AOIMapInstanceMgr::AddMap(unsigned int dwMapId)
 	{
-		return &(this->m_mapMaps[dwMapId] = MapInstance(dwMapId, 0, 0, 0));
+		assert(this->m_mapMaps.end() == this->m_mapMaps.find(dwMapId));
+		return &(this->m_mapMaps[dwMapId] = MapInstance(dwMapId, 0, 0, &this->m_mapMaps[dwMapId]));
 	}
 
 	MapInstance *AOIMapInstanceMgr::GetMap(unsigned int dwMapId)
 	{
 		std::unordered_map<NODE_ID, MapInstance>::iterator it = this->m_mapMaps.find(dwMapId);
-		if (this->m_mapMaps.end() != it)
+		if (this->m_mapMaps.end() == it)
 		{
 			return 0;
 		}

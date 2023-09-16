@@ -4,6 +4,7 @@
 #include "include/aoi_define.h"
 
 #include <map>
+#include <ostream>
 
 namespace FXAOI
 {
@@ -29,6 +30,8 @@ namespace FXAOI
 		unsigned int GetY()const{return m_dwY;}
 #endif
 		unsigned int GetZ()const{return m_dwZ;}
+
+		void Debug(std::ostream& refOstream);
 
 	protected:
 	private:
@@ -70,7 +73,7 @@ namespace FXAOI
 				, 0, 0);
 		}
 
-		const static AOIUnits& Instance() {return s_oInstace;}
+		const static AOIUnits& Instance() {return s_oInstance;}
 
 		bool GetMapPos(unsigned int x
 #if AOI_USE_Y_AXIS
@@ -98,7 +101,7 @@ namespace FXAOI
 
 			AOIUnitMap m_mapUnits;
 
-			static AOIUnits s_oInstace;
+			static AOIUnits s_oInstance;
 	};
 
 }

@@ -1,6 +1,8 @@
 #ifndef __AOI_CONST_H__
 #define __AOI_CONST_H__
 
+#include <ostream>
+
 typedef unsigned long long NODE_ID;
 
 /**
@@ -62,6 +64,15 @@ namespace FXAOI
 		double y;
 #endif
 		double z;
+
+		void Debug(std::ostream& refOstream)
+		{
+			refOstream << "NodePosition:{x:" << this->x << ","
+#if AOI_USE_Y_AXIS
+				<< "y:" << this->y << ","
+#endif
+				<< "z:" << this->z << "}";
+		}
 	};
 } // namespace FXAOI
 

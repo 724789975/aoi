@@ -6,7 +6,7 @@
 
 namespace FXAOI
 {
-	AOIUnits AOIUnits::s_oInstace;
+	AOIUnits AOIUnits::s_oInstance;
 
 	void AOIUnits::Divide(unsigned int dwX
 #if AOI_USE_Y_AXIS
@@ -165,5 +165,14 @@ namespace FXAOI
 			std::cout << "\n";
 		}
 #endif
+	}
+
+	void AOICoordinate::Debug(std::ostream& refOstream)
+	{
+		refOstream << "AOICoordinate:{x:" << this->m_dwX << ","
+#if AOI_USE_Y_AXIS
+			<< "y:" << this->m_dwY << ","
+#endif
+			<< "z:" << this->m_dwZ << "}";
 	}
 }

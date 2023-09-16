@@ -11,14 +11,14 @@ namespace FXAOI
 	class AOIMapInstanceMgr
 	{
 	public:
-		static AOIMapInstanceMgr& Instance() {return s_oInstace;}
+		static AOIMapInstanceMgr& Instance() {return s_oInstance;}
 
 		MapInstance* AddMap(unsigned int dwMapId);
 
 		MapInstance* GetMap(unsigned int dwMapId);
 	protected:
 	private:
-		static AOIMapInstanceMgr s_oInstace;
+		static AOIMapInstanceMgr s_oInstance;
 		std::unordered_map<NODE_ID, MapInstance> m_mapMaps;
 	};
 } // namespace FXAOI

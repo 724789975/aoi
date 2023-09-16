@@ -58,14 +58,14 @@ namespace FXAOI
 
 		this->m_mapNodeChunk[lNodeId] = lPos;
 		for (unsigned int x = (refCoordinate.GetX() > dwWatchedRadius ? refCoordinate.GetX() - dwWatchedRadius : 0)
-			; x < (refCoordinate.GetX() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refCoordinate.GetX() + dwWatchedRadius); ++x)
+			; x <= (refCoordinate.GetX() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) - 1 ? (1 << AOI_MAX_DIVIDE_NUM) - 1 : refCoordinate.GetX() + dwWatchedRadius); ++x)
 		{
 			for (unsigned int z = (refCoordinate.GetZ() > dwWatchedRadius ? refCoordinate.GetZ() - dwWatchedRadius : 0)
-				; z < (refCoordinate.GetZ() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refCoordinate.GetZ() + dwWatchedRadius); ++z)
+				; z <= (refCoordinate.GetZ() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) - 1 ? (1 << AOI_MAX_DIVIDE_NUM) - 1 : refCoordinate.GetZ() + dwWatchedRadius); ++z)
 			{
 #if AOI_USE_Y_AXIS
 				for (unsigned int y = (refCoordinate.GetY() > dwWatchedRadius ? refCoordinate.GetY() - dwWatchedRadius : 0)
-					; y < (refCoordinate.GetY() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refCoordinate.GetY() + dwWatchedRadius); ++y)
+					; y <= (refCoordinate.GetY() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) - 1 ? (1 << AOI_MAX_DIVIDE_NUM) - 1 : refCoordinate.GetY() + dwWatchedRadius); ++y)
 #endif
 				{
 					AOI_UNIT_SUB_SCRIPT lPos;
@@ -86,14 +86,14 @@ namespace FXAOI
 		}
 
 		for (unsigned int x = (refCoordinate.GetX() > dwWatchingRadius ? refCoordinate.GetX() - dwWatchingRadius : 0)
-			; x < (refCoordinate.GetX() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refCoordinate.GetX() + dwWatchingRadius); ++x)
+			; x <= (refCoordinate.GetX() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) - 1 ? (1 << AOI_MAX_DIVIDE_NUM) - 1 : refCoordinate.GetX() + dwWatchingRadius); ++x)
 		{
 			for (unsigned int z = (refCoordinate.GetZ() > dwWatchingRadius ? refCoordinate.GetZ() - dwWatchingRadius : 0)
-				; z < (refCoordinate.GetZ() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refCoordinate.GetZ() + dwWatchingRadius); ++z)
+				; z <= (refCoordinate.GetZ() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) - 1 ? (1 << AOI_MAX_DIVIDE_NUM) - 1 : refCoordinate.GetZ() + dwWatchingRadius); ++z)
 			{
 #if AOI_USE_Y_AXIS
 				for (unsigned int y = (refCoordinate.GetY() > dwWatchingRadius ? refCoordinate.GetY() - dwWatchingRadius : 0)
-					; y < (refCoordinate.GetY() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refCoordinate.GetY() + dwWatchingRadius); ++y)
+					; y <= (refCoordinate.GetY() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) - 1 ? (1 << AOI_MAX_DIVIDE_NUM) - 1 : refCoordinate.GetY() + dwWatchingRadius); ++y)
 #endif
 				{
 					AOI_UNIT_SUB_SCRIPT lPos;
@@ -132,19 +132,18 @@ namespace FXAOI
 			assert(this->m_mapDividedMap.find(lChunk) != this->m_mapDividedMap.end());
 
 			this->m_mapDividedMap[lChunk].Leave(lNodeId, refCoordinate, dwWatchedRadius, dwWatchingRadius);
-			return;
 		}
 		else
 		{
 			for (unsigned int x = (refCoordinate.GetX() > dwWatchingRadius ? refCoordinate.GetX() - dwWatchingRadius : 0)
-				; x < (refCoordinate.GetX() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refCoordinate.GetX() + dwWatchingRadius); ++x)
+				; x <= (refCoordinate.GetX() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) - 1 ? (1 << AOI_MAX_DIVIDE_NUM) - 1 : refCoordinate.GetX() + dwWatchingRadius); ++x)
 			{
 				for (unsigned int z = (refCoordinate.GetZ() > dwWatchingRadius ? refCoordinate.GetZ() - dwWatchingRadius : 0)
-					; z < (refCoordinate.GetZ() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refCoordinate.GetZ() + dwWatchingRadius); ++z)
+					; z <= (refCoordinate.GetZ() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) - 1 ? (1 << AOI_MAX_DIVIDE_NUM) - 1 : refCoordinate.GetZ() + dwWatchingRadius); ++z)
 				{
 	#if AOI_USE_Y_AXIS
 					for (unsigned int y = (refCoordinate.GetY() > dwWatchingRadius ? refCoordinate.GetY() - dwWatchingRadius : 0)
-						; y < (refCoordinate.GetY() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refCoordinate.GetY() + dwWatchingRadius); ++y)
+						; y <= (refCoordinate.GetY() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) - 1 ? (1 << AOI_MAX_DIVIDE_NUM) - 1 : refCoordinate.GetY() + dwWatchingRadius); ++y)
 	#endif
 					{
 						AOI_UNIT_SUB_SCRIPT lPos;
@@ -165,14 +164,14 @@ namespace FXAOI
 				}
 			}
 			for (unsigned int x = (refCoordinate.GetX() > dwWatchedRadius ? refCoordinate.GetX() - dwWatchedRadius : 0)
-				; x < (refCoordinate.GetX() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refCoordinate.GetX() + dwWatchedRadius); ++x)
+				; x <= (refCoordinate.GetX() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) - 1 ? (1 << AOI_MAX_DIVIDE_NUM) - 1 : refCoordinate.GetX() + dwWatchedRadius); ++x)
 			{
 				for (unsigned int z = (refCoordinate.GetZ() > dwWatchedRadius ? refCoordinate.GetZ() - dwWatchedRadius : 0)
-					; z < (refCoordinate.GetZ() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refCoordinate.GetZ() + dwWatchedRadius); ++z)
+					; z <= (refCoordinate.GetZ() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) - 1 ? (1 << AOI_MAX_DIVIDE_NUM) - 1 : refCoordinate.GetZ() + dwWatchedRadius); ++z)
 				{
 	#if AOI_USE_Y_AXIS
 					for (unsigned int y = (refCoordinate.GetY() > dwWatchedRadius ? refCoordinate.GetY() - dwWatchedRadius : 0)
-						; y < (refCoordinate.GetY() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refCoordinate.GetY() + dwWatchedRadius); ++y)
+						; y <= (refCoordinate.GetY() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) - 1 ? (1 << AOI_MAX_DIVIDE_NUM) - 1 : refCoordinate.GetY() + dwWatchedRadius); ++y)
 	#endif
 					{
 						AOI_UNIT_SUB_SCRIPT lPos;
@@ -223,213 +222,217 @@ namespace FXAOI
 	void MapInstance::Move(NODE_ID lNodeId, const AOICoordinate& refFromCoordinate, const AOICoordinate& refToCoordinate
 		, unsigned int dwWatchedRadius, unsigned int dwWatchingRadius)
 	{
-		class RemoveWatched
-		{
-		public:
-			void operator ()(NODE_ID lNodeId, MapInstance* pInstance, AOI_UNIT_SUB_SCRIPT lPos)
-			{
-				MapInstance* pTargetInstance = pInstance->m_pRoot->GetInstance(lPos);
-				assert(pTargetInstance);
-				pInstance->RemoveWatched(lNodeId, lPos);
-			}
-		};
-		class RemoveWatching
-		{
-		public:
-			void operator ()(NODE_ID lNodeId, MapInstance* pInstance, AOI_UNIT_SUB_SCRIPT lPos) const
-			{
-				MapInstance* pTargetInstance = pInstance->m_pRoot->GetInstance(lPos);
-				assert(pTargetInstance);
-				pInstance->RemoveWatching(lNodeId, lPos);
-			}
-		};
-		class AddWatched
-		{
-		public:
-			void operator ()(NODE_ID lNodeId, MapInstance* pInstance, AOI_UNIT_SUB_SCRIPT lPos) const
-			{
-				MapInstance* pTargetInstance = pInstance->m_pRoot->GetInstance(lPos);
-				assert(pTargetInstance);
-				pInstance->AddWatched(lNodeId, lPos);
-			}
-		};
-		class AddWatching
-		{
-		public:
-			void operator ()(NODE_ID lNodeId, MapInstance* pInstance, AOI_UNIT_SUB_SCRIPT lPos) const
-			{
-				MapInstance* pTargetInstance = pInstance->m_pRoot->GetInstance(lPos);
-				assert(pTargetInstance);
-				pInstance->AddWatching(lNodeId, lPos);
-			}
-		};
-		
-		AOICoordinate oWatchedToCoordinateLeftDownBottom(refToCoordinate.GetX() > dwWatchedRadius? refToCoordinate.GetX() - dwWatchedRadius : 0
-			, refToCoordinate.GetY() > dwWatchedRadius? refToCoordinate.GetY() - dwWatchedRadius : 0
-			, refToCoordinate.GetZ() > dwWatchedRadius? refToCoordinate.GetZ() - dwWatchedRadius : 0
-			);
-		AOICoordinate oWatchedToCoordinateRigthUpTop(refToCoordinate.GetX() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refToCoordinate.GetX() + dwWatchedRadius
-			, refToCoordinate.GetY() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refToCoordinate.GetY() + dwWatchedRadius
-			, refToCoordinate.GetZ() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refToCoordinate.GetZ() + dwWatchedRadius
-			);
+// 		class RemoveWatched
+// 		{
+// 		public:
+// 			void operator ()(NODE_ID lNodeId, MapInstance* pInstance, AOI_UNIT_SUB_SCRIPT lPos)
+// 			{
+// 				MapInstance* pTargetInstance = pInstance->m_pRoot->GetInstance(lPos);
+// 				assert(pTargetInstance);
+// 				pInstance->RemoveWatched(lNodeId, lPos);
+// 			}
+// 		};
+// 		class RemoveWatching
+// 		{
+// 		public:
+// 			void operator ()(NODE_ID lNodeId, MapInstance* pInstance, AOI_UNIT_SUB_SCRIPT lPos) const
+// 			{
+// 				MapInstance* pTargetInstance = pInstance->m_pRoot->GetInstance(lPos);
+// 				assert(pTargetInstance);
+// 				pInstance->RemoveWatching(lNodeId, lPos);
+// 			}
+// 		};
+// 		class AddWatched
+// 		{
+// 		public:
+// 			void operator ()(NODE_ID lNodeId, MapInstance* pInstance, AOI_UNIT_SUB_SCRIPT lPos) const
+// 			{
+// 				MapInstance* pTargetInstance = pInstance->m_pRoot->GetInstance(lPos);
+// 				assert(pTargetInstance);
+// 				pInstance->AddWatched(lNodeId, lPos);
+// 			}
+// 		};
+// 		class AddWatching
+// 		{
+// 		public:
+// 			void operator ()(NODE_ID lNodeId, MapInstance* pInstance, AOI_UNIT_SUB_SCRIPT lPos) const
+// 			{
+// 				MapInstance* pTargetInstance = pInstance->m_pRoot->GetInstance(lPos);
+// 				assert(pTargetInstance);
+// 				pInstance->AddWatching(lNodeId, lPos);
+// 			}
+// 		};
+//		
+// 		AOICoordinate oWatchedToCoordinateLeftDownBottom(refToCoordinate.GetX() > dwWatchedRadius? refToCoordinate.GetX() - dwWatchedRadius : 0
+// 			, refToCoordinate.GetY() > dwWatchedRadius? refToCoordinate.GetY() - dwWatchedRadius : 0
+// 			, refToCoordinate.GetZ() > dwWatchedRadius? refToCoordinate.GetZ() - dwWatchedRadius : 0
+// 			);
+// 		AOICoordinate oWatchedToCoordinateRigthUpTop(refToCoordinate.GetX() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refToCoordinate.GetX() + dwWatchedRadius
+// 			, refToCoordinate.GetY() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refToCoordinate.GetY() + dwWatchedRadius
+// 			, refToCoordinate.GetZ() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refToCoordinate.GetZ() + dwWatchedRadius
+// 			);
+//
+// 		for (unsigned int x = (refFromCoordinate.GetX() > dwWatchedRadius ? refFromCoordinate.GetX() - dwWatchedRadius : 0)
+// 			; x <= (refFromCoordinate.GetX() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) - 1 ? (1 << AOI_MAX_DIVIDE_NUM) - 1 : refFromCoordinate.GetX() + dwWatchedRadius); ++x)
+// 		{
+// 			for (unsigned int z = (refFromCoordinate.GetZ() > dwWatchedRadius ? refFromCoordinate.GetZ() - dwWatchedRadius : 0)
+// 				; z <= (refFromCoordinate.GetZ() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) - 1 ? (1 << AOI_MAX_DIVIDE_NUM) - 1 : refFromCoordinate.GetZ() + dwWatchedRadius); ++z)
+// 			{
+// #if AOI_USE_Y_AXIS
+// 				for (unsigned int y = (refFromCoordinate.GetY() > dwWatchedRadius ? refFromCoordinate.GetY() - dwWatchedRadius : 0)
+// 					; y <= (refFromCoordinate.GetY() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) - 1 ? (1 << AOI_MAX_DIVIDE_NUM) - 1 : refFromCoordinate.GetY() + dwWatchedRadius); ++y)
+// #endif
+// 				{
+// 					if (!(x >= oWatchedToCoordinateLeftDownBottom.GetX() && z >= oWatchedToCoordinateLeftDownBottom.GetZ()
+// 						&& x < oWatchedToCoordinateRigthUpTop.GetX() && z < oWatchedToCoordinateRigthUpTop.GetZ()
+// #if AOI_USE_Y_AXIS
+// 						&& y >= oWatchedToCoordinateLeftDownBottom.GetY()
+// 						&& y < oWatchedToCoordinateRigthUpTop.GetY()
+// #endif
+// 					))
+// 					{
+// 						AOI_UNIT_SUB_SCRIPT lPos;
+// 						bool bRet = AOIUnits::Instance().GetMapPos(x
+// #if AOI_USE_Y_AXIS
+// 							, y
+// #endif
+// 							, z, lPos);
+// 						assert(bRet);
+//
+// 						RemoveWatched()(lNodeId, this->m_pRoot, lPos);
+// 					}
+// 				}
+// 			}
+// 		}
+//
+// 		AOICoordinate oWatchingToCoordinateLeftDownBottom(refToCoordinate.GetX() > dwWatchedRadius? refToCoordinate.GetX() - dwWatchedRadius : 0
+// 			, refToCoordinate.GetY() > dwWatchedRadius? refToCoordinate.GetY() - dwWatchedRadius : 0
+// 			, refToCoordinate.GetZ() > dwWatchedRadius? refToCoordinate.GetZ() - dwWatchedRadius : 0
+// 			);
+// 		AOICoordinate oWatchingToCoordinateRigthUpTop(refToCoordinate.GetX() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refToCoordinate.GetX() + dwWatchedRadius
+// 			, refToCoordinate.GetY() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refToCoordinate.GetY() + dwWatchedRadius
+// 			, refToCoordinate.GetZ() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refToCoordinate.GetZ() + dwWatchedRadius
+// 			);
+// 		for (unsigned int x = (refFromCoordinate.GetX() > dwWatchingRadius? refFromCoordinate.GetX() - dwWatchingRadius : 0)
+// 			; x <= (refFromCoordinate.GetX() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) - 1 ? (1 << AOI_MAX_DIVIDE_NUM) - 1 : refFromCoordinate.GetX() + dwWatchingRadius); ++x)
+// 		{
+// 			for (unsigned int z = (refFromCoordinate.GetZ() > dwWatchingRadius ? refFromCoordinate.GetZ() - dwWatchingRadius : 0)
+// 				; z <= (refFromCoordinate.GetZ() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) - 1 ? (1 << AOI_MAX_DIVIDE_NUM) - 1 : refFromCoordinate.GetZ() + dwWatchingRadius); ++z)
+// 			{
+// #if AOI_USE_Y_AXIS
+// 				for (unsigned int y = (refFromCoordinate.GetY() > dwWatchingRadius ? refFromCoordinate.GetY() - dwWatchingRadius : 0)
+// 					; y <= (refFromCoordinate.GetY() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) - 1 ? (1 << AOI_MAX_DIVIDE_NUM) - 1 : refFromCoordinate.GetY() + dwWatchingRadius); ++y)
+// #endif
+// 				{
+// 					if (!(x >= oWatchingToCoordinateLeftDownBottom.GetX() && z >= oWatchingToCoordinateLeftDownBottom.GetZ()
+// 						&& x < oWatchingToCoordinateRigthUpTop.GetX() && z < oWatchingToCoordinateRigthUpTop.GetZ()
+// #if AOI_USE_Y_AXIS
+// 						&& y >= oWatchingToCoordinateLeftDownBottom.GetY()
+// 						&& y < oWatchingToCoordinateRigthUpTop.GetY()
+// #endif
+// 					))
+// 					{
+// 						AOI_UNIT_SUB_SCRIPT lPos;
+// 						bool bRet = AOIUnits::Instance().GetMapPos(x
+// #if AOI_USE_Y_AXIS
+// 							, y
+// #endif
+// 							, z, lPos);
+// 						assert(bRet);
+//
+// 						RemoveWatching()(lNodeId, this->m_pRoot, lPos);
+// 					}
+// 				}
+// 			}
+// 		}
+//
+// 		AOICoordinate oWatchedFromCoordinateLeftDownBottom(refFromCoordinate.GetX() > dwWatchedRadius? refToCoordinate.GetX() - dwWatchedRadius : 0
+// 			, refFromCoordinate.GetY() > dwWatchedRadius? refFromCoordinate.GetY() - dwWatchedRadius : 0
+// 			, refFromCoordinate.GetZ() > dwWatchedRadius? refFromCoordinate.GetZ() - dwWatchedRadius : 0
+// 			);
+// 		AOICoordinate oWatchedFromCoordinateRigthUpTop(refFromCoordinate.GetX() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refFromCoordinate.GetX() + dwWatchedRadius
+// 			, refFromCoordinate.GetY() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refFromCoordinate.GetY() + dwWatchedRadius
+// 			, refFromCoordinate.GetZ() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refFromCoordinate.GetZ() + dwWatchedRadius
+// 			);
+//
+// 		for (unsigned int x = (refToCoordinate.GetX() > dwWatchedRadius ? refToCoordinate.GetX() - dwWatchedRadius : 0)
+// 			; x <= (refToCoordinate.GetX() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) - 1 ? (1 << AOI_MAX_DIVIDE_NUM) - 1 : refToCoordinate.GetX() + dwWatchedRadius); ++x)
+// 		{
+// 			for (unsigned int z = (refToCoordinate.GetZ() > dwWatchedRadius ? refToCoordinate.GetZ() - dwWatchedRadius : 0)
+// 				; z <= (refToCoordinate.GetZ() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) - 1 ? (1 << AOI_MAX_DIVIDE_NUM) - 1 : refToCoordinate.GetZ() + dwWatchedRadius); ++z)
+// 			{
+// #if AOI_USE_Y_AXIS
+// 				for (unsigned int y = (refToCoordinate.GetY() > dwWatchedRadius ? refToCoordinate.GetY() - dwWatchedRadius : 0)
+// 					; y <= (refToCoordinate.GetY() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) - 1 ? (1 << AOI_MAX_DIVIDE_NUM) - 1 : refToCoordinate.GetY() + dwWatchedRadius); ++y)
+// #endif
+// 				{
+// 					if (!(x >= oWatchedFromCoordinateLeftDownBottom.GetX() && z >= oWatchedFromCoordinateLeftDownBottom.GetZ()
+// 						&& x < oWatchedFromCoordinateRigthUpTop.GetX() && z < oWatchedFromCoordinateRigthUpTop.GetZ()
+// #if AOI_USE_Y_AXIS
+// 						&& y >= oWatchedFromCoordinateLeftDownBottom.GetY()
+// 						&& y < oWatchedFromCoordinateRigthUpTop.GetY()
+// #endif
+// 					))
+// 					{
+// 						AOI_UNIT_SUB_SCRIPT lPos;
+// 						bool bRet = AOIUnits::Instance().GetMapPos(x
+// #if AOI_USE_Y_AXIS
+// 							, y
+// #endif
+// 							, z, lPos);
+// 						assert(bRet);
+//
+// 						AddWatched()(lNodeId, this->m_pRoot, lPos);
+// 					}
+// 				}
+// 			}
+// 		}
+//
+// 		AOICoordinate oWatchingFromCoordinateLeftDownBottom(refFromCoordinate.GetX() > dwWatchingRadius? refToCoordinate.GetX() - dwWatchingRadius : 0
+// 			, refFromCoordinate.GetY() > dwWatchingRadius? refFromCoordinate.GetY() - dwWatchingRadius : 0
+// 			, refFromCoordinate.GetZ() > dwWatchingRadius? refFromCoordinate.GetZ() - dwWatchingRadius : 0
+// 			);
+// 		AOICoordinate oWatchingFromCoordinateRigthUpTop(refFromCoordinate.GetX() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refFromCoordinate.GetX() + dwWatchingRadius
+// 			, refFromCoordinate.GetY() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refFromCoordinate.GetY() + dwWatchingRadius
+// 			, refFromCoordinate.GetZ() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refFromCoordinate.GetZ() + dwWatchingRadius
+// 			);
+// 		for (unsigned int x = (refToCoordinate.GetX() > dwWatchingRadius ? refToCoordinate.GetX() - dwWatchingRadius : 0)
+// 			; x <= (refToCoordinate.GetX() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) - 1 ? (1 << AOI_MAX_DIVIDE_NUM) - 1 : refToCoordinate.GetX() + dwWatchingRadius); ++x)
+// 		{
+// 			for (unsigned int z = (refToCoordinate.GetZ() > dwWatchingRadius ? refToCoordinate.GetZ() - dwWatchingRadius : 0)
+// 				; z <= (refToCoordinate.GetZ() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) - 1 ? (1 << AOI_MAX_DIVIDE_NUM) - 1 : refToCoordinate.GetZ() + dwWatchingRadius); ++z)
+// 			{
+// #if AOI_USE_Y_AXIS
+// 				for (unsigned int y = (refToCoordinate.GetY() > dwWatchingRadius ? refToCoordinate.GetY() - dwWatchingRadius : 0)
+// 					; y <= (refToCoordinate.GetY() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) - 1 ? (1 << AOI_MAX_DIVIDE_NUM) - 1 : refToCoordinate.GetY() + dwWatchingRadius); ++y)
+// #endif
+// 				{
+// 					if (!(x >= oWatchingFromCoordinateLeftDownBottom.GetX() && z >= oWatchingFromCoordinateLeftDownBottom.GetZ()
+// 						&& x < oWatchingFromCoordinateRigthUpTop.GetX() && z < oWatchingFromCoordinateRigthUpTop.GetZ()
+// #if AOI_USE_Y_AXIS
+// 						&& y >= oWatchingFromCoordinateLeftDownBottom.GetY()
+// 						&& y < oWatchingFromCoordinateRigthUpTop.GetY()
+// #endif
+// 					))
+// 					{
+// 						AOI_UNIT_SUB_SCRIPT lPos;
+// 						bool bRet = AOIUnits::Instance().GetMapPos(x
+// #if AOI_USE_Y_AXIS
+// 							, y
+// #endif
+// 							, z, lPos);
+// 						assert(bRet);
+//
+// 						AddWatching()(lNodeId, this->m_pRoot, lPos);
+// 					}
+// 				}
+// 			}
+// 		}
 
-		for (unsigned int x = (refFromCoordinate.GetX() > dwWatchedRadius ? refFromCoordinate.GetX() - dwWatchedRadius : 0)
-			; x < (refFromCoordinate.GetX() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refFromCoordinate.GetX() + dwWatchedRadius); ++x)
-		{
-			for (unsigned int z = (refFromCoordinate.GetZ() > dwWatchedRadius ? refFromCoordinate.GetZ() - dwWatchedRadius : 0)
-				; z < (refFromCoordinate.GetZ() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refFromCoordinate.GetZ() + dwWatchedRadius); ++z)
-			{
-#if AOI_USE_Y_AXIS
-				for (unsigned int y = (refFromCoordinate.GetY() > dwWatchedRadius ? refFromCoordinate.GetY() - dwWatchedRadius : 0)
-					; y < (refFromCoordinate.GetY() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refFromCoordinate.GetY() + dwWatchedRadius); ++y)
-#endif
-				{
-					if (!(x >= oWatchedToCoordinateLeftDownBottom.GetX() && z >= oWatchedToCoordinateLeftDownBottom.GetZ()
-						&& x < oWatchedToCoordinateRigthUpTop.GetX() && z < oWatchedToCoordinateRigthUpTop.GetZ()
-#if AOI_USE_Y_AXIS
-						&& y >= oWatchedToCoordinateLeftDownBottom.GetY()
-						&& y < oWatchedToCoordinateRigthUpTop.GetY()
-#endif
-					))
-					{
-						AOI_UNIT_SUB_SCRIPT lPos;
-						bool bRet = AOIUnits::Instance().GetMapPos(x
-#if AOI_USE_Y_AXIS
-							, y
-#endif
-							, z, lPos);
-						assert(bRet);
-
-						RemoveWatched()(lNodeId, this->m_pRoot, lPos);
-					}
-				}
-			}
-		}
-
-		AOICoordinate oWatchingToCoordinateLeftDownBottom(refToCoordinate.GetX() > dwWatchedRadius? refToCoordinate.GetX() - dwWatchedRadius : 0
-			, refToCoordinate.GetY() > dwWatchedRadius? refToCoordinate.GetY() - dwWatchedRadius : 0
-			, refToCoordinate.GetZ() > dwWatchedRadius? refToCoordinate.GetZ() - dwWatchedRadius : 0
-			);
-		AOICoordinate oWatchingToCoordinateRigthUpTop(refToCoordinate.GetX() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refToCoordinate.GetX() + dwWatchedRadius
-			, refToCoordinate.GetY() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refToCoordinate.GetY() + dwWatchedRadius
-			, refToCoordinate.GetZ() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refToCoordinate.GetZ() + dwWatchedRadius
-			);
-		for (unsigned int x = (refFromCoordinate.GetX() > dwWatchingRadius? refFromCoordinate.GetX() - dwWatchingRadius : 0)
-			; x < (refFromCoordinate.GetX() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refFromCoordinate.GetX() + dwWatchingRadius); ++x)
-		{
-			for (unsigned int z = (refFromCoordinate.GetZ() > dwWatchingRadius ? refFromCoordinate.GetZ() - dwWatchingRadius : 0)
-				; z < (refFromCoordinate.GetZ() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refFromCoordinate.GetZ() + dwWatchingRadius); ++z)
-			{
-#if AOI_USE_Y_AXIS
-				for (unsigned int y = (refFromCoordinate.GetY() > dwWatchingRadius ? refFromCoordinate.GetY() - dwWatchingRadius : 0)
-					; y < (refFromCoordinate.GetY() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refFromCoordinate.GetY() + dwWatchingRadius); ++y)
-#endif
-				{
-					if (!(x >= oWatchingToCoordinateLeftDownBottom.GetX() && z >= oWatchingToCoordinateLeftDownBottom.GetZ()
-						&& x < oWatchingToCoordinateRigthUpTop.GetX() && z < oWatchingToCoordinateRigthUpTop.GetZ()
-#if AOI_USE_Y_AXIS
-						&& y >= oWatchingToCoordinateLeftDownBottom.GetY()
-						&& y < oWatchingToCoordinateRigthUpTop.GetY()
-#endif
-					))
-					{
-						AOI_UNIT_SUB_SCRIPT lPos;
-						bool bRet = AOIUnits::Instance().GetMapPos(x
-#if AOI_USE_Y_AXIS
-							, y
-#endif
-							, z, lPos);
-						assert(bRet);
-
-						RemoveWatching()(lNodeId, this->m_pRoot, lPos);
-					}
-				}
-			}
-		}
-
-		AOICoordinate oWatchedFromCoordinateLeftDownBottom(refFromCoordinate.GetX() > dwWatchedRadius? refToCoordinate.GetX() - dwWatchedRadius : 0
-			, refFromCoordinate.GetY() > dwWatchedRadius? refFromCoordinate.GetY() - dwWatchedRadius : 0
-			, refFromCoordinate.GetZ() > dwWatchedRadius? refFromCoordinate.GetZ() - dwWatchedRadius : 0
-			);
-		AOICoordinate oWatchedFromCoordinateRigthUpTop(refFromCoordinate.GetX() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refFromCoordinate.GetX() + dwWatchedRadius
-			, refFromCoordinate.GetY() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refFromCoordinate.GetY() + dwWatchedRadius
-			, refFromCoordinate.GetZ() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refFromCoordinate.GetZ() + dwWatchedRadius
-			);
-
-		for (unsigned int x = (refToCoordinate.GetX() > dwWatchedRadius ? refToCoordinate.GetX() - dwWatchedRadius : 0)
-			; x < (refToCoordinate.GetX() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refToCoordinate.GetX() + dwWatchedRadius); ++x)
-		{
-			for (unsigned int z = (refToCoordinate.GetZ() > dwWatchedRadius ? refToCoordinate.GetZ() - dwWatchedRadius : 0)
-				; z < (refToCoordinate.GetZ() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refToCoordinate.GetZ() + dwWatchedRadius); ++z)
-			{
-#if AOI_USE_Y_AXIS
-				for (unsigned int y = (refToCoordinate.GetY() > dwWatchedRadius ? refToCoordinate.GetY() - dwWatchedRadius : 0)
-					; y < (refToCoordinate.GetY() + dwWatchedRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refToCoordinate.GetY() + dwWatchedRadius); ++y)
-#endif
-				{
-					if (!(x >= oWatchedFromCoordinateLeftDownBottom.GetX() && z >= oWatchedFromCoordinateLeftDownBottom.GetZ()
-						&& x < oWatchedFromCoordinateRigthUpTop.GetX() && z < oWatchedFromCoordinateRigthUpTop.GetZ()
-#if AOI_USE_Y_AXIS
-						&& y >= oWatchedFromCoordinateLeftDownBottom.GetY()
-						&& y < oWatchedFromCoordinateRigthUpTop.GetY()
-#endif
-					))
-					{
-						AOI_UNIT_SUB_SCRIPT lPos;
-						bool bRet = AOIUnits::Instance().GetMapPos(x
-#if AOI_USE_Y_AXIS
-							, y
-#endif
-							, z, lPos);
-						assert(bRet);
-
-						AddWatched()(lNodeId, this->m_pRoot, lPos);
-					}
-				}
-			}
-		}
-
-		AOICoordinate oWatchingFromCoordinateLeftDownBottom(refFromCoordinate.GetX() > dwWatchingRadius? refToCoordinate.GetX() - dwWatchingRadius : 0
-			, refFromCoordinate.GetY() > dwWatchingRadius? refFromCoordinate.GetY() - dwWatchingRadius : 0
-			, refFromCoordinate.GetZ() > dwWatchingRadius? refFromCoordinate.GetZ() - dwWatchingRadius : 0
-			);
-		AOICoordinate oWatchingFromCoordinateRigthUpTop(refFromCoordinate.GetX() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refFromCoordinate.GetX() + dwWatchingRadius
-			, refFromCoordinate.GetY() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refFromCoordinate.GetY() + dwWatchingRadius
-			, refFromCoordinate.GetZ() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refFromCoordinate.GetZ() + dwWatchingRadius
-			);
-		for (unsigned int x = (refToCoordinate.GetX() > dwWatchingRadius ? refToCoordinate.GetX() - dwWatchingRadius : 0)
-			; x < (refToCoordinate.GetX() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refToCoordinate.GetX() + dwWatchingRadius); ++x)
-		{
-			for (unsigned int z = (refToCoordinate.GetZ() > dwWatchingRadius ? refToCoordinate.GetZ() - dwWatchingRadius : 0)
-				; z < (refToCoordinate.GetZ() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refToCoordinate.GetZ() + dwWatchingRadius); ++z)
-			{
-#if AOI_USE_Y_AXIS
-				for (unsigned int y = (refToCoordinate.GetY() > dwWatchingRadius ? refToCoordinate.GetY() - dwWatchingRadius : 0)
-					; y < (refToCoordinate.GetY() + dwWatchingRadius > (1 << AOI_MAX_DIVIDE_NUM) ? (1 << AOI_MAX_DIVIDE_NUM) : refToCoordinate.GetY() + dwWatchingRadius); ++y)
-#endif
-				{
-					if (!(x >= oWatchingFromCoordinateLeftDownBottom.GetX() && z >= oWatchingFromCoordinateLeftDownBottom.GetZ()
-						&& x < oWatchingFromCoordinateRigthUpTop.GetX() && z < oWatchingFromCoordinateRigthUpTop.GetZ()
-#if AOI_USE_Y_AXIS
-						&& y >= oWatchingFromCoordinateLeftDownBottom.GetY()
-						&& y < oWatchingFromCoordinateRigthUpTop.GetY()
-#endif
-					))
-					{
-						AOI_UNIT_SUB_SCRIPT lPos;
-						bool bRet = AOIUnits::Instance().GetMapPos(x
-#if AOI_USE_Y_AXIS
-							, y
-#endif
-							, z, lPos);
-						assert(bRet);
-
-						AddWatching()(lNodeId, this->m_pRoot, lPos);
-					}
-				}
-			}
-		}
-
+		this->Leave(lNodeId, refFromCoordinate, dwWatchedRadius, dwWatchedRadius);
+		MapInstance* pInstance1 = this->GetInstance(refToCoordinate);
+		assert(pInstance1);
+		pInstance1->Enter(lNodeId, refToCoordinate, dwWatchedRadius, dwWatchingRadius);
 	}
 
 	void MapInstance::GetNodeInPos(AOI_UNIT_SUB_SCRIPT lPos, std::unordered_map<unsigned int, std::unordered_set<NODE_ID>> &refWatchingNode)

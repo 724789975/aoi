@@ -29,9 +29,25 @@ namespace FXAOI
 
 	unsigned int GetAOINodeLimit(unsigned int dwAOIType1, unsigned int dwAOIType2)
 	{
+		if (g_mapAOINodeLimit.end() == g_mapAOINodeLimit.find(dwAOIType1))
+		{
+			return -1;
+		}
+
+		if (g_mapAOINodeLimit[dwAOIType1].end() == g_mapAOINodeLimit[dwAOIType1].find(dwAOIType2))
+		{
+			return -1;
+		}
+		
 		return g_mapAOINodeLimit[dwAOIType1][dwAOIType2];
 	}
-	AOISystem AOISystem::s_oInstace;
+	void AoiOperatorDefault (NODE_ID lNodeId
+		, std::unordered_map<unsigned int, std::unordered_set<NODE_ID> >& mapAddWatching
+		, std::unordered_map<unsigned int, std::unordered_set<NODE_ID> >& mapDelWatching
+		, std::unordered_map<unsigned int, std::unordered_set<NODE_ID> >& mapAddWatched
+		, std::unordered_map<unsigned int, std::unordered_set<NODE_ID> >& mapDelWatched
+	){}
+	AOISystem AOISystem::s_oInstance;
 
 	bool AOISystem::AddMap(unsigned int dwMapId, unsigned int dwViweRadius, unsigned int dwLength, unsigned int dwWidth
 #if AOI_USE_Y_AXIS
@@ -83,23 +99,24 @@ namespace FXAOI
 		pNode->SetPosition(refPosition);
 		pNode->SetCoordinate(pInfo->GetAOICoordinate(refPosition));
 
-		MapInstance* pInstance = AOIMapInstanceMgr().Instance().AddMap(dwMapId);
+		MapInstance* pInstance = AOIMapInstanceMgr().Instance().GetMap(dwMapId);
 		assert(pInstance);
-		pInstance = pInstance->GetInstance(pNode->GetCoordinate());
-		assert(pInstance);
-		pInstance->Enter(lNodeId, pNode->GetCoordinate(), pNode->GetWatchedRadius(), pNode->GetWatchingRadius());
+		MapInstance* pInstance1 = pInstance->GetInstance(pNode->GetCoordinate());
+		assert(pInstance1);
+		pInstance1->Enter(lNodeId, pNode->GetCoordinate(), pNode->GetWatchedRadius(), pNode->GetWatchingRadius());
 		pNode->CalcView(pInstance);
 	}
 
-	void AOISystem::LeaveMap(NODE_ID lNodeId, const NodePosition &refPosition)
+	void AOISystem::LeaveMap(NODE_ID lNodeId)
 	{
 		AOINode* pNode = AOINodeMgr::Instance().GetNode(lNodeId);
 		assert(pNode);
 
-		MapInstance* pInstance = AOIMapInstanceMgr().Instance().AddMap(pNode->GetMapId());
+		MapInstance* pInstance = AOIMapInstanceMgr().Instance().GetMap(pNode->GetMapId());
 		assert(pInstance);
 		pInstance->Leave(lNodeId, pNode->GetCoordinate(), pNode->GetWatchedRadius(), pNode->GetWatchingRadius());
 		pNode->CalcView(pInstance);
+		pNode->SetMapId(-1);
 	}
 
 	void AOISystem::Move(NODE_ID lNodeId, const NodePosition &refPosition)
@@ -110,12 +127,19 @@ namespace FXAOI
 		MapInfo* pInfo = AOIMapInfoMgr::Instance().GetMap(pNode->GetMapId());
 		assert(pInfo);
 
-		MapInstance* pInstance = AOIMapInstanceMgr().Instance().AddMap(pNode->GetMapId());
+		MapInstance* pInstance = AOIMapInstanceMgr().Instance().GetMap(pNode->GetMapId());
 		assert(pInstance);
 		const AOICoordinate& refCoordinate = pInfo->GetAOICoordinate(refPosition);
 		pInstance->Move(lNodeId, pNode->GetCoordinate(), refCoordinate, pNode->GetWatchedRadius(), pNode->GetWatchingRadius());
 		pNode->SetCoordinate(refCoordinate);
 		pNode->CalcView(pInstance);
+	}
+
+	void AOISystem::DebugNode(NODE_ID lNodeId, std::ostream& refOstream)
+	{
+		AOINode* pNode = AOINodeMgr::Instance().GetNode(lNodeId);
+		assert(pNode);
+		pNode->Debug(refOstream);
 	}
 }
 // namespace FXAOI

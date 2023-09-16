@@ -2,7 +2,7 @@
 
 namespace FXAOI
 {
-	AOINodeMgr AOINodeMgr::s_oInstace;
+	AOINodeMgr AOINodeMgr::s_oInstance;
 
 	AOINode* AOINodeMgr::AddNode(NODE_ID lNodeId, unsigned int dwAOIType, unsigned int dwWatchedRadius, unsigned int dwWatchingRadius)
 	{
@@ -18,7 +18,7 @@ namespace FXAOI
 	AOINode* AOINodeMgr::GetNode(NODE_ID lNodeId)
 	{
 		std::unordered_map<NODE_ID, AOINode>::iterator it = this->m_mapNodes.find(lNodeId);
-		if (this->m_mapNodes.end() != it)
+		if (this->m_mapNodes.end() == it)
 		{
 			return 0;
 		}

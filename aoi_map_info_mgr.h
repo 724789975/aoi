@@ -11,7 +11,7 @@ namespace FXAOI
 	class AOIMapInfoMgr
 	{
 	public:
-		static AOIMapInfoMgr& Instance() {return s_oInstace;}
+		static AOIMapInfoMgr& Instance() {return s_oInstance;}
 
 		MapInfo* AddMap(unsigned int dwMapId, unsigned int dwViweRadius, unsigned int dwLength, unsigned int dwWidth
 #if AOI_USE_Y_AXIS
@@ -27,7 +27,7 @@ namespace FXAOI
 		MapInfo* GetMap(unsigned int dwMapId);
 	protected:
 	private:
-		static AOIMapInfoMgr s_oInstace;
+		static AOIMapInfoMgr s_oInstance;
 		std::unordered_map<unsigned int, MapInfo> m_mapMaps;
 	};
 } // namespace FXAOI

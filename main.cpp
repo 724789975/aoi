@@ -2,9 +2,82 @@
 
 #include <iostream>
 #include <bitset>
+#include <unordered_map>
+#include <unordered_set>
+
+void AoiOperatorDefault (NODE_ID lNodeId
+	, std::unordered_map<unsigned int, std::unordered_set<NODE_ID> >& mapAddWatching
+	, std::unordered_map<unsigned int, std::unordered_set<NODE_ID> >& mapDelWatching
+	, std::unordered_map<unsigned int, std::unordered_set<NODE_ID> >& mapAddWatched
+	, std::unordered_map<unsigned int, std::unordered_set<NODE_ID> >& mapDelWatched
+)
+{
+	FXAOI::AOISystem::Instance().DebugNode(lNodeId, std::cout);
+	std::cout << "\n";
+	if (mapAddWatching.size())
+	{
+		std::cout << " add_watching:{";
+		for (auto &&i : mapAddWatching)
+		{
+			std::cout << "type_" << i.first << " : {";
+			for (auto &&j : i.second)
+			{
+				std::cout << j << ",";
+			}
+			std::cout << "},";
+		}
+		std::cout << "}\n";
+	}
+	
+	if (mapDelWatching.size())
+	{
+		std::cout << " del_watching:{";
+		for (auto &&i : mapDelWatching)
+		{
+			std::cout << "type_" << i.first << " : {";
+			for (auto &&j : i.second)
+			{
+				std::cout << j << ",";
+			}
+			std::cout << "},";
+		}
+		std::cout << "}\n";
+	}
+	
+	if (mapAddWatched.size())
+	{
+		std::cout << " add_watched:{";
+		for (auto &&i : mapAddWatched)
+		{
+			std::cout << "type_" << i.first << " : {";
+			for (auto &&j : i.second)
+			{
+				std::cout << j << ",";
+			}
+			std::cout << "},";
+		}
+		std::cout << "}\n";
+	}
+	
+	if (mapDelWatched.size())
+	{
+		std::cout << " del_watched:{";
+		for (auto &&i : mapDelWatched)
+		{
+			std::cout << "type_" << i.first << " : {";
+			for (auto &&j : i.second)
+			{
+				std::cout << j << ",";
+			}
+			std::cout << "},";
+		}
+		std::cout << "}\n";
+	}
+}
 
 int main()
 {
+	FXAOI::AOISystem::Instance().SetAoiOperator(AoiOperatorDefault);
 	FXAOI::AOISystem::Instance().AddMap(1, 1, 512, 512, 512, 0, 0, 0);
 	FXAOI::SetAOIVisibilityType(1, 1, FXAOI::AOIVisibilityType::AOIVisibilityType_Mutual_Visibility);
 	FXAOI::SetAOIVisibilityType(1, 2, FXAOI::AOIVisibilityType::AOIVisibilityType_Visible);
@@ -15,12 +88,13 @@ int main()
 	FXAOI::SetAOIVisibilityType(3, 1, FXAOI::AOIVisibilityType::AOIVisibilityType_Visible);
 	FXAOI::SetAOIVisibilityType(3, 2, FXAOI::AOIVisibilityType::AOIVisibilityType_Visible);
 	FXAOI::SetAOIVisibilityType(3, 3, FXAOI::AOIVisibilityType::AOIVisibilityType_Visible);
+	FXAOI::SetAOINodeLimit(1, 1, 100);
 	// FXAOI::AOIUnits::Instance();//.DebugInfo();
 
 	// FXAOI::MapInstance oMapInstance(0, 0, 0, 0);
 
-	int x = 0, y = 0, z = 0;
-	for (size_t i = 0; i < 1376560; i++)
+	int x = 10, y = 10, z = 10;
+	for (size_t i = 0; i < 1376; i++)
 	{
 		if (z >= 512)
 		{
@@ -35,30 +109,32 @@ int main()
 		FXAOI::AOISystem::Instance().AddNode(i, i % 3 + 1, 1, 1);
 		FXAOI::NodePosition pos = {x, y, z};
 		FXAOI::AOISystem::Instance().EnterMap(i, 1, pos);
-		// oMapInstance.Enter(i, FXAOI::AOICoordinate(x, y, z), 1, 1);
-		// oMapInstance.Enter(i, FXAOI::AOICoordinate(x, z), 1, 1);
 		++z;
 	}
 
-	// x = 0, y = 0, z = 0;
-	// for (size_t i = 0; i < 1376560; i++)
-	// {
-	// 	if (z >= 256)
-	// 	{
-	// 		++x;
-	// 		z = 0;
-	// 	}
-	// 	if (x >= 256)
-	// 	{
-	// 		++y;
-	// 		x = 0;
-	// 	}
-	// 	oMapInstance.Leave(i, FXAOI::AOICoordinate(x, y, z), 1, 1);
-	// 	// oMapInstance.Leave(i, FXAOI::AOICoordinate(x, z), 1, 1);
-	// 	++z;
-	// }
+	x = 11, y = 12, z = 13;
+	for (size_t i = 0; i < 1376; i++)
+	{
+		if (z >= 512)
+		{
+			++x;
+			z = 0;
+		}
+		if (x >= 512)
+		{
+			++y;
+			x = 0;
+		}
+		FXAOI::NodePosition pos = {x, y, z};
+		FXAOI::AOISystem::Instance().Move(i, pos);
+		++z;
+	}
+
+	for (size_t i = 0; i < 1376; i++)
+	{
+		FXAOI::AOISystem::Instance().LeaveMap(i);
+	}
 	
-	// oMapInstance.Enter()
 
 	return 0;
 }
