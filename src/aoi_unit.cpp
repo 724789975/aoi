@@ -1,5 +1,5 @@
 #include "aoi_unit.h"
-#include "include/aoi_define.h"
+#include "../include/aoi_define.h"
 
 #include <iostream>
 #include <assert.h>

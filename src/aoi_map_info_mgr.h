@@ -1,7 +1,7 @@
 #ifndef __AOI_MAP_INFO_MGR_H__
 #define __AOI_MAP_INFO_MGR_H__
 
-#include "include/aoi_define.h"
+#include "../include/aoi_define.h"
 #include "aoi_map_info.h"
 
 #include <unordered_map>

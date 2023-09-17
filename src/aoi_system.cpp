@@ -1,4 +1,4 @@
-#include "include/aoi_system.h"
+#include "../include/aoi_system.h"
 #include "aoi_map_info_mgr.h"
 #include "aoi_map_instance_mgr.h"
 #include "aoi_node_mgr.h"

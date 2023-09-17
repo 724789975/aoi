@@ -1,7 +1,7 @@
 #ifndef __MAP_INFO_H__
 #define __MAP_INFO_H__
 
-#include "include/aoi_define.h"
+#include "../include/aoi_define.h"
 #include "aoi_unit.h"
 
 namespace FXAOI

@@ -1,8 +1,8 @@
 #include "aoi_node.h"
 #include "aoi_map_instance.h"
 #include "aoi_node_mgr.h"
-#include "include/aoi_define.h"
-#include "include/aoi_system.h"
+#include "../include/aoi_define.h"
+#include "../include/aoi_system.h"
 
 #include <unordered_map>
 #include <assert.h>

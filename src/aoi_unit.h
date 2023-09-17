@@ -1,7 +1,7 @@
 #ifndef __AOI_UNIT_H__
 #define __AOI_UNIT_H__
 
-#include "include/aoi_define.h"
+#include "../include/aoi_define.h"
 
 #include <map>
 #include <ostream>

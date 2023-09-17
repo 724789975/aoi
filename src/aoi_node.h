@@ -1,7 +1,7 @@
 #ifndef __AOI_NODE_H__
 #define __AOI_NODE_H__
 
-#include "include/aoi_define.h"
+#include "../include/aoi_define.h"
 #include "aoi_unit.h"
 
 #include <unordered_set>
