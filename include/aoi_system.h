@@ -3,8 +3,8 @@
 
 #include "aoi_define.h"
 
-#include <unordered_map>
-#include <unordered_set>
+#include <map>
+#include <set>
 #include <ostream>
 
 namespace FXAOI
@@ -44,17 +44,17 @@ namespace FXAOI
 	 * @param mapDelWatched 其他节点收到消失包
 	 */
 	typedef void AoiOperator (NODE_ID lNodeId
-		, std::unordered_map<unsigned int, std::unordered_set<NODE_ID> >& mapAddWatching
-		, std::unordered_map<unsigned int, std::unordered_set<NODE_ID> >& mapDelWatching
-		, std::unordered_map<unsigned int, std::unordered_set<NODE_ID> >& mapAddWatched
-		, std::unordered_map<unsigned int, std::unordered_set<NODE_ID> >& mapDelWatched
+		, std::map<unsigned int, std::set<NODE_ID> >& mapAddWatching
+		, std::map<unsigned int, std::set<NODE_ID> >& mapDelWatching
+		, std::map<unsigned int, std::set<NODE_ID> >& mapAddWatched
+		, std::map<unsigned int, std::set<NODE_ID> >& mapDelWatched
 	);
 
 	void AoiOperatorDefault (NODE_ID lNodeId
-		, std::unordered_map<unsigned int, std::unordered_set<NODE_ID> >& mapAddWatching
-		, std::unordered_map<unsigned int, std::unordered_set<NODE_ID> >& mapDelWatching
-		, std::unordered_map<unsigned int, std::unordered_set<NODE_ID> >& mapAddWatched
-		, std::unordered_map<unsigned int, std::unordered_set<NODE_ID> >& mapDelWatched
+		, std::map<unsigned int, std::set<NODE_ID> >& mapAddWatching
+		, std::map<unsigned int, std::set<NODE_ID> >& mapDelWatching
+		, std::map<unsigned int, std::set<NODE_ID> >& mapAddWatched
+		, std::map<unsigned int, std::set<NODE_ID> >& mapDelWatched
 	);
 
 	class AOISystem
@@ -62,7 +62,18 @@ namespace FXAOI
 	public:
 		AOISystem(AoiOperator* pOperator = AoiOperatorDefault):m_pAoiOperator(pOperator){}
 		static AOISystem& Instance() {return s_oInstance;}
-
+		/**
+		 * @brief 
+		 * 添加地图配置
+		 * @param dwMapId 地图id
+		 * @param dwViweRadius 视野半径
+		 * @param dwLength 地图长度
+		 * @param dwWidth 地图宽度
+		 * @param dwHight 地图高度
+		 * @param dOffsetX 距离原点偏移(将中心偏移到0,0,0)
+		 * @param dOffsetY 距离原点偏移
+		 * @param dOffsetZ 距离原点偏移
+		 */
 		bool AddMap(unsigned int dwMapId, unsigned int dwViweRadius, unsigned int dwLength, unsigned int dwWidth
 #if AOI_USE_Y_AXIS
 			, unsigned int dwHight
@@ -73,10 +84,9 @@ namespace FXAOI
 #endif
 			, double dOffsetZ
 		);
-
 		/**
 		 * @brief 
-		 * 
+		 * 添加节点
 		 * @param lNodeId 
 		 * @param dwAOIType 
 		 * @param dwWatchedRadius 
@@ -85,7 +95,7 @@ namespace FXAOI
 		void AddNode(NODE_ID lNodeId, unsigned int dwAOIType, unsigned int dwWatchedRadius, unsigned int dwWatchingRadius);
 		/**
 		 * @brief 
-		 * 
+		 * 移除节点
 		 * @param lNodeId 
 		 */
 		void RemoveNode(NODE_ID lNodeId);
@@ -99,14 +109,14 @@ namespace FXAOI
 		void EnterMap(NODE_ID lNodeId, unsigned int dwMapId, const NodePosition& refPosition);
 		/**
 		 * @brief 
-		 * 
+		 * 进入地图
 		 * @param lNodeId 
 		 * @param refPosition 
 		 */
 		void LeaveMap(NODE_ID lNodeId);
 		/**
 		 * @brief 
-		 * 
+		 * 离开地图
 		 * @param lNodeId 
 		 * @param refPosition 
 		 */
@@ -148,7 +158,7 @@ namespace FXAOI
 	private:
 		static AOISystem s_oInstance;
 		AoiOperator* m_pAoiOperator;
-		std::unordered_map<NODE_ID, NODE_ID> m_mapNodeParent;
+		std::map<NODE_ID, NODE_ID> m_mapNodeParent;
 	};
 } // namespace FXAOI
 

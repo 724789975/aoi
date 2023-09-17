@@ -14,7 +14,7 @@ namespace FXAOI
 
 	MapInstance *AOIMapInstanceMgr::GetMap(unsigned int dwMapId)
 	{
-		std::unordered_map<NODE_ID, MapInstance>::iterator it = this->m_mapMaps.find(dwMapId);
+		std::map<NODE_ID, MapInstance>::iterator it = this->m_mapMaps.find(dwMapId);
 		if (this->m_mapMaps.end() == it)
 		{
 			return 0;

@@ -4,8 +4,8 @@
 #include "../include/aoi_define.h"
 #include "aoi_unit.h"
 
-#include <unordered_set>
-#include <unordered_map>
+#include <set>
+#include <map>
 
 namespace FXAOI
 {
@@ -133,24 +133,24 @@ namespace FXAOI
 		 * 被节点看见
 		 * <视野类型, 视野列表>
 		 */
-		std::unordered_map<unsigned int, std::unordered_set< NODE_ID> > m_mapWatched;
+		std::map<unsigned int, std::set< NODE_ID> > m_mapWatched;
 		/**
 		 * @brief 
 		 * 正在观察的节点
 		 * <视野类型, 视野列表>
 		 */
-		std::unordered_map<unsigned int, std::unordered_set< NODE_ID> > m_mapWatching;
+		std::map<unsigned int, std::set< NODE_ID> > m_mapWatching;
 		/**
 		 * @brief 
 		 * 记录玩家移动或进入地图时能够看到的地块
 		 */
-		std::unordered_set<AOI_UNIT_SUB_SCRIPT> m_setTempWatchingMap;
+		std::set<AOI_UNIT_SUB_SCRIPT> m_setTempWatchingMap;
 
 		/**
 		 * @brief 
 		 * 子节点 共享跟此节点相同的 可见 被观察列表 视野与本节点相同
 		 */
-		std::unordered_set<NODE_ID> m_setChildrenNode;
+		std::set<NODE_ID> m_setChildrenNode;
 	};
 } // namespace FXAOI
 

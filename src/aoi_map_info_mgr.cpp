@@ -29,7 +29,7 @@ namespace FXAOI
 
 	MapInfo *AOIMapInfoMgr::GetMap(unsigned int dwMapId)
 	{
-		std::unordered_map<unsigned int, MapInfo>::iterator it = this->m_mapMaps.find(dwMapId);
+		std::map<unsigned int, MapInfo>::iterator it = this->m_mapMaps.find(dwMapId);
 		if (this->m_mapMaps.end() == it)
 		{
 			return 0;

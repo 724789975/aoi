@@ -2,14 +2,14 @@
 
 #include <iostream>
 #include <bitset>
-#include <unordered_map>
-#include <unordered_set>
+#include <map>
+#include <set>
 
 void AoiOperatorDefault (NODE_ID lNodeId
-	, std::unordered_map<unsigned int, std::unordered_set<NODE_ID> >& mapAddWatching
-	, std::unordered_map<unsigned int, std::unordered_set<NODE_ID> >& mapDelWatching
-	, std::unordered_map<unsigned int, std::unordered_set<NODE_ID> >& mapAddWatched
-	, std::unordered_map<unsigned int, std::unordered_set<NODE_ID> >& mapDelWatched
+	, std::map<unsigned int, std::set<NODE_ID> >& mapAddWatching
+	, std::map<unsigned int, std::set<NODE_ID> >& mapDelWatching
+	, std::map<unsigned int, std::set<NODE_ID> >& mapAddWatched
+	, std::map<unsigned int, std::set<NODE_ID> >& mapDelWatched
 )
 {
 	FXAOI::AOISystem::Instance().DebugNode(lNodeId, std::cout);

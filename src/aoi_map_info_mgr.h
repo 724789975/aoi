@@ -4,7 +4,7 @@
 #include "../include/aoi_define.h"
 #include "aoi_map_info.h"
 
-#include <unordered_map>
+#include <map>
 
 namespace FXAOI
 {
@@ -28,7 +28,7 @@ namespace FXAOI
 	protected:
 	private:
 		static AOIMapInfoMgr s_oInstance;
-		std::unordered_map<unsigned int, MapInfo> m_mapMaps;
+		std::map<unsigned int, MapInfo> m_mapMaps;
 	};
 } // namespace FXAOI
 

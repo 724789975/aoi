@@ -5,8 +5,8 @@
 #include "aoi_node.h"
 #include "aoi_unit.h"
 
-#include <unordered_map>
-#include <unordered_set>
+#include <map>
+#include <set>
 
 namespace FXAOI
 {
@@ -57,14 +57,14 @@ namespace FXAOI
 		void Move(NODE_ID lNodeId, const AOICoordinate& refFromCoordinate, const AOICoordinate& refToCoordinate
 			, unsigned int dwWatchedRadius, unsigned int dwWatchingRadius);
 
-		void GetNodeInPos(AOI_UNIT_SUB_SCRIPT lPos, std::unordered_map<unsigned int, std::unordered_set< NODE_ID> >& refWatchingNode);
+		void GetNodeInPos(AOI_UNIT_SUB_SCRIPT lPos, std::map<unsigned int, std::set< NODE_ID> >& refWatchingNode);
 		/**
 		 * @brief Get the Watching In Pos object
 		 * 获取正在观察某个格子的节点
 		 * @param lPos 
 		 * @param refWatchingNode 
 		 */
-		void GetWatchingInPos(AOI_UNIT_SUB_SCRIPT lPos, std::unordered_map<unsigned int, std::unordered_set< NODE_ID> >& refWatchingNode);
+		void GetWatchingInPos(AOI_UNIT_SUB_SCRIPT lPos, std::map<unsigned int, std::set< NODE_ID> >& refWatchingNode);
 		/**
 		 * @brief 
 		 * 目标点是否在节点可见范围内
@@ -114,24 +114,24 @@ namespace FXAOI
 		 * @brief 
 		 * 已分裂地块
 		 */
-		std::unordered_map<unsigned int, MapInstance> m_mapDividedMap;
+		std::map<unsigned int, MapInstance> m_mapDividedMap;
 		/**
 		 * @brief 
 		 * map<格子坐标,set<节点id>>
 		 * 列表中的节点可被格子中的节点看见
 		 */
-		std::unordered_map<AOI_UNIT_SUB_SCRIPT, std::unordered_set<NODE_ID> > m_mapWatched;
+		std::map<AOI_UNIT_SUB_SCRIPT, std::set<NODE_ID> > m_mapWatched;
 		/**
 		 * @brief 
 		 * map<格子坐标,set<节点id>>
 		 * 列表中的节点可看见格子中的节点
 		 */
-		std::unordered_map<AOI_UNIT_SUB_SCRIPT, std::unordered_set<NODE_ID> > m_mapWatching;
+		std::map<AOI_UNIT_SUB_SCRIPT, std::set<NODE_ID> > m_mapWatching;
 		/**
 		 * @brief 
 		 * <节点id, 地块id>
 		 */
-		std::unordered_map<NODE_ID, AOI_UNIT_SUB_SCRIPT> m_mapNodeChunk;
+		std::map<NODE_ID, AOI_UNIT_SUB_SCRIPT> m_mapNodeChunk;
 	};
 } // namespace FXAOI
 
