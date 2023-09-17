@@ -127,9 +127,15 @@ namespace FXAOI
 		MapInfo* pInfo = AOIMapInfoMgr::Instance().GetMap(pNode->GetMapId());
 		assert(pInfo);
 
+		const AOICoordinate& refCoordinate = pInfo->GetAOICoordinate(refPosition);
+		if (!AOICoordinateLess()(refCoordinate, pNode->GetCoordinate()) && !AOICoordinateLess()(pNode->GetCoordinate(), refCoordinate))
+		{
+			//在aoi格子上没有变化
+			return;
+		}
+		
 		MapInstance* pInstance = AOIMapInstanceMgr().Instance().GetMap(pNode->GetMapId());
 		assert(pInstance);
-		const AOICoordinate& refCoordinate = pInfo->GetAOICoordinate(refPosition);
 		pInstance->Move(lNodeId, pNode->GetCoordinate(), refCoordinate, pNode->GetWatchedRadius(), pNode->GetWatchingRadius());
 		pNode->SetCoordinate(refCoordinate);
 		pNode->CalcView(pInstance);

@@ -88,9 +88,9 @@ namespace FXAOI
 		 * @brief 
 		 * 添加节点
 		 * @param lNodeId 
-		 * @param dwAOIType 
-		 * @param dwWatchedRadius 
-		 * @param dwWatchingRadius 
+		 * @param dwAOIType aoi类型
+		 * @param dwWatchedRadius 被观察半径
+		 * @param dwWatchingRadius 观察半径
 		 */
 		void AddNode(NODE_ID lNodeId, unsigned int dwAOIType, unsigned int dwWatchedRadius, unsigned int dwWatchingRadius);
 		/**
@@ -102,23 +102,22 @@ namespace FXAOI
 		/**
 		 * @brief 
 		 * 进入地图
-		 * @param lNodeId 
-		 * @param dwMapId 
-		 * @param refPosition 
+		 * @param lNodeId 节点id
+		 * @param dwMapId 地图id
+		 * @param refPosition 坐标位置(世界坐标)
 		 */
 		void EnterMap(NODE_ID lNodeId, unsigned int dwMapId, const NodePosition& refPosition);
 		/**
 		 * @brief 
 		 * 离开地图
-		 * @param lNodeId 
-		 * @param refPosition 
+		 * @param lNodeId 节点id
 		 */
 		void LeaveMap(NODE_ID lNodeId);
 		/**
 		 * @brief 
 		 * 离开地图
-		 * @param lNodeId 
-		 * @param refPosition 
+		 * @param lNodeId 节点id
+		 * @param refPosition 当前坐标位置(世界坐标)
 		 */
 		void Move(NODE_ID lNodeId, const NodePosition& refPosition);
 		/**
