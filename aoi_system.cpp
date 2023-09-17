@@ -135,8 +135,30 @@ namespace FXAOI
 		pNode->CalcView(pInstance);
 	}
 
+	void AOISystem::AddChild(NODE_ID lNodeId, NODE_ID lChildId)
+	{
+		AOINode* pNode = AOINodeMgr::Instance().GetNode(lNodeId);
+		assert(pNode);
+		this->m_mapNodeParent[lChildId] = lNodeId;
+		pNode->AddChild(lChildId);
+	}
+
+	void AOISystem::RemoveChild(NODE_ID lNodeId, NODE_ID lChildId)
+	{
+		AOINode* pNode = AOINodeMgr::Instance().GetNode(lNodeId);
+		assert(pNode);
+		pNode->RemoveChild(lChildId);
+		this->m_mapNodeParent.erase(lChildId);
+	}
+
 	void AOISystem::DebugNode(NODE_ID lNodeId, std::ostream& refOstream)
 	{
+		if (this->m_mapNodeParent.end() != this->m_mapNodeParent.find(lNodeId))
+		{
+			refOstream << lNodeId;
+			refOstream << ",parent:" << (lNodeId = this->m_mapNodeParent[lNodeId]) << ",";
+		}
+		
 		AOINode* pNode = AOINodeMgr::Instance().GetNode(lNodeId);
 		assert(pNode);
 		pNode->Debug(refOstream);

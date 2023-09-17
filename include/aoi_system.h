@@ -112,6 +112,20 @@ namespace FXAOI
 		 */
 		void Move(NODE_ID lNodeId, const NodePosition& refPosition);
 		/**
+		 * @brief 
+		 * 添加子节点
+		 * @param lNodeId 
+		 * @param lChildId 
+		 */
+		void AddChild(NODE_ID lNodeId, NODE_ID lChildId);
+		/**
+		 * @brief 
+		 * 删除子节点
+		 * @param lNodeId 
+		 * @param lChildId 
+		 */
+		void RemoveChild(NODE_ID lNodeId, NODE_ID lChildId);
+		/**
 		 * @brief Set the Aoi Operator object
 		 * 
 		 * @param pAoiOperator 
@@ -134,6 +148,7 @@ namespace FXAOI
 	private:
 		static AOISystem s_oInstance;
 		AoiOperator* m_pAoiOperator;
+		std::unordered_map<NODE_ID, NODE_ID> m_mapNodeParent;
 	};
 } // namespace FXAOI
 

@@ -49,7 +49,7 @@ void AoiOperatorDefault (NODE_ID lNodeId
 		std::cout << " add_watched:{";
 		for (auto &&i : mapAddWatched)
 		{
-			std::cout << "type_" << i.first << " : {";
+			std::cout << "type_" << i.first << ":{";
 			for (auto &&j : i.second)
 			{
 				std::cout << j << ",";
@@ -106,9 +106,16 @@ int main()
 			++y;
 			x = 0;
 		}
-		FXAOI::AOISystem::Instance().AddNode(i, i % 3 + 1, 1, 1);
-		FXAOI::NodePosition pos = {x, y, z};
-		FXAOI::AOISystem::Instance().EnterMap(i, 1, pos);
+		if (1 == i % 5)
+		{
+			FXAOI::AOISystem::Instance().AddChild(i - 1, i);
+		}
+		else
+		{
+			FXAOI::AOISystem::Instance().AddNode(i, i % 3 + 1, 1, 1);
+			FXAOI::NodePosition pos = {x, y, z};
+			FXAOI::AOISystem::Instance().EnterMap(i, 1, pos);
+		}
 		++z;
 	}
 
@@ -125,14 +132,20 @@ int main()
 			++y;
 			x = 0;
 		}
-		FXAOI::NodePosition pos = {x, y, z};
-		FXAOI::AOISystem::Instance().Move(i, pos);
+		if (1 != i % 5)
+		{
+			FXAOI::NodePosition pos = {x, y, z};
+			FXAOI::AOISystem::Instance().Move(i, pos);
+		}
 		++z;
 	}
 
 	for (size_t i = 0; i < 1376; i++)
 	{
-		FXAOI::AOISystem::Instance().LeaveMap(i);
+		if (1 != i % 5)
+		{
+			FXAOI::AOISystem::Instance().LeaveMap(i);
+		}
 	}
 	
 

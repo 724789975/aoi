@@ -15,7 +15,7 @@ typedef unsigned long long NODE_ID;
  * @brief 
  * 分裂阈值
  */
-#define AOI_THRESHOLD_FOR_DIVIDE 20
+#define AOI_THRESHOLD_FOR_DIVIDE 200
 /**
  * @brief 
  * 归并阈值

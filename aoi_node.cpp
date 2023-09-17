@@ -276,6 +276,72 @@ namespace FXAOI
 			}
 		}
 		
+		//处理子节点
+		for (std::unordered_map<unsigned int, std::unordered_set<NODE_ID>>::iterator it1 = mapAddWatching.begin()
+			; it1 != mapAddWatching.end(); ++it1)
+		{
+			for (std::unordered_set<NODE_ID>::iterator it2 = it1->second.begin();
+				it2 != it1->second.end(); ++it2)
+			{
+				if (AOINode* pNode = AOINodeMgr::Instance().GetNode(*it2))
+				{
+					for (std::unordered_set<NODE_ID>::iterator it3 = pNode->m_setChildrenNode.begin();
+						it3 != pNode->m_setChildrenNode.end(); ++it3)
+					{
+						it1->second.insert(*it3);
+					}
+				}
+			}
+		}
+		for (std::unordered_map<unsigned int, std::unordered_set<NODE_ID>>::iterator it1 = mapDelWatching.begin()
+			; it1 != mapDelWatching.end(); ++it1)
+		{
+			for (std::unordered_set<NODE_ID>::iterator it2 = it1->second.begin();
+				it2 != it1->second.end(); ++it2)
+			{
+				if (AOINode* pNode = AOINodeMgr::Instance().GetNode(*it2))
+				{
+					for (std::unordered_set<NODE_ID>::iterator it3 = pNode->m_setChildrenNode.begin();
+						it3 != pNode->m_setChildrenNode.end(); ++it3)
+					{
+						it1->second.insert(*it3);
+					}
+				}
+			}
+		}
+		for (std::unordered_map<unsigned int, std::unordered_set<NODE_ID>>::iterator it1 = mapAddWatched.begin()
+			; it1 != mapAddWatched.end(); ++it1)
+		{
+			for (std::unordered_set<NODE_ID>::iterator it2 = it1->second.begin();
+				it2 != it1->second.end(); ++it2)
+			{
+				if (AOINode* pNode = AOINodeMgr::Instance().GetNode(*it2))
+				{
+					for (std::unordered_set<NODE_ID>::iterator it3 = pNode->m_setChildrenNode.begin();
+						it3 != pNode->m_setChildrenNode.end(); ++it3)
+					{
+						it1->second.insert(*it3);
+					}
+				}
+			}
+		}
+		for (std::unordered_map<unsigned int, std::unordered_set<NODE_ID>>::iterator it1 = mapDelWatched.begin()
+			; it1 != mapDelWatched.end(); ++it1)
+		{
+			for (std::unordered_set<NODE_ID>::iterator it2 = it1->second.begin();
+				it2 != it1->second.end(); ++it2)
+			{
+				if (AOINode* pNode = AOINodeMgr::Instance().GetNode(*it2))
+				{
+					for (std::unordered_set<NODE_ID>::iterator it3 = pNode->m_setChildrenNode.begin();
+						it3 != pNode->m_setChildrenNode.end(); ++it3)
+					{
+						it1->second.insert(*it3);
+					}
+				}
+			}
+		}
+
 		// //此节点收到的出现包
 		// mapAddWatching;
 		// //此节点收到的消失包
@@ -285,33 +351,66 @@ namespace FXAOI
 		// mapAddWatched;
 		// //其他节点收到的消失包
 		// mapDelWatched;
-
 		AOISystem::Instance().GetAoiOperator()(m_lNodeId, mapAddWatching, mapDelWatching, mapAddWatched, mapDelWatched);
+		for (std::unordered_set<NODE_ID>::iterator it = this->m_setChildrenNode.begin();
+			it != this->m_setChildrenNode.end(); ++it)
+		{
+			AOISystem::Instance().GetAoiOperator()(*it, mapAddWatching, mapDelWatching, mapAddWatched, mapDelWatched);
+		}
+		
+	}
+
+	void AOINode::AddChild(NODE_ID lNodeId)
+	{
+		std::unordered_map<unsigned int, std::unordered_set<NODE_ID> > mapDelWatching;
+		std::unordered_map<unsigned int, std::unordered_set<NODE_ID> > mapDelWatched;
+		AOISystem::Instance().GetAoiOperator()(lNodeId, this->m_mapWatching, mapDelWatching, this->m_mapWatched, mapDelWatched);
+		this->m_setChildrenNode.insert(lNodeId);
+	}
+
+	void AOINode::RemoveChild(NODE_ID lNodeId)
+	{
+		std::unordered_map<unsigned int, std::unordered_set<NODE_ID> > mapAddWatching;
+		std::unordered_map<unsigned int, std::unordered_set<NODE_ID> > mapAddWatched;
+		AOISystem::Instance().GetAoiOperator()(lNodeId, mapAddWatching, this->m_mapWatching, mapAddWatched, this->m_mapWatched);
+		this->m_setChildrenNode.erase(lNodeId);
 	}
 
 	void AOINode::Debug(std::ostream& refOstream)
 	{
 		refOstream << "AOINode:" << this->m_lNodeId << ",AOIType:" << this->m_dwAOIType << ",MapId:" << this->m_dwMapId;
+		refOstream << ",Children:{";
+		for (std::unordered_set<NODE_ID>::iterator it = this->m_setChildrenNode.begin();
+			it != this->m_setChildrenNode.end(); ++it)
+		{
+			refOstream << *it << ",";
+		}
+		refOstream << "},";
+		
 		this->m_oCoordinate.Debug(refOstream);
 		this->m_oPosition.Debug(refOstream);
 		refOstream << ",Watching:{";
-		for (auto &&i : this->m_mapWatching)
+		for (std::unordered_map<unsigned int, std::unordered_set< NODE_ID> >::iterator it1 = this->m_mapWatching.begin()
+			; it1 != this->m_mapWatching.end(); ++it1)
 		{
-			refOstream << "type_" << i.first << ":{";
-			for (auto &&j : i.second)
+			refOstream << "type_" << it1->first << ":{";
+			for (std::unordered_set< NODE_ID>::iterator it2 = it1->second.begin();
+				it2 != it1->second.end(); ++it2)
 			{
-				refOstream << j << ",";
+				refOstream << *it2 << ",";
 			}
 			refOstream << "},";
 		}
 		refOstream << "}";
 		refOstream << ",Watched:{";
-		for (auto &&i : this->m_mapWatched)
+		for (std::unordered_map<unsigned int, std::unordered_set< NODE_ID> >::iterator it1 = this->m_mapWatched.begin()
+			; it1 != this->m_mapWatched.end(); ++it1)
 		{
-			refOstream << "type_" << i.first << ":{";
-			for (auto &&j : i.second)
+			refOstream << "type_" << it1->first << ":{";
+			for (std::unordered_set< NODE_ID>::iterator it2 = it1->second.begin();
+				it2 != it1->second.end(); ++it2)
 			{
-				refOstream << j << ",";
+				refOstream << *it2 << ",";
 			}
 			refOstream << "},";
 		}

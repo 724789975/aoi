@@ -78,6 +78,18 @@ namespace FXAOI
 		 * 计算视野
 		 */
 		void CalcView(MapInstance* pMapRoot);
+		/**
+		 * @brief 
+		 * 添加子节点
+		 * @param lNodeId 
+		 */
+		void AddChild(NODE_ID lNodeId);
+		/**
+		 * @brief 
+		 * 移除子节点
+		 * @param lNodeId 
+		 */
+		void RemoveChild(NODE_ID lNodeId);
 
 		void Debug(std::ostream& refOstream);
 	private:
