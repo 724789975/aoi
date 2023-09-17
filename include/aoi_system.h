@@ -101,7 +101,7 @@ namespace FXAOI
 		void RemoveNode(NODE_ID lNodeId);
 		/**
 		 * @brief 
-		 * 
+		 * 进入地图
 		 * @param lNodeId 
 		 * @param dwMapId 
 		 * @param refPosition 
@@ -109,7 +109,7 @@ namespace FXAOI
 		void EnterMap(NODE_ID lNodeId, unsigned int dwMapId, const NodePosition& refPosition);
 		/**
 		 * @brief 
-		 * 进入地图
+		 * 离开地图
 		 * @param lNodeId 
 		 * @param refPosition 
 		 */
