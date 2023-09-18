@@ -20,32 +20,59 @@ namespace FXAOI
 		//最后一次分裂
 		if (AOI_MAX_DIVIDE_NUM - 1 == dwDivideNum)
 		{
+// // #if AOI_USE_Y_AXIS
+// 			//左下底
+// 			m_mapUnits[AOICoordinate(dwX, dwY, dwZ)]				= (lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_DOWN_BOTTOM);
+// 			//左上底
+// 			m_mapUnits[AOICoordinate(dwX, dwY, dwZ + 1)]			= (lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_UP_BOTTOM);
+// 			//右下底
+// 			m_mapUnits[AOICoordinate(dwX + 1, dwY, dwZ)]			= (lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_DOWN_BOTTOM);
+// 			//右上底
+// 			m_mapUnits[AOICoordinate(dwX + 1, dwY, dwZ + 1)]		= (lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_UP_BOTTOM);
+// 			//左下顶
+// 			m_mapUnits[AOICoordinate(dwX, dwY + 1, dwZ)]			= (lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_DOWN_TOP);
+// 			//左上顶
+// 			m_mapUnits[AOICoordinate(dwX, dwY + 1, dwZ + 1)]		= (lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_UP_TOP);
+// 			//右下顶
+// 			m_mapUnits[AOICoordinate(dwX + 1, dwY + 1, dwZ)]		= (lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_DOWN_TOP);
+// 			//右上顶
+// 			m_mapUnits[AOICoordinate(dwX + 1, dwY + 1, dwZ + 1)]	= (lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_UP_TOP);
+// #else
+// 			//左下
+// 			m_mapUnits[AOICoordinate(dwX, dwZ)]				= (lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_DOWN_BOTTOM);
+// 			//左上
+// 			m_mapUnits[AOICoordinate(dwX, dwZ + 1)]			= (lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_UP_BOTTOM);
+// 			//右下
+// 			m_mapUnits[AOICoordinate(dwX + 1, dwZ)]			= (lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_DOWN_BOTTOM);
+// 			//右上
+// 			m_mapUnits[AOICoordinate(dwX + 1, dwZ + 1)]		= (lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_UP_BOTTOM);
+// #endif
 #if AOI_USE_Y_AXIS
 			//左下底
-			m_mapUnits[AOICoordinate(dwX, dwY, dwZ)]				= (lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_DOWN_BOTTOM);
+			m_arrUnits[AOICoordinate(dwX, dwY, dwZ).GetCoordinate()]				= (lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_DOWN_BOTTOM);
 			//左上底
-			m_mapUnits[AOICoordinate(dwX, dwY, dwZ + 1)]			= (lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_UP_BOTTOM);
+			m_arrUnits[AOICoordinate(dwX, dwY, dwZ + 1).GetCoordinate()]			= (lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_UP_BOTTOM);
 			//右下底
-			m_mapUnits[AOICoordinate(dwX + 1, dwY, dwZ)]			= (lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_DOWN_BOTTOM);
+			m_arrUnits[AOICoordinate(dwX + 1, dwY, dwZ).GetCoordinate()]			= (lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_DOWN_BOTTOM);
 			//右上底
-			m_mapUnits[AOICoordinate(dwX + 1, dwY, dwZ + 1)]		= (lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_UP_BOTTOM);
+			m_arrUnits[AOICoordinate(dwX + 1, dwY, dwZ + 1).GetCoordinate()]		= (lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_UP_BOTTOM);
 			//左下顶
-			m_mapUnits[AOICoordinate(dwX, dwY + 1, dwZ)]			= (lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_DOWN_TOP);
+			m_arrUnits[AOICoordinate(dwX, dwY + 1, dwZ).GetCoordinate()]			= (lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_DOWN_TOP);
 			//左上顶
-			m_mapUnits[AOICoordinate(dwX, dwY + 1, dwZ + 1)]		= (lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_UP_TOP);
+			m_arrUnits[AOICoordinate(dwX, dwY + 1, dwZ + 1).GetCoordinate()]		= (lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_UP_TOP);
 			//右下顶
-			m_mapUnits[AOICoordinate(dwX + 1, dwY + 1, dwZ)]		= (lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_DOWN_TOP);
+			m_arrUnits[AOICoordinate(dwX + 1, dwY + 1, dwZ).GetCoordinate()]		= (lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_DOWN_TOP);
 			//右上顶
-			m_mapUnits[AOICoordinate(dwX + 1, dwY + 1, dwZ + 1)]	= (lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_UP_TOP);
+			m_arrUnits[AOICoordinate(dwX + 1, dwY + 1, dwZ + 1).GetCoordinate()]	= (lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_UP_TOP);
 #else
 			//左下
-			m_mapUnits[AOICoordinate(dwX, dwZ)]				= (lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_DOWN_BOTTOM);
+			m_arrUnits[AOICoordinate(dwX, dwZ).GetCoordinate()]				= (lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_DOWN_BOTTOM);
 			//左上
-			m_mapUnits[AOICoordinate(dwX, dwZ + 1)]			= (lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_UP_BOTTOM);
+			m_arrUnits[AOICoordinate(dwX, dwZ + 1).GetCoordinate()]			= (lPosIdx << AOI_BIT_OFFSET | AOI_LEFT_UP_BOTTOM);
 			//右下
-			m_mapUnits[AOICoordinate(dwX + 1, dwZ)]			= (lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_DOWN_BOTTOM);
+			m_arrUnits[AOICoordinate(dwX + 1, dwZ).GetCoordinate()]			= (lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_DOWN_BOTTOM);
 			//右上
-			m_mapUnits[AOICoordinate(dwX + 1, dwZ + 1)]		= (lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_UP_BOTTOM);
+			m_arrUnits[AOICoordinate(dwX + 1, dwZ + 1).GetCoordinate()]		= (lPosIdx << AOI_BIT_OFFSET | AOI_RIGHT_UP_BOTTOM);
 #endif
 		}
 		else
@@ -103,14 +130,7 @@ namespace FXAOI
 
 	bool AOIUnits::GetMapPos(const AOICoordinate& refCoordinate, AOI_UNIT_SUB_SCRIPT& reflPos)const
 	{
-		AOIUnitMap::const_iterator it = this->m_mapUnits.find(refCoordinate);
-
-		if (it == this->m_mapUnits.cend())
-		{
-			return false;
-		}
-
-		reflPos = it->second;
+		reflPos = this->m_arrUnits[refCoordinate.GetCoordinate()];
 		return true;
 	}
 
@@ -123,10 +143,7 @@ namespace FXAOI
 			{
 				for(unsigned int x = 0; x < 1 << AOI_MAX_DIVIDE_NUM; ++x)
 				{
-					AOIUnitMap::const_iterator it = this->m_mapUnits.find(AOICoordinate(x, y, z));
-					if (it == this->m_mapUnits.cend()){continue;}
-
-					AOI_UNIT_SUB_SCRIPT pos = it->second;
+					AOI_UNIT_SUB_SCRIPT pos = this->m_arrUnits[AOICoordinate(x, y, z).GetCoordinate()];
 					std::cout << "(" << x << "," << y << "," << z << ")" ;
 					std::cout << ((pos & (0xffll << 56)) >> 56) << ",";
 					std::cout << ((pos & (0xffll << 48)) >> 48) << ",";
@@ -147,10 +164,7 @@ namespace FXAOI
 		{
 			for(unsigned int x = 0; x < 1 << AOI_MAX_DIVIDE_NUM; ++x)
 			{
-				std::map<AOICoordinate, unsigned int, AOICoordinateLess>::const_iterator it = this->m_mapUnits.find(AOICoordinate(x, z));
-				if (it == this->m_mapUnits.cend()){continue;}
-
-				unsigned int pos = it->second;
+				AOI_UNIT_SUB_SCRIPT pos = this->m_arrUnits[AOICoordinate(x, z).GetCoordinate()];
 				std::cout << "(" << x << "," << z << ")" ;
 				std::cout << ((pos & (0xf << 28)) >> 28);
 				std::cout << ((pos & (0xf << 24)) >> 24);
@@ -169,10 +183,10 @@ namespace FXAOI
 
 	void AOICoordinate::Debug(std::ostream& refOstream)
 	{
-		refOstream << "AOICoordinate:{x:" << this->m_dwX << ","
+		refOstream << "AOICoordinate:{x:" << (int)this->m_dwX << ","
 #if AOI_USE_Y_AXIS
-			<< "y:" << this->m_dwY << ","
+			<< "y:" << (int)this->m_dwY << ","
 #endif
-			<< "z:" << this->m_dwZ << "}";
+			<< "z:" << (int)this->m_dwZ << "}";
 	}
 }

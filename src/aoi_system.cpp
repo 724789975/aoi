@@ -128,7 +128,7 @@ namespace FXAOI
 		assert(pInfo);
 
 		const AOICoordinate& refCoordinate = pInfo->GetAOICoordinate(refPosition);
-		if (!AOICoordinateLess()(refCoordinate, pNode->GetCoordinate()) && !AOICoordinateLess()(pNode->GetCoordinate(), refCoordinate))
+		if (refCoordinate.GetCoordinate() == pNode->GetCoordinate().GetCoordinate())
 		{
 			//在aoi格子上没有变化
 			return;

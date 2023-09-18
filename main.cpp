@@ -5,6 +5,8 @@
 #include <map>
 #include <set>
 
+#include <chrono>
+
 void AoiOperatorDefault (NODE_ID lNodeId
 	, std::map<unsigned int, std::set<NODE_ID> >& mapAddWatching
 	, std::map<unsigned int, std::set<NODE_ID> >& mapDelWatching
@@ -12,6 +14,7 @@ void AoiOperatorDefault (NODE_ID lNodeId
 	, std::map<unsigned int, std::set<NODE_ID> >& mapDelWatched
 )
 {
+	return;
 	FXAOI::AOISystem::Instance().DebugNode(lNodeId, std::cout);
 	std::cout << "\n";
 	if (mapAddWatching.size())
@@ -79,6 +82,7 @@ int main()
 {
 	FXAOI::AOISystem::Instance().SetAoiOperator(AoiOperatorDefault);
 	FXAOI::AOISystem::Instance().AddMap(1, 1, 512, 512, 512, 0, 0, 0);
+	// FXAOI::AOISystem::Instance().AddMap(1, 1, 512, 512, 0, 0);
 	FXAOI::SetAOIVisibilityType(1, 1, FXAOI::AOIVisibilityType::AOIVisibilityType_Mutual_Visibility);
 	FXAOI::SetAOIVisibilityType(1, 2, FXAOI::AOIVisibilityType::AOIVisibilityType_Visible);
 	FXAOI::SetAOIVisibilityType(1, 3, FXAOI::AOIVisibilityType::AOIVisibilityType_Visible);
@@ -93,61 +97,70 @@ int main()
 
 	// FXAOI::MapInstance oMapInstance(0, 0, 0, 0);
 
-	int x = 10, y = 10, z = 10;
-	for (size_t i = 0; i < 1376; i++)
+	auto utc_start = std::chrono::steady_clock::now();
+	for (size_t i = 0; i < 100; i++)
 	{
-		if (z >= 512)
+		int x = 10, y = 10, z = 10;
+		for (size_t i = 0; i < 1024; i++)
 		{
-			++x;
-			z = 0;
+			if (z >= 512)
+			{
+				++x;
+				z = 0;
+			}
+			if (x >= 512)
+			{
+				++y;
+				x = 0;
+			}
+			if (1 == i % 5)
+			{
+				FXAOI::AOISystem::Instance().AddChild(i - 1, i);
+			}
+			else
+			{
+				FXAOI::AOISystem::Instance().AddNode(i, i % 3 + 1, 1, 1);
+				FXAOI::NodePosition pos = {x, y, z};
+				// FXAOI::NodePosition pos = {x, z};
+				FXAOI::AOISystem::Instance().EnterMap(i, 1, pos);
+			}
+			++z;
 		}
-		if (x >= 512)
-		{
-			++y;
-			x = 0;
-		}
-		if (1 == i % 5)
-		{
-			FXAOI::AOISystem::Instance().AddChild(i - 1, i);
-		}
-		else
-		{
-			FXAOI::AOISystem::Instance().AddNode(i, i % 3 + 1, 1, 1);
-			FXAOI::NodePosition pos = {x, y, z};
-			FXAOI::AOISystem::Instance().EnterMap(i, 1, pos);
-		}
-		++z;
-	}
 
-	x = 11, y = 12, z = 13;
-	for (size_t i = 0; i < 1376; i++)
-	{
-		if (z >= 512)
+		x = 11, y = 12, z = 13;
+		for (size_t i = 0; i < 1024; i++)
 		{
-			++x;
-			z = 0;
+			if (z >= 512)
+			{
+				++x;
+				z = 0;
+			}
+			if (x >= 512)
+			{
+				++y;
+				x = 0;
+			}
+			if (1 != i % 5)
+			{
+				FXAOI::NodePosition pos = {x, y, z};
+				// FXAOI::NodePosition pos = {x, z};
+				FXAOI::AOISystem::Instance().Move(i, pos);
+			}
+			++z;
 		}
-		if (x >= 512)
-		{
-			++y;
-			x = 0;
-		}
-		if (1 != i % 5)
-		{
-			FXAOI::NodePosition pos = {x, y, z};
-			FXAOI::AOISystem::Instance().Move(i, pos);
-		}
-		++z;
-	}
 
-	for (size_t i = 0; i < 1376; i++)
-	{
-		if (1 != i % 5)
+		for (size_t i = 0; i < 1024; i++)
 		{
-			FXAOI::AOISystem::Instance().LeaveMap(i);
+			if (1 != i % 5)
+			{
+				FXAOI::AOISystem::Instance().LeaveMap(i);
+			}
 		}
 	}
-	
+	auto utc_end = std::chrono::steady_clock::now();
+	auto time_diff = utc_end - utc_start;
+	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(time_diff);
+	std::cout << "Operation cost : " << duration.count() << "microseconds\n";
 
 	return 0;
 }

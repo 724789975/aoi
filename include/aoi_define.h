@@ -39,11 +39,13 @@ typedef unsigned long long NODE_ID;
 #define AOI_DIVIDE_CHILDREN_NUM 8
 #define AOI_UNIT_SUB_SCRIPT unsigned long long
 #define AOI_FLAG_MASK 0xFFll
+#define AOI_COORDINATE_FLAG_MASK 0xFF000000
 #else
 #define AOI_BIT_OFFSET 4
 #define AOI_DIVIDE_CHILDREN_NUM 4
 #define AOI_UNIT_SUB_SCRIPT unsigned int
 #define AOI_FLAG_MASK 0xF
+#define AOI_COORDINATE_FLAG_MASK 0xFFFF0000
 #endif
 
 #define AOI_LEFT_DOWN_BOTTOM		AOI_UNIT_SUB_SCRIPT(0x1)
