@@ -8,6 +8,16 @@
 
 namespace FXAOI
 {
+	MapInstance::MapInstance()
+		: m_dwMapId(0)
+		, m_lSubScript(0)
+		, m_dwDivideNum(0)
+		, m_bDivided(false)
+		, m_pRoot(0)
+	{
+		if (0 == m_pRoot) { m_pRoot = this; }
+	}
+
 	MapInstance::MapInstance(unsigned int dwMapId, AOI_UNIT_SUB_SCRIPT lSubScript, unsigned int dwDivideNum, MapInstance* pRoot)
 		: m_dwMapId(dwMapId)
 		, m_lSubScript(lSubScript)

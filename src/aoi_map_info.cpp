@@ -12,6 +12,11 @@ namespace FXAOI
 #if AOI_USE_Y_AXIS
 		, m_dwHightViweRadius(-1)
 #endif
+		, m_dOffsetX(0)
+#if AOI_USE_Y_AXIS
+		, m_dOffsetY(0)
+#endif
+		, m_dOffsetZ(0)
 	{
 	}
 

@@ -1,7 +1,7 @@
 #ifndef __AOI_MAP_INSTANCE_H__
 #define __AOI_MAP_INSTANCE_H__
 
-#include "aoi_define.h"
+#include "../include/aoi_define.h"
 #include "aoi_node.h"
 #include "aoi_unit.h"
 
@@ -13,7 +13,7 @@ namespace FXAOI
 	class MapInstance
 	{
 	public:
-		MapInstance(){}
+		MapInstance();
 		MapInstance(unsigned int dwMapId, AOI_UNIT_SUB_SCRIPT lSubScript, unsigned int dwDivideNum, MapInstance* pRoot);
 
 		/**

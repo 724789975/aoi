@@ -1,7 +1,7 @@
 #ifndef __AOI_MAP_MGR_H__
 #define __AOI_MAP_MGR_H__
 
-#include "aoi_define.h"
+#include "../include/aoi_define.h"
 #include "aoi_map_instance.h"
 
 #include <map>

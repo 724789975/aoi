@@ -6,7 +6,6 @@
 #include "aoi_unit.h"
 
 #include <assert.h>
-#include "aoi_system.h"
 
 namespace FXAOI
 {

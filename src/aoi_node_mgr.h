@@ -1,7 +1,7 @@
 #ifndef __AOI_NODE_MGR_H__
 #define __AOI_NODE_MGR_H__
 
-#include "aoi_define.h"
+#include "../include/aoi_define.h"
 #include "aoi_node.h"
 
 #include <map>

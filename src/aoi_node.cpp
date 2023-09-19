@@ -21,11 +21,13 @@ namespace FXAOI
 	AOINode::AOINode(NODE_ID lNodeId, unsigned int dwAOIType, unsigned int dwWatchedRadius, unsigned int dwWatchingRadius)
 		: m_lNodeId(lNodeId)
 		, m_dwAOIType(dwAOIType)
+		, m_dwMapId(0)
 		, m_oCoordinate(0
 #if AOI_USE_Y_AXIS
 			, 0
 #endif
 			, 0)
+		, m_oPosition{ 0, 0, 0 }
 		, m_dwWatchedRadius(dwWatchedRadius)
 		, m_dwWatchingRadius(dwWatchingRadius)
 	{}
@@ -33,11 +35,13 @@ namespace FXAOI
 	AOINode::AOINode()
 		: m_lNodeId(0)
 		, m_dwAOIType(0)
+		, m_dwMapId(0)
 		, m_oCoordinate(0
 #if AOI_USE_Y_AXIS
 			, 0
 #endif
 			, 0)
+		, m_oPosition{ 0, 0, 0 }
 		, m_dwWatchedRadius(0)
 		, m_dwWatchingRadius(0)
 	{}
