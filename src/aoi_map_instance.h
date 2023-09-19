@@ -2,9 +2,10 @@
 #define __AOI_MAP_INSTANCE_H__
 
 #include "../include/aoi_define.h"
-#include "arr_map.h"
 #include "aoi_node.h"
 #include "aoi_unit.h"
+#include "arr_map.h"
+#include "arr_set.h"
 
 #include <map>
 #include <set>
@@ -127,7 +128,7 @@ namespace FXAOI
 		 * map<格子坐标,set<节点id>>
 		 * 列表中的节点可看见格子中的节点
 		 */
-		std::map<AOI_UNIT_SUB_SCRIPT, std::set<NODE_ID> > m_mapWatching;
+		ArrMap<AOI_UNIT_SUB_SCRIPT, ArrSet<NODE_ID> > m_mapWatching;
 		/**
 		 * @brief 
 		 * <节点id, 地块id>

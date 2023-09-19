@@ -98,7 +98,7 @@ int main()
 	// FXAOI::MapInstance oMapInstance(0, 0, 0, 0);
 
 	auto utc_start = std::chrono::steady_clock::now();
-	for (size_t i = 0; i < 100; i++)
+	for (size_t i = 0; i < 1; i++)
 	{
 		int x = 10, y = 10, z = 10;
 		for (size_t i = 0; i < 1024; i++)
@@ -119,8 +119,9 @@ int main()
 			}
 			else
 			{
-				FXAOI::AOISystem::Instance().AddNode(i, i % 3 + 1, 1, 1);
-				FXAOI::NodePosition pos = {x, y, z};
+				//FXAOI::AOISystem::Instance().AddNode(i, i % 3 + 1, 1, 1);
+				FXAOI::AOISystem::Instance().AddNode(i, 1, 1, 1);
+				FXAOI::NodePosition pos = {0, 0, 0};
 				// FXAOI::NodePosition pos = {x, z};
 				FXAOI::AOISystem::Instance().EnterMap(i, 1, pos);
 			}
@@ -142,7 +143,7 @@ int main()
 			}
 			if (1 != i % 5)
 			{
-				FXAOI::NodePosition pos = {x, y, z};
+				FXAOI::NodePosition pos = {512, 512, 512};
 				// FXAOI::NodePosition pos = {x, z};
 				FXAOI::AOISystem::Instance().Move(i, pos);
 			}

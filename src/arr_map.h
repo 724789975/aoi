@@ -8,17 +8,56 @@ namespace FXAOI
 {
 	//K只能为基础类型 且 不能为string, 可以为char[] V必须指定默认构造函数
 	//K要支持[]=操作
-	template<typename K, typename V, unsigned int MAXNUM = 128, class KeyLess = Less<K> >
+	template<typename K, typename V, class KeyLess = Less<K> >
 	class ArrMap
 	{
-		struct KVPair
+		class KVPair
 		{
+		public:
 			K first;
 			V second;
 		};
-	public:
-		typedef struct
+
+		template<typename T>
+		struct VHasClear {
+			template<typename U, void (U::*)()> struct HELPS;
+			template<typename U> static char Check(HELPS<U, &U::clear>*);
+			template<typename U> static int Check(...);
+			const static bool Has = sizeof(Check<T>(0)) == sizeof(char);
+		};
+
+		struct TrueType {
+			enum { Result = true };
+		};
+
+		struct FalseType {
+			enum { Result = false };
+		};
+
+		template <bool val>
+		struct BooleanType : public FalseType
+		{};
+
+		template <>
+		struct BooleanType<true> : public TrueType
+		{};
+
+		template<typename T>
+		void OnClear(T* p, TrueType t)
 		{
+			for (unsigned int i = 0; i <p->m_dwSize; ++i)
+			{
+				p->m_pKeyStores[i].second.clear();
+			}
+		}
+		template<typename T>
+		void OnClear(T* p, FalseType f)
+		{}
+
+	public:
+		typedef class
+		{
+		public:
 			const K first;
 			V second;
 		}*iterator;
@@ -27,37 +66,51 @@ namespace FXAOI
 
 		ArrMap() : m_dwSize(0)
 		{
-			m_pKeyStores = new KVPair[MAXNUM];
-			m_dwCapcity = MAXNUM;
-			if (!m_pKeyStores)
-			{
-				throw(std::exception());
-			}
+			m_pKeyStores = 0;
+			m_dwCapcity = 0;
 		}
-		ArrMap(const ArrMap<K, V, MAXNUM, KeyLess>& ref)
+		ArrMap(const ArrMap<K, V, KeyLess>& ref)
 			: m_dwSize(ref.m_dwSize)
 			, m_dwCapcity(ref.m_dwCapcity)
 		{
 			m_pKeyStores = new KVPair[m_dwCapcity];
-			memcpy(m_pKeyStores, ref.m_pKeyStores, m_dwSize * sizeof(KVPair));
+			for (unsigned int i = 0; i < m_dwSize; ++i)
+			{
+				m_pKeyStores[i] = ref.m_pKeyStores[i];
+			}
+			//memcpy(m_pKeyStores, ref.m_pKeyStores, m_dwSize * sizeof(KVPair));
 		}
-		const ArrMap<K, V, MAXNUM, KeyLess>& operator = (const ArrMap<K, V, MAXNUM, KeyLess>& ref)
+		const ArrMap<K, V, KeyLess>& operator = (const ArrMap<K, V, KeyLess>& ref)
 		{
 			m_dwSize = ref.m_dwSize;
 			m_dwCapcity = ref.m_dwCapcity;
-			m_pKeyStores = new KVPair[m_dwCapcity];
-			memcpy(m_pKeyStores, ref.m_pKeyStores, m_dwSize * sizeof(KVPair));
+			if (m_dwCapcity)
+			{
+				m_pKeyStores = new KVPair[m_dwCapcity];
+				for (unsigned int i = 0; i < m_dwSize; ++i)
+				{
+					m_pKeyStores[i] = ref.m_pKeyStores[i];
+				}
+				//memcpy(m_pKeyStores, ref.m_pKeyStores, m_dwSize * sizeof(KVPair));
+			}
 			return *this;
 		}
 		~ArrMap()
 		{
-			delete[] m_pKeyStores;
+			if (m_pKeyStores)
+			{
+				delete[] m_pKeyStores;
+				m_pKeyStores = 0;
+			}
 		}
-
 
 		void clear()
 		{
+			OnClear(this, BooleanType<VHasClear<V>::Has>());
 			m_dwSize = 0;
+			delete[] m_pKeyStores;
+			m_dwCapcity = 0;
+			m_pKeyStores = 0;
 		}
 
 		V* Alloc(const K& k)
@@ -77,7 +130,8 @@ namespace FXAOI
 			{
 				return end();
 			}
-			memmove(&pPair->second, &v, sizeof(V));
+			//memmove(&pPair->second, &v, sizeof(V));
+			pPair->second = v;
 			return (iterator)pPair;
 		}
 
@@ -132,6 +186,19 @@ namespace FXAOI
 
 		unsigned int size() const { return m_dwSize; }
 
+		void swap(ArrMap<K, V, KeyLess>& ref)
+		{
+			unsigned int dwSize = ref.m_dwSize;
+			ref.m_dwSize = m_dwSize;
+			m_dwSize = dwSize;
+			unsigned int dwCapcity = ref.m_dwCapcity;
+			ref.m_dwCapcity = m_dwCapcity;
+			m_dwCapcity = dwCapcity;
+			KVPair* pKeyStores = ref.m_pKeyStores;
+			ref.m_pKeyStores = m_pKeyStores;
+			m_pKeyStores = pKeyStores;
+		}
+
 		V& operator [](const K& refK)
 		{
 			unsigned int dwIndex = Search(refK);
@@ -150,11 +217,25 @@ namespace FXAOI
 		{
 			if (m_dwSize >= m_dwCapcity)
 			{
-				KVPair* pTemp = new KVPair[2 * m_dwCapcity];
-				memcpy(pTemp, m_pKeyStores, m_dwSize * sizeof(KVPair));
-				delete[] m_pKeyStores;
+				if (128 > m_dwCapcity)
+				{
+					m_dwCapcity = 128;
+				}
+				else
+				{
+					m_dwCapcity <<= 1;
+				}
+				KVPair* pTemp = new KVPair[m_dwCapcity];
+				for (unsigned int i = 0; i < m_dwSize; ++i)
+				{
+					pTemp[i] = m_pKeyStores[i];
+				}
+				//memcpy(pTemp, m_pKeyStores, m_dwSize * sizeof(KVPair));
+				if (m_pKeyStores)
+				{
+					delete[] m_pKeyStores;
+				}
 				m_pKeyStores = pTemp;
-				m_dwCapcity *= 2;
 			}
 
 			if (m_dwSize == 0)
@@ -192,6 +273,7 @@ namespace FXAOI
 			m_pKeyStores[dwRightIndex].first = k;
 			++m_dwSize;
 
+			new (&m_pKeyStores[dwRightIndex]) V;
 			return &m_pKeyStores[dwRightIndex];
 		}
 
