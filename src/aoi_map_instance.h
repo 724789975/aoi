@@ -2,6 +2,7 @@
 #define __AOI_MAP_INSTANCE_H__
 
 #include "../include/aoi_define.h"
+#include "arr_map.h"
 #include "aoi_node.h"
 #include "aoi_unit.h"
 
@@ -131,7 +132,7 @@ namespace FXAOI
 		 * @brief 
 		 * <½Úµãid, µØ¿éid>
 		 */
-		std::map<NODE_ID, AOI_UNIT_SUB_SCRIPT> m_mapNodeChunk;
+		ArrMap<NODE_ID, AOI_UNIT_SUB_SCRIPT> m_mapNodeChunk;
 	};
 } // namespace FXAOI
 

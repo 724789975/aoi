@@ -240,7 +240,7 @@ namespace FXAOI
 
 	void MapInstance::GetNodeInPos(AOI_UNIT_SUB_SCRIPT lPos, std::map<unsigned int, std::set<NODE_ID>> &refWatchingNode)
 	{
-		for (std::map<NODE_ID, AOI_UNIT_SUB_SCRIPT>::iterator it = this->m_mapNodeChunk.begin();
+		for (ArrMap<NODE_ID, AOI_UNIT_SUB_SCRIPT>::iterator it = this->m_mapNodeChunk.begin();
 			it != this->m_mapNodeChunk.end(); ++it)
 		{
 			if (lPos == it->second)
@@ -299,7 +299,7 @@ namespace FXAOI
 		this->m_mapDividedMap[AOI_RIGHT_UP_TOP]			= MapInstance(this->m_dwMapId, this->m_lSubScript | (AOI_RIGHT_UP_TOP		<< (AOI_MAX_DIVIDE_NUM - m_dwDivideNum - 1) * AOI_BIT_OFFSET), m_dwDivideNum + 1, m_pRoot);
 #endif // AOI_USE_Y_AXIS
 
-		for (std::map<NODE_ID, AOI_UNIT_SUB_SCRIPT>::iterator it = this->m_mapNodeChunk.begin();
+		for (ArrMap<NODE_ID, AOI_UNIT_SUB_SCRIPT>::iterator it = this->m_mapNodeChunk.begin();
 			it != this->m_mapNodeChunk.end(); ++it)
 		{
 			unsigned int lChunk = unsigned int((it->second >> ((AOI_MAX_DIVIDE_NUM - 1 - this->m_dwDivideNum) * AOI_BIT_OFFSET)) & AOI_FLAG_MASK);
@@ -339,7 +339,7 @@ namespace FXAOI
 		for (std::map<unsigned int, MapInstance>::iterator it = this->m_mapDividedMap.begin();
 			it != this->m_mapDividedMap.end(); ++it)
 		{
-			for (std::map<NODE_ID, AOI_UNIT_SUB_SCRIPT>::iterator it2 = it->second.m_mapNodeChunk.begin();
+			for (ArrMap<NODE_ID, AOI_UNIT_SUB_SCRIPT>::iterator it2 = it->second.m_mapNodeChunk.begin();
 				it2 != it->second.m_mapNodeChunk.end(); ++it2)
 			{
 				this->m_mapNodeChunk[it2->first] = it2->second;
