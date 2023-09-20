@@ -4,12 +4,13 @@
 #include "aoi_node_mgr.h"
 #include "aoi_map_info_mgr.h"
 #include "aoi_unit.h"
+#include "../include/arr_map.h"
 
 #include <assert.h>
 
 namespace FXAOI
 {
-	std::map<unsigned int, std::map<unsigned int, AOIVisibilityType> > g_mapAOIVisibilityTypes;
+	AOIMap<unsigned int, AOIMap<unsigned int, AOIVisibilityType> > g_mapAOIVisibilityTypes;
 	void SetAOIVisibilityType(unsigned int dwAOIType1, unsigned int dwAOIType2, AOIVisibilityType type)
 	{
 		g_mapAOIVisibilityTypes[dwAOIType1][dwAOIType2] = type;
@@ -20,7 +21,7 @@ namespace FXAOI
 		return g_mapAOIVisibilityTypes[dwAOIType1][dwAOIType2];
 	}
 
-	std::map<unsigned int, std::map<unsigned int, unsigned int> > g_mapAOINodeLimit;
+	AOIMap<unsigned int, AOIMap<unsigned int, unsigned int> > g_mapAOINodeLimit;
 	void SetAOINodeLimit(unsigned int dwAOIType1, unsigned int dwAOIType2, unsigned int dwNum)
 	{
 		g_mapAOINodeLimit[dwAOIType1][dwAOIType2] = dwNum;
@@ -41,10 +42,10 @@ namespace FXAOI
 		return g_mapAOINodeLimit[dwAOIType1][dwAOIType2];
 	}
 	void AoiOperatorDefault (NODE_ID lNodeId
-		, std::map<unsigned int, std::set<NODE_ID> >& mapAddWatching
-		, std::map<unsigned int, std::set<NODE_ID> >& mapDelWatching
-		, std::map<unsigned int, std::set<NODE_ID> >& mapAddWatched
-		, std::map<unsigned int, std::set<NODE_ID> >& mapDelWatched
+		, AOIMap<unsigned int, AOISet<NODE_ID> >& mapAddWatching
+		, AOIMap<unsigned int, AOISet<NODE_ID> >& mapDelWatching
+		, AOIMap<unsigned int, AOISet<NODE_ID> >& mapAddWatched
+		, AOIMap<unsigned int, AOISet<NODE_ID> >& mapDelWatched
 	){}
 	AOISystem AOISystem::s_oInstance;
 

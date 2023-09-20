@@ -78,4 +78,13 @@ namespace FXAOI
 	};
 } // namespace FXAOI
 
+#define USE_AOI_CONTAINER 1
+#if USE_AOI_CONTAINER
+#define AOIMap ArrMap
+#define AOISet ArrSet
+#else
+#define AOIMap std::map
+#define AOISet std::set
+#endif
+
 #endif  //!__AOI_CONST_H__

@@ -3,6 +3,7 @@
 
 #include "arr_tree_less.h"
 #include <exception>
+#include <assert.h>
 
 namespace FXAOI
 {
@@ -22,6 +23,14 @@ namespace FXAOI
 		struct VHasClear {
 			template<typename U, void (U::*)()> struct HELPS;
 			template<typename U> static char Check(HELPS<U, &U::clear>*);
+			template<typename U> static int Check(...);
+			const static bool Has = sizeof(Check<T>(0)) == sizeof(char);
+		};
+
+		template<typename T>
+		struct VHasDestruct{
+			template<typename U, void (U::*)()> struct HELPS;
+			template<typename U> static char Check(HELPS<U, &U::~U>*);
 			template<typename U> static int Check(...);
 			const static bool Has = sizeof(Check<T>(0)) == sizeof(char);
 		};
@@ -54,6 +63,15 @@ namespace FXAOI
 		void OnClear(T* p, FalseType f)
 		{}
 
+		template<typename T>
+		void OnDestruct(T* p, TrueType t)
+		{
+			p->~T();
+		}
+		template<typename T>
+		void OnDestruct(T* p, FalseType f)
+		{}
+
 	public:
 		typedef class
 		{
@@ -82,6 +100,8 @@ namespace FXAOI
 		}
 		const ArrMap<K, V, KeyLess>& operator = (const ArrMap<K, V, KeyLess>& ref)
 		{
+			clear();
+			assert(ref.m_dwSize <= ref.m_dwCapcity);
 			m_dwSize = ref.m_dwSize;
 			m_dwCapcity = ref.m_dwCapcity;
 			if (m_dwCapcity)
@@ -154,9 +174,11 @@ namespace FXAOI
 			if (dwIndex == m_dwSize - 1)
 			{
 				--m_dwSize;
+				OnDestruct(&m_pKeyStores[dwIndex].second, BooleanType<VHasDestruct<V>::Has>());
 				memset(&m_pKeyStores[dwIndex], 0, sizeof(KVPair));
 				return (iterator)(m_pKeyStores + dwIndex);
 			}
+			OnDestruct(&m_pKeyStores[dwIndex].second, BooleanType<VHasDestruct<V>::Has>());
 			memmove(&m_pKeyStores[dwIndex], &m_pKeyStores[dwIndex + 1], (m_dwSize - 1 - dwIndex) * sizeof(KVPair));
 			memset(&m_pKeyStores[m_dwSize - 1], 0, sizeof(KVPair));
 			--m_dwSize;
@@ -300,7 +322,7 @@ namespace FXAOI
 			dwLeftIndex = 0;
 			dwRightIndex = m_dwSize - 1;
 
-			unsigned int dwMidIndex = (dwLeftIndex + dwRightIndex) / 2;
+			unsigned int dwMidIndex = (dwLeftIndex + dwRightIndex) >> 1;
 
 			while (dwLeftIndex < dwRightIndex && !m_oEqual(m_pKeyStores[dwMidIndex].first, k))
 			{
@@ -312,7 +334,7 @@ namespace FXAOI
 				{
 					dwRightIndex = dwMidIndex;
 				}
-				dwMidIndex = (dwLeftIndex + dwRightIndex) / 2;
+				dwMidIndex = (dwLeftIndex + dwRightIndex) >> 1;
 			}
 			if (m_oEqual(m_pKeyStores[dwMidIndex].first, k))
 			{

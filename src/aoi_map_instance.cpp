@@ -238,9 +238,9 @@ namespace FXAOI
 		pInstance1->Enter(lNodeId, refToCoordinate, dwWatchedRadius, dwWatchingRadius);
 	}
 
-	void MapInstance::GetNodeInPos(AOI_UNIT_SUB_SCRIPT lPos, std::map<unsigned int, std::set<NODE_ID>> &refWatchingNode)
+	void MapInstance::GetNodeInPos(AOI_UNIT_SUB_SCRIPT lPos, ArrMap<unsigned int, ArrSet<NODE_ID> > &refWatchingNode)
 	{
-		for (ArrMap<NODE_ID, AOI_UNIT_SUB_SCRIPT>::iterator it = this->m_mapNodeChunk.begin();
+		for (AOIMap<NODE_ID, AOI_UNIT_SUB_SCRIPT>::iterator it = this->m_mapNodeChunk.begin();
 			it != this->m_mapNodeChunk.end(); ++it)
 		{
 			if (lPos == it->second)
@@ -252,15 +252,15 @@ namespace FXAOI
 		}
 	}
 
-	void MapInstance::GetWatchingInPos(AOI_UNIT_SUB_SCRIPT lPos, std::map<unsigned int, std::set<NODE_ID>> &refWatchingNode)
+	void MapInstance::GetWatchingInPos(AOI_UNIT_SUB_SCRIPT lPos, ArrMap<unsigned int, ArrSet< NODE_ID> > &refWatchingNode)
 	{
-		ArrMap<AOI_UNIT_SUB_SCRIPT, ArrSet<NODE_ID> >::iterator it = this->m_mapWatching.find(lPos);
+		AOIMap<AOI_UNIT_SUB_SCRIPT, AOISet<NODE_ID> >::iterator it = this->m_mapWatching.find(lPos);
 		if (it == this->m_mapWatching.end())
 		{
 			return;
 		}
 
-		for (ArrSet<NODE_ID>::iterator it2 = it->second.begin();
+		for (AOISet<NODE_ID>::iterator it2 = it->second.begin();
 			it2 != it->second.end(); ++it2)
 		{
 			AOINode* pNode = AOINodeMgr::Instance().GetNode(*it2);
@@ -271,7 +271,7 @@ namespace FXAOI
 
 	bool MapInstance::CanWatching(NODE_ID lNodeId, AOI_UNIT_SUB_SCRIPT lPos)
 	{
-		ArrMap<AOI_UNIT_SUB_SCRIPT, ArrSet<NODE_ID> >::iterator it = this->m_mapWatching.find(lPos);
+		AOIMap<AOI_UNIT_SUB_SCRIPT, AOISet<NODE_ID> >::iterator it = this->m_mapWatching.find(lPos);
 		if (it == this->m_mapWatching.end())
 		{
 			return false;
@@ -299,7 +299,7 @@ namespace FXAOI
 		this->m_mapDividedMap[AOI_RIGHT_UP_TOP]			= MapInstance(this->m_dwMapId, this->m_lSubScript | (AOI_RIGHT_UP_TOP		<< (AOI_MAX_DIVIDE_NUM - m_dwDivideNum - 1) * AOI_BIT_OFFSET), m_dwDivideNum + 1, m_pRoot);
 #endif // AOI_USE_Y_AXIS
 
-		for (ArrMap<NODE_ID, AOI_UNIT_SUB_SCRIPT>::iterator it = this->m_mapNodeChunk.begin();
+		for (AOIMap<NODE_ID, AOI_UNIT_SUB_SCRIPT>::iterator it = this->m_mapNodeChunk.begin();
 			it != this->m_mapNodeChunk.end(); ++it)
 		{
 			unsigned int lChunk = unsigned int((it->second >> ((AOI_MAX_DIVIDE_NUM - 1 - this->m_dwDivideNum) * AOI_BIT_OFFSET)) & AOI_FLAG_MASK);
@@ -309,7 +309,7 @@ namespace FXAOI
 		}
 		this->m_mapNodeChunk.clear();
 
-		for (std::map<AOI_UNIT_SUB_SCRIPT, std::set<NODE_ID> >::iterator it = this->m_mapWatched.begin();
+		for (AOIMap<AOI_UNIT_SUB_SCRIPT, AOISet<NODE_ID> >::iterator it = this->m_mapWatched.begin();
 			it != this->m_mapWatched.end(); ++it)
 		{
 			unsigned int lChunk = unsigned int((it->first >> ((AOI_MAX_DIVIDE_NUM - 1 - this->m_dwDivideNum) * AOI_BIT_OFFSET)) & AOI_FLAG_MASK);
@@ -319,7 +319,7 @@ namespace FXAOI
 		}
 		this->m_mapWatched.clear();
 
-		for (ArrMap<AOI_UNIT_SUB_SCRIPT, ArrSet<NODE_ID> >::iterator it = this->m_mapWatching.begin();
+		for (AOIMap<AOI_UNIT_SUB_SCRIPT, AOISet<NODE_ID> >::iterator it = this->m_mapWatching.begin();
 			it != this->m_mapWatching.end(); ++it)
 		{
 			unsigned int lChunk = unsigned int((it->first >> ((AOI_MAX_DIVIDE_NUM - 1 - this->m_dwDivideNum) * AOI_BIT_OFFSET)) & AOI_FLAG_MASK);
@@ -339,13 +339,13 @@ namespace FXAOI
 		for (std::map<unsigned int, MapInstance>::iterator it = this->m_mapDividedMap.begin();
 			it != this->m_mapDividedMap.end(); ++it)
 		{
-			for (ArrMap<NODE_ID, AOI_UNIT_SUB_SCRIPT>::iterator it2 = it->second.m_mapNodeChunk.begin();
+			for (AOIMap<NODE_ID, AOI_UNIT_SUB_SCRIPT>::iterator it2 = it->second.m_mapNodeChunk.begin();
 				it2 != it->second.m_mapNodeChunk.end(); ++it2)
 			{
 				this->m_mapNodeChunk[it2->first] = it2->second;
 			}
 			
-			for (std::map<AOI_UNIT_SUB_SCRIPT, std::set<NODE_ID> >::iterator it2 = it->second.m_mapWatched.begin();
+			for (AOIMap<AOI_UNIT_SUB_SCRIPT, AOISet<NODE_ID> >::iterator it2 = it->second.m_mapWatched.begin();
 				it2 != it->second.m_mapWatched.end(); ++it2)
 			{
 				assert(this->m_mapWatched.find(it2->first) == this->m_mapWatched.end());
@@ -353,7 +353,7 @@ namespace FXAOI
 				this->m_mapWatched[it2->first].swap(it2->second);
 			}
 
-			for (ArrMap<AOI_UNIT_SUB_SCRIPT, ArrSet<NODE_ID> >::iterator it2 = it->second.m_mapWatching.begin();
+			for (AOIMap<AOI_UNIT_SUB_SCRIPT, AOISet<NODE_ID> >::iterator it2 = it->second.m_mapWatching.begin();
 				it2 != it->second.m_mapWatching.end(); ++it2)
 			{
 				assert(this->m_mapWatching.find(it2->first) == this->m_mapWatching.end());

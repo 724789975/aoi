@@ -1,5 +1,8 @@
 #include "include/aoi_system.h"
+#include "include/aoi_define.h"
 
+#include "include/arr_map.h"
+#include "include/arr_set.h"
 #include <iostream>
 #include <bitset>
 #include <map>
@@ -8,10 +11,10 @@
 #include <chrono>
 
 void AoiOperatorDefault (NODE_ID lNodeId
-	, std::map<unsigned int, std::set<NODE_ID> >& mapAddWatching
-	, std::map<unsigned int, std::set<NODE_ID> >& mapDelWatching
-	, std::map<unsigned int, std::set<NODE_ID> >& mapAddWatched
-	, std::map<unsigned int, std::set<NODE_ID> >& mapDelWatched
+	, FXAOI::AOIMap<unsigned int, FXAOI::AOISet<NODE_ID> >& mapAddWatching
+	, FXAOI::AOIMap<unsigned int, FXAOI::AOISet<NODE_ID> >& mapDelWatching
+	, FXAOI::AOIMap<unsigned int, FXAOI::AOISet<NODE_ID> >& mapAddWatched
+	, FXAOI::AOIMap<unsigned int, FXAOI::AOISet<NODE_ID> >& mapDelWatched
 )
 {
 	return;
@@ -98,7 +101,7 @@ int main()
 	// FXAOI::MapInstance oMapInstance(0, 0, 0, 0);
 
 	auto utc_start = std::chrono::steady_clock::now();
-	for (size_t i = 0; i < 1; i++)
+	for (size_t i_ = 0; i_ < 10; i_++)
 	{
 		int x = 10, y = 10, z = 10;
 		for (size_t i = 0; i < 1024; i++)
@@ -119,8 +122,8 @@ int main()
 			}
 			else
 			{
-				//FXAOI::AOISystem::Instance().AddNode(i, i % 3 + 1, 1, 1);
-				FXAOI::AOISystem::Instance().AddNode(i, 1, 1, 1);
+				FXAOI::AOISystem::Instance().AddNode(i, i % 3 + 1, 1, 1);
+				//FXAOI::AOISystem::Instance().AddNode(i, 1, 1, 1);
 				FXAOI::NodePosition pos = {0, 0, 0};
 				// FXAOI::NodePosition pos = {x, z};
 				FXAOI::AOISystem::Instance().EnterMap(i, 1, pos);

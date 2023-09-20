@@ -4,6 +4,8 @@
 #include "../include/aoi_define.h"
 #include "../include/aoi_system.h"
 
+#include "../include/arr_map.h"
+#include "../include/arr_set.h"
 #include <map>
 #include <assert.h>
 
@@ -61,7 +63,7 @@ namespace FXAOI
 		std::set<AOI_UNIT_SUB_SCRIPT> setTemp;
 		setTemp.swap(this->m_setTempWatchingMap);
 
-		std::map<unsigned int, std::set<NODE_ID> > mapWatchingNodes;
+		AOIMap<unsigned int, AOISet<NODE_ID> > mapWatchingNodes;
 		//获取观察范围内地块中node
 		for (std::set<AOI_UNIT_SUB_SCRIPT>::iterator it = setTemp.begin()
 			; it != setTemp.end(); ++it)
@@ -81,9 +83,9 @@ namespace FXAOI
 		mapWatchingNodes[this->m_dwAOIType].erase(this->m_lNodeId);
 
 		//新增进入视野
-		std::map<unsigned int, std::set<NODE_ID> > mapAddWatching;
-		std::map<unsigned int, std::set<NODE_ID> > mapAddMutualWatching;	//互相看见的 被观察的就不计算了
-		for (std::map<unsigned int, std::set<NODE_ID> >::iterator it1 = mapWatchingNodes.begin()
+		AOIMap<unsigned int, AOISet<NODE_ID> > mapAddWatching;
+		AOIMap<unsigned int, AOISet<NODE_ID> > mapAddMutualWatching;	//互相看见的 被观察的就不计算了
+		for (AOIMap<unsigned int, AOISet<NODE_ID> >::iterator it1 = mapWatchingNodes.begin()
 			; it1 != mapWatchingNodes.end(); ++it1)
 		{
 			if (GetAOIVisibilityType(this->m_dwAOIType, it1->first) <= AOIVisibilityType::AOIVisibilityType_Invisible)
@@ -94,8 +96,8 @@ namespace FXAOI
 			if (GetAOIVisibilityType(this->m_dwAOIType, it1->first) == AOIVisibilityType::AOIVisibilityType_Mutual_Visibility)
 			{
 				//优先级队列
-				std::map<double, NODE_ID> mapFirstNode;
-				for (std::set<NODE_ID>::iterator it2 = it1->second.begin()
+				AOIMap<double, NODE_ID> mapFirstNode;
+				for (AOISet<NODE_ID>::iterator it2 = it1->second.begin()
 					; it2 != it1->second.end(); ++it2)
 				{
 					if (this->m_mapWatching[it1->first].end() != this->m_mapWatching[it1->first].find(*it2))
@@ -121,7 +123,7 @@ namespace FXAOI
 				if (this->m_mapWatching[it1->first].size() + mapAddMutualWatching[it1->first].size() > AOI_MAX_NODE_IN_VIEW)
 				{
 					int dwNum = int(this->m_mapWatching[it1->first].size() + mapAddMutualWatching[it1->first].size() - AOI_MAX_NODE_IN_VIEW);
-					for (std::map<double, NODE_ID>::iterator it3 = mapFirstNode.begin()
+					for (AOIMap<double, NODE_ID>::iterator it3 = mapFirstNode.begin()
 						; it3 != mapFirstNode.end() && 0 < dwNum; ++it3, --dwNum)
 					{
 						mapAddMutualWatching[it1->first].erase(it3->second);
@@ -130,7 +132,7 @@ namespace FXAOI
 			}
 			else
 			{
-				for (std::set<NODE_ID>::iterator it2 = it1->second.begin()
+				for (AOISet<NODE_ID>::iterator it2 = it1->second.begin()
 					; it2 != it1->second.end(); ++it2)
 				{
 					if (this->m_mapWatching[it1->first].end() == this->m_mapWatching[it1->first].find(*it2))
@@ -142,8 +144,8 @@ namespace FXAOI
 		}
 
 		//离开视野
-		std::map<unsigned int, std::set<NODE_ID> > mapDelWatching;
-		std::map<unsigned int, std::set<NODE_ID> > mapDelMutualWatching;
+		AOIMap<unsigned int, AOISet<NODE_ID> > mapDelWatching;
+		AOIMap<unsigned int, AOISet<NODE_ID> > mapDelMutualWatching;
 		for (std::map<unsigned int, std::set<NODE_ID> >::iterator it1 = this->m_mapWatching.begin()
 			; it1 != this->m_mapWatching.end(); ++it1)
 		{
@@ -166,16 +168,16 @@ namespace FXAOI
 		}
 
 		//处理被其他节点观察列表
-		std::map<unsigned int, std::set<NODE_ID> > mapWatchedNodes;
+		AOIMap<unsigned int, AOISet<NODE_ID> > mapWatchedNodes;
 		pInstance->GetWatchingInPos(lPos, mapWatchedNodes);
 		mapWatchedNodes[this->m_dwAOIType].erase(this->m_lNodeId);
 		
 		//新增的可以看见当前节点的节点
-		std::map<unsigned int, std::set<NODE_ID>> mapAddWatched;
-		for (std::map<unsigned int, std::set<NODE_ID> >::iterator it1 = mapWatchedNodes.begin();
+		AOIMap<unsigned int, AOISet<NODE_ID>> mapAddWatched;
+		for (AOIMap<unsigned int, AOISet<NODE_ID> >::iterator it1 = mapWatchedNodes.begin();
 			it1 != mapWatchedNodes.end(); ++it1)
 		{
-			for (std::set<NODE_ID>::iterator it2 = it1->second.begin();
+			for (AOISet<NODE_ID>::iterator it2 = it1->second.begin();
 				it2 != it1->second.end(); ++it2)
 			{
 				if (this->m_mapWatched[it1->first].end() != this->m_mapWatched[it1->first].find(*it2))
@@ -191,7 +193,7 @@ namespace FXAOI
 		}
 
 		//要删除的离开了对方的视野
-		std::map<unsigned int, std::set<NODE_ID>> mapDelWatched;
+		AOIMap<unsigned int, AOISet<NODE_ID> > mapDelWatched;
 		for (std::map<unsigned int, std::set<NODE_ID> >::iterator it1 = this->m_mapWatched.begin();
 			it1 != this->m_mapWatched.end(); ++it1)
 		{
@@ -211,13 +213,13 @@ namespace FXAOI
 		}
 
 		//计算视野
-		for (std::map<unsigned int, std::set<NODE_ID> >::iterator it = mapAddMutualWatching.begin()
+		for (AOIMap<unsigned int, AOISet<NODE_ID> >::iterator it = mapAddMutualWatching.begin()
 			; it != mapAddMutualWatching.end(); ++it)
 		{
 			mapAddWatching[it->first] = it->second;
 			mapAddWatched[it->first] = it->second;
 		}
-		for (std::map<unsigned int, std::set<NODE_ID> >::iterator it = mapDelMutualWatching.begin()
+		for (AOIMap<unsigned int, AOISet<NODE_ID> >::iterator it = mapDelMutualWatching.begin()
 			; it != mapDelMutualWatching.end(); ++it)
 		{
 			mapDelWatching[it->first] = it->second;
@@ -225,10 +227,10 @@ namespace FXAOI
 		}
 
 		//处理关联视野
-		for (std::map<unsigned int, std::set<NODE_ID>>::iterator it1 = mapDelWatching.begin()
+		for (AOIMap<unsigned int, AOISet<NODE_ID> >::iterator it1 = mapDelWatching.begin()
 			; it1 != mapDelWatching.end(); ++it1)
 		{
-			for (std::set<NODE_ID>::iterator it2 = it1->second.begin();
+			for (AOISet<NODE_ID>::iterator it2 = it1->second.begin();
 				it2 != it1->second.end(); ++it2)
 			{
 				assert(this->m_mapWatching[it1->first].end() != this->m_mapWatching[it1->first].find(*it2));
@@ -241,10 +243,10 @@ namespace FXAOI
 			}
 		}
 
-		for (std::map<unsigned int, std::set<NODE_ID>>::iterator it1 = mapAddWatching.begin()
+		for (AOIMap<unsigned int, AOISet<NODE_ID>>::iterator it1 = mapAddWatching.begin()
 			; it1 != mapAddWatching.end(); ++it1)
 		{
-			for (std::set<NODE_ID>::iterator it2 = it1->second.begin();
+			for (AOISet<NODE_ID>::iterator it2 = it1->second.begin();
 				it2 != it1->second.end(); ++it2)
 			{
 				assert(this->m_mapWatching[it1->first].end() == this->m_mapWatching[it1->first].find(*it2));
@@ -257,10 +259,10 @@ namespace FXAOI
 			}
 		}
 
-		for (std::map<unsigned int, std::set<NODE_ID>>::iterator it1 = mapAddWatched.begin()
+		for (AOIMap<unsigned int, AOISet<NODE_ID> >::iterator it1 = mapAddWatched.begin()
 			; it1 != mapAddWatched.end(); ++it1)
 		{
-			for (std::set<NODE_ID>::iterator it2 = it1->second.begin();
+			for (AOISet<NODE_ID>::iterator it2 = it1->second.begin();
 				it2 != it1->second.end(); ++it2)
 			{
 				assert(this->m_mapWatched[it1->first].end() == this->m_mapWatched[it1->first].find(*it2));
@@ -272,10 +274,10 @@ namespace FXAOI
 				pNode->m_mapWatching[this->m_dwAOIType].insert(this->m_lNodeId);
 			}
 		}
-		for (std::map<unsigned int, std::set<NODE_ID>>::iterator it1 = mapDelWatched.begin()
+		for (AOIMap<unsigned int, AOISet<NODE_ID> >::iterator it1 = mapDelWatched.begin()
 			; it1 != mapDelWatched.end(); ++it1)
 		{
-			for (std::set<NODE_ID>::iterator it2 = it1->second.begin();
+			for (AOISet<NODE_ID>::iterator it2 = it1->second.begin();
 				it2 != it1->second.end(); ++it2)
 			{
 				assert(this->m_mapWatched[it1->first].end() != this->m_mapWatched[it1->first].find(*it2));
@@ -289,10 +291,11 @@ namespace FXAOI
 		}
 		
 		//处理子节点
-		for (std::map<unsigned int, std::set<NODE_ID>>::iterator it1 = mapAddWatching.begin()
+		AOIMap<unsigned int, AOISet<NODE_ID> > mapAddWatchingChild;
+		for (AOIMap<unsigned int, AOISet<NODE_ID> >::iterator it1 = mapAddWatching.begin()
 			; it1 != mapAddWatching.end(); ++it1)
 		{
-			for (std::set<NODE_ID>::iterator it2 = it1->second.begin();
+			for (AOISet<NODE_ID>::iterator it2 = it1->second.begin();
 				it2 != it1->second.end(); ++it2)
 			{
 				if (AOINode* pNode = AOINodeMgr::Instance().GetNode(*it2))
@@ -300,15 +303,26 @@ namespace FXAOI
 					for (std::set<NODE_ID>::iterator it3 = pNode->m_setChildrenNode.begin();
 						it3 != pNode->m_setChildrenNode.end(); ++it3)
 					{
-						it1->second.insert(*it3);
+						mapAddWatchingChild[it1->first].insert(*it3);
 					}
 				}
 			}
 		}
-		for (std::map<unsigned int, std::set<NODE_ID>>::iterator it1 = mapDelWatching.begin()
+		for (AOIMap<unsigned int, AOISet<NODE_ID> >::iterator it1 = mapAddWatchingChild.begin()
+			; it1 != mapAddWatchingChild.end(); ++it1)
+		{
+			for (AOISet<NODE_ID>::iterator it2 = it1->second.begin();
+				it2 != it1->second.end(); ++it2)
+			{
+				mapAddWatching[it1->first].insert(*it2);
+			}
+		}
+
+		AOIMap<unsigned int, AOISet<NODE_ID> > mapDelWatchingChild;
+		for (AOIMap<unsigned int, AOISet<NODE_ID> >::iterator it1 = mapDelWatching.begin()
 			; it1 != mapDelWatching.end(); ++it1)
 		{
-			for (std::set<NODE_ID>::iterator it2 = it1->second.begin();
+			for (AOISet<NODE_ID>::iterator it2 = it1->second.begin();
 				it2 != it1->second.end(); ++it2)
 			{
 				if (AOINode* pNode = AOINodeMgr::Instance().GetNode(*it2))
@@ -316,15 +330,26 @@ namespace FXAOI
 					for (std::set<NODE_ID>::iterator it3 = pNode->m_setChildrenNode.begin();
 						it3 != pNode->m_setChildrenNode.end(); ++it3)
 					{
-						it1->second.insert(*it3);
+						mapDelWatchingChild[it1->first].insert(*it3);
 					}
 				}
 			}
 		}
-		for (std::map<unsigned int, std::set<NODE_ID>>::iterator it1 = mapAddWatched.begin()
+		for (AOIMap<unsigned int, AOISet<NODE_ID> >::iterator it1 = mapDelWatchingChild.begin()
+			; it1 != mapDelWatchingChild.end(); ++it1)
+		{
+			for (AOISet<NODE_ID>::iterator it2 = it1->second.begin();
+				it2 != it1->second.end(); ++it2)
+			{
+				mapDelWatching[it1->first].insert(*it2);
+			}
+		}
+
+		AOIMap<unsigned int, AOISet<NODE_ID> > mapAddWatchedChild;
+		for (AOIMap<unsigned int, AOISet<NODE_ID> >::iterator it1 = mapAddWatched.begin()
 			; it1 != mapAddWatched.end(); ++it1)
 		{
-			for (std::set<NODE_ID>::iterator it2 = it1->second.begin();
+			for (AOISet<NODE_ID>::iterator it2 = it1->second.begin();
 				it2 != it1->second.end(); ++it2)
 			{
 				if (AOINode* pNode = AOINodeMgr::Instance().GetNode(*it2))
@@ -332,15 +357,26 @@ namespace FXAOI
 					for (std::set<NODE_ID>::iterator it3 = pNode->m_setChildrenNode.begin();
 						it3 != pNode->m_setChildrenNode.end(); ++it3)
 					{
-						it1->second.insert(*it3);
+						mapAddWatchedChild[it1->first].insert(*it3);
 					}
 				}
 			}
 		}
-		for (std::map<unsigned int, std::set<NODE_ID>>::iterator it1 = mapDelWatched.begin()
+		for (AOIMap<unsigned int, AOISet<NODE_ID> >::iterator it1 = mapAddWatchedChild.begin()
+			; it1 != mapAddWatchedChild.end(); ++it1)
+		{
+			for (AOISet<NODE_ID>::iterator it2 = it1->second.begin();
+				it2 != it1->second.end(); ++it2)
+			{
+				mapAddWatched[it1->first].insert(*it2);
+			}
+		}
+
+		AOIMap<unsigned int, AOISet<NODE_ID> > mapDelWatchedChild;
+		for (AOIMap<unsigned int, AOISet<NODE_ID> >::iterator it1 = mapDelWatched.begin()
 			; it1 != mapDelWatched.end(); ++it1)
 		{
-			for (std::set<NODE_ID>::iterator it2 = it1->second.begin();
+			for (AOISet<NODE_ID>::iterator it2 = it1->second.begin();
 				it2 != it1->second.end(); ++it2)
 			{
 				if (AOINode* pNode = AOINodeMgr::Instance().GetNode(*it2))
@@ -348,9 +384,18 @@ namespace FXAOI
 					for (std::set<NODE_ID>::iterator it3 = pNode->m_setChildrenNode.begin();
 						it3 != pNode->m_setChildrenNode.end(); ++it3)
 					{
-						it1->second.insert(*it3);
+						mapDelWatchedChild[it1->first].insert(*it3);
 					}
 				}
+			}
+		}
+		for (AOIMap<unsigned int, AOISet<NODE_ID> >::iterator it1 = mapDelWatchedChild.begin()
+			; it1 != mapDelWatchedChild.end(); ++it1)
+		{
+			for (AOISet<NODE_ID>::iterator it2 = it1->second.begin();
+				it2 != it1->second.end(); ++it2)
+			{
+				mapDelWatched[it1->first].insert(*it2);
 			}
 		}
 
@@ -374,17 +419,57 @@ namespace FXAOI
 
 	void AOINode::AddChild(NODE_ID lNodeId)
 	{
-		std::map<unsigned int, std::set<NODE_ID> > mapDelWatching;
-		std::map<unsigned int, std::set<NODE_ID> > mapDelWatched;
-		AOISystem::Instance().GetAoiOperator()(lNodeId, this->m_mapWatching, mapDelWatching, this->m_mapWatched, mapDelWatched);
+		AOIMap<unsigned int, AOISet<NODE_ID> > mapAddWatching;
+		AOIMap<unsigned int, AOISet<NODE_ID> > mapDelWatching;
+		AOIMap<unsigned int, AOISet<NODE_ID> > mapAddWatched;
+		AOIMap<unsigned int, AOISet<NODE_ID> > mapDelWatched;
+		for (std::map<unsigned int, std::set< NODE_ID> >::iterator it1 = this->m_mapWatching.begin()
+			; it1 != this->m_mapWatching.end(); ++it1)
+		{
+			for (std::set< NODE_ID>::iterator it2 = it1->second.begin();
+				it2 != it1->second.end(); ++it2)
+			{
+				mapAddWatching[it1->first].insert(*it2);
+			}
+		}
+		for (std::map<unsigned int, std::set< NODE_ID> >::iterator it1 = this->m_mapWatched.begin()
+			; it1 != this->m_mapWatched.end(); ++it1)
+		{
+			for (std::set< NODE_ID>::iterator it2 = it1->second.begin();
+				it2 != it1->second.end(); ++it2)
+			{
+				mapAddWatching[it1->first].insert(*it2);
+			}
+		}
+		AOISystem::Instance().GetAoiOperator()(lNodeId, mapAddWatching, mapDelWatched, mapAddWatched, mapDelWatched);
 		this->m_setChildrenNode.insert(lNodeId);
 	}
 
 	void AOINode::RemoveChild(NODE_ID lNodeId)
 	{
-		std::map<unsigned int, std::set<NODE_ID> > mapAddWatching;
-		std::map<unsigned int, std::set<NODE_ID> > mapAddWatched;
-		AOISystem::Instance().GetAoiOperator()(lNodeId, mapAddWatching, this->m_mapWatching, mapAddWatched, this->m_mapWatched);
+		AOIMap<unsigned int, AOISet<NODE_ID> > mapAddWatching;
+		AOIMap<unsigned int, AOISet<NODE_ID> > mapDelWatching;
+		AOIMap<unsigned int, AOISet<NODE_ID> > mapAddWatched;
+		AOIMap<unsigned int, AOISet<NODE_ID> > mapDelWatched;
+		for (std::map<unsigned int, std::set< NODE_ID> >::iterator it1 = this->m_mapWatching.begin()
+			; it1 != this->m_mapWatching.end(); ++it1)
+		{
+			for (std::set< NODE_ID>::iterator it2 = it1->second.begin();
+				it2 != it1->second.end(); ++it2)
+			{
+				mapDelWatching[it1->first].insert(*it2);
+			}
+		}
+		for (std::map<unsigned int, std::set< NODE_ID> >::iterator it1 = this->m_mapWatched.begin()
+			; it1 != this->m_mapWatched.end(); ++it1)
+		{
+			for (std::set< NODE_ID>::iterator it2 = it1->second.begin();
+				it2 != it1->second.end(); ++it2)
+			{
+				mapDelWatched[it1->first].insert(*it2);
+			}
+		}
+		AOISystem::Instance().GetAoiOperator()(lNodeId, mapAddWatching, mapDelWatched, mapAddWatched, mapDelWatched);
 		this->m_setChildrenNode.erase(lNodeId);
 	}
 

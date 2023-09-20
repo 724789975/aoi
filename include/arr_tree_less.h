@@ -19,8 +19,9 @@ namespace FXAOI
 	public:
 		bool operator() (const T& refLeft, const T& refRight)const
 		{
-			return (!KeyCompare()(refLeft, refRight)) && (!KeyCompare()(refRight, refLeft));
+			return (!m_oCompare(refLeft, refRight)) && (!m_oCompare(refRight, refLeft));
 		}
+		KeyCompare m_oCompare;
 	};
 };
 #endif // !__ArrTreeLess_H__

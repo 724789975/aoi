@@ -4,8 +4,8 @@
 #include "../include/aoi_define.h"
 #include "aoi_node.h"
 #include "aoi_unit.h"
-#include "arr_map.h"
-#include "arr_set.h"
+#include "../include/arr_map.h"
+#include "../include/arr_set.h"
 
 #include <map>
 #include <set>
@@ -59,14 +59,14 @@ namespace FXAOI
 		void Move(NODE_ID lNodeId, const AOICoordinate& refFromCoordinate, const AOICoordinate& refToCoordinate
 			, unsigned int dwWatchedRadius, unsigned int dwWatchingRadius);
 
-		void GetNodeInPos(AOI_UNIT_SUB_SCRIPT lPos, std::map<unsigned int, std::set< NODE_ID> >& refWatchingNode);
+		void GetNodeInPos(AOI_UNIT_SUB_SCRIPT lPos, ArrMap<unsigned int, ArrSet< NODE_ID> >& refWatchingNode);
 		/**
 		 * @brief Get the Watching In Pos object
 		 * 获取正在观察某个格子的节点
 		 * @param lPos 
 		 * @param refWatchingNode 
 		 */
-		void GetWatchingInPos(AOI_UNIT_SUB_SCRIPT lPos, std::map<unsigned int, std::set< NODE_ID> >& refWatchingNode);
+		void GetWatchingInPos(AOI_UNIT_SUB_SCRIPT lPos, ArrMap<unsigned int, ArrSet< NODE_ID> >& refWatchingNode);
 		/**
 		 * @brief 
 		 * 目标点是否在节点可见范围内
@@ -122,18 +122,18 @@ namespace FXAOI
 		 * map<格子坐标,set<节点id>>
 		 * 列表中的节点可被格子中的节点看见
 		 */
-		std::map<AOI_UNIT_SUB_SCRIPT, std::set<NODE_ID> > m_mapWatched;
+		AOIMap<AOI_UNIT_SUB_SCRIPT, AOISet<NODE_ID> > m_mapWatched;
 		/**
 		 * @brief 
 		 * map<格子坐标,set<节点id>>
 		 * 列表中的节点可看见格子中的节点
 		 */
-		ArrMap<AOI_UNIT_SUB_SCRIPT, ArrSet<NODE_ID> > m_mapWatching;
+		AOIMap<AOI_UNIT_SUB_SCRIPT, AOISet<NODE_ID> > m_mapWatching;
 		/**
 		 * @brief 
 		 * <节点id, 地块id>
 		 */
-		ArrMap<NODE_ID, AOI_UNIT_SUB_SCRIPT> m_mapNodeChunk;
+		AOIMap<NODE_ID, AOI_UNIT_SUB_SCRIPT> m_mapNodeChunk;
 	};
 } // namespace FXAOI
 

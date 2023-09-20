@@ -3,6 +3,8 @@
 
 #include "aoi_define.h"
 
+#include "arr_map.h"
+#include "arr_set.h"
 #include <map>
 #include <set>
 #include <ostream>
@@ -44,17 +46,17 @@ namespace FXAOI
 	 * @param mapDelWatched 其他节点收到消失包
 	 */
 	typedef void AoiOperator (NODE_ID lNodeId
-		, std::map<unsigned int, std::set<NODE_ID> >& mapAddWatching
-		, std::map<unsigned int, std::set<NODE_ID> >& mapDelWatching
-		, std::map<unsigned int, std::set<NODE_ID> >& mapAddWatched
-		, std::map<unsigned int, std::set<NODE_ID> >& mapDelWatched
+		, AOIMap<unsigned int, AOISet<NODE_ID> >& mapAddWatching
+		, AOIMap<unsigned int, AOISet<NODE_ID> >& mapDelWatching
+		, AOIMap<unsigned int, AOISet<NODE_ID> >& mapAddWatched
+		, AOIMap<unsigned int, AOISet<NODE_ID> >& mapDelWatched
 	);
 
 	void AoiOperatorDefault (NODE_ID lNodeId
-		, std::map<unsigned int, std::set<NODE_ID> >& mapAddWatching
-		, std::map<unsigned int, std::set<NODE_ID> >& mapDelWatching
-		, std::map<unsigned int, std::set<NODE_ID> >& mapAddWatched
-		, std::map<unsigned int, std::set<NODE_ID> >& mapDelWatched
+		, AOIMap<unsigned int, AOISet<NODE_ID> >& mapAddWatching
+		, AOIMap<unsigned int, AOISet<NODE_ID> >& mapDelWatching
+		, AOIMap<unsigned int, AOISet<NODE_ID> >& mapAddWatched
+		, AOIMap<unsigned int, AOISet<NODE_ID> >& mapDelWatched
 	);
 
 	class AOISystem

@@ -3,6 +3,7 @@
 
 #include "../include/aoi_define.h"
 #include "aoi_node.h"
+#include "../include/arr_map.h"
 
 #include <map>
 
@@ -20,7 +21,7 @@ namespace FXAOI
 	protected:
 	private:
 		static AOINodeMgr s_oInstance;
-		std::map<NODE_ID, AOINode> m_mapNodes;
+		AOIMap<NODE_ID, AOINode> m_mapNodes;
 	};
 } // namespace FXAOI
 
