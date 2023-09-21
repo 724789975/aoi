@@ -24,6 +24,11 @@ namespace FXAOI
 #endif
 				m_dwZ = dwZ;
 			}
+		//const AOICoordinate& operator = (const AOICoordinate& ref)
+		//{
+		//	this->m_dwCoordinate = ref.m_dwCoordinate;
+		//	return *this;
+		//}
 
 		unsigned char GetX()const{return this->m_dwX;}
 #if AOI_USE_Y_AXIS

@@ -116,7 +116,7 @@ namespace FXAOI
 		assert(pInstance);
 		pInstance->Leave(lNodeId, pNode->GetCoordinate(), pNode->GetWatchedRadius(), pNode->GetWatchingRadius());
 		pNode->CalcView(pInstance);
-		pNode->SetMapId(-1);
+		pNode->AfterLeaveMap();
 	}
 
 	void AOISystem::Move(NODE_ID lNodeId, const NodePosition &refPosition)

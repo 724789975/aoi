@@ -4,6 +4,8 @@
 #include "../include/aoi_define.h"
 #include "aoi_unit.h"
 
+#include "../include/arr_map.h"
+#include "../include/arr_set.h"
 #include <set>
 #include <map>
 
@@ -90,6 +92,11 @@ namespace FXAOI
 		 * @param lNodeId 
 		 */
 		void RemoveChild(NODE_ID lNodeId);
+		/**
+		 * @brief 
+		 * 离开地图后调用
+		 */
+		void AfterLeaveMap();
 
 		void Debug(std::ostream& refOstream);
 	private:
@@ -133,13 +140,13 @@ namespace FXAOI
 		 * 被节点看见
 		 * <视野类型, 视野列表>
 		 */
-		std::map<unsigned int, std::set< NODE_ID> > m_mapWatched;
+		AOIMap<unsigned int, AOISet<NODE_ID> > m_mapWatched;
 		/**
 		 * @brief 
 		 * 正在观察的节点
 		 * <视野类型, 视野列表>
 		 */
-		std::map<unsigned int, std::set< NODE_ID> > m_mapWatching;
+		AOIMap<unsigned int, AOISet< NODE_ID> > m_mapWatching;
 		/**
 		 * @brief 
 		 * 记录玩家移动或进入地图时能够看到的地块

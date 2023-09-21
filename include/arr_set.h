@@ -112,7 +112,7 @@ namespace FXAOI
 		{
 			OnClear(this, BooleanType<KHasClear<K>::Has>());
 			m_dwSize = 0;
-			delete m_pKeys;
+			delete[] m_pKeys;
 			m_dwCapcity = 0;
 			m_pKeys = 0;
 		}
