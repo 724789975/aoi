@@ -31,10 +31,6 @@ namespace FXAOI
 		AOIVisibilityType_Mutual_Visibility,
 	};
 	
-	void SetAOIVisibilityType(unsigned int dwAOIType1, unsigned int dwAOIType2, AOIVisibilityType type);
-	AOIVisibilityType GetAOIVisibilityType(unsigned int dwAOIType1, unsigned int dwAOIType2);
-	void SetAOINodeLimit(unsigned int dwAOIType1, unsigned int dwAOIType2, unsigned int dwNum);
-	unsigned int GetAOINodeLimit(unsigned int dwAOIType1, unsigned int dwAOIType2);
 
 	/**
 	 * @brief 
@@ -86,6 +82,38 @@ namespace FXAOI
 #endif
 			, double dOffsetZ
 		);
+		/**
+		 * @brief 
+		 * 设置dwAOIType1对dwAOIType2的可见性
+		 * @param dwAOIType1 
+		 * @param dwAOIType2 
+		 * @param type 
+		 */
+		void SetAOIVisibilityType(unsigned int dwAOIType1, unsigned int dwAOIType2, AOIVisibilityType type);
+		/**
+		 * @brief 
+		 * 获取可见性
+		 * @param dwAOIType1 
+		 * @param dwAOIType2 
+		 * @return AOIVisibilityType 
+		 */
+		AOIVisibilityType GetAOIVisibilityType(unsigned int dwAOIType1, unsigned int dwAOIType2);
+		/**
+		 * @brief 
+		 * 设置dwAOIType1可见的dwAOIType2的数量
+		 * @param dwAOIType1 
+		 * @param dwAOIType2 
+		 * @param dwNum 
+		 */
+		void SetAOINodeLimit(unsigned int dwAOIType1, unsigned int dwAOIType2, unsigned int dwNum);
+		/**
+		 * @brief 
+		 * 获取某类型视野上限 默认无上限
+		 * @param dwAOIType1 
+		 * @param dwAOIType2 
+		 * @return unsigned int 
+		 */
+		unsigned int GetAOINodeLimit(unsigned int dwAOIType1, unsigned int dwAOIType2);
 		/**
 		 * @brief 
 		 * 添加节点

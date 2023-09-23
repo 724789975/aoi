@@ -88,12 +88,12 @@ namespace FXAOI
 		for (AOIMap<unsigned int, AOISet<NODE_ID> >::iterator it1 = mapWatchingNodes.begin()
 			; it1 != mapWatchingNodes.end(); ++it1)
 		{
-			if (GetAOIVisibilityType(this->m_dwAOIType, it1->first) <= AOIVisibilityType::AOIVisibilityType_Invisible)
+			if (AOISystem::Instance().GetAOIVisibilityType(this->m_dwAOIType, it1->first) <= AOIVisibilityType::AOIVisibilityType_Invisible)
 			{
 				continue;
 			}
 			
-			if (GetAOIVisibilityType(this->m_dwAOIType, it1->first) == AOIVisibilityType::AOIVisibilityType_Mutual_Visibility)
+			if (AOISystem::Instance().GetAOIVisibilityType(this->m_dwAOIType, it1->first) == AOIVisibilityType::AOIVisibilityType_Mutual_Visibility)
 			{
 				//优先级队列
 				AOIMap<double, NODE_ID> mapFirstNode;
@@ -154,7 +154,7 @@ namespace FXAOI
 			{
 				if (mapWatchingNodes[it1->first].end() == mapWatchingNodes[it1->first].find(*it2))
 				{
-					if (GetAOIVisibilityType(this->m_dwAOIType, it1->first) == AOIVisibilityType::AOIVisibilityType_Mutual_Visibility)
+					if (AOISystem::Instance().GetAOIVisibilityType(this->m_dwAOIType, it1->first) == AOIVisibilityType::AOIVisibilityType_Mutual_Visibility)
 					{
 						assert(mapAddMutualWatching[it1->first].end() == mapAddMutualWatching[it1->first].find(*it2));
 						mapDelMutualWatching[it1->first].insert(*it2);
@@ -184,7 +184,7 @@ namespace FXAOI
 				{
 					continue;
 				}
-				if (GetAOIVisibilityType(it1->first, this->m_dwAOIType) != AOIVisibilityType::AOIVisibilityType_Visible)
+				if (AOISystem::Instance().GetAOIVisibilityType(it1->first, this->m_dwAOIType) != AOIVisibilityType::AOIVisibilityType_Visible)
 				{
 					continue;
 				}
@@ -204,7 +204,7 @@ namespace FXAOI
 				{
 					continue;
 				}
-				if (GetAOIVisibilityType(it1->first, this->m_dwAOIType) != AOIVisibilityType::AOIVisibilityType_Visible)
+				if (AOISystem::Instance().GetAOIVisibilityType(it1->first, this->m_dwAOIType) != AOIVisibilityType::AOIVisibilityType_Visible)
 				{
 					continue;
 				}

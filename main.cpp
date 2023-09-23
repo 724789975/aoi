@@ -86,16 +86,16 @@ int main()
 	FXAOI::AOISystem::Instance().SetAoiOperator(AoiOperatorDefault);
 	FXAOI::AOISystem::Instance().AddMap(1, 1, 512, 512, 512, 0, 0, 0);
 	// FXAOI::AOISystem::Instance().AddMap(1, 1, 512, 512, 0, 0);
-	FXAOI::SetAOIVisibilityType(1, 1, FXAOI::AOIVisibilityType::AOIVisibilityType_Mutual_Visibility);
-	FXAOI::SetAOIVisibilityType(1, 2, FXAOI::AOIVisibilityType::AOIVisibilityType_Visible);
-	FXAOI::SetAOIVisibilityType(1, 3, FXAOI::AOIVisibilityType::AOIVisibilityType_Visible);
-	FXAOI::SetAOIVisibilityType(2, 1, FXAOI::AOIVisibilityType::AOIVisibilityType_Visible);
-	FXAOI::SetAOIVisibilityType(2, 2, FXAOI::AOIVisibilityType::AOIVisibilityType_Invisible);
-	FXAOI::SetAOIVisibilityType(2, 3, FXAOI::AOIVisibilityType::AOIVisibilityType_Invisible);
-	FXAOI::SetAOIVisibilityType(3, 1, FXAOI::AOIVisibilityType::AOIVisibilityType_Visible);
-	FXAOI::SetAOIVisibilityType(3, 2, FXAOI::AOIVisibilityType::AOIVisibilityType_Visible);
-	FXAOI::SetAOIVisibilityType(3, 3, FXAOI::AOIVisibilityType::AOIVisibilityType_Visible);
-	FXAOI::SetAOINodeLimit(1, 1, 100);
+	FXAOI::AOISystem::Instance().SetAOIVisibilityType(1, 1, FXAOI::AOIVisibilityType::AOIVisibilityType_Mutual_Visibility);
+	FXAOI::AOISystem::Instance().SetAOIVisibilityType(1, 2, FXAOI::AOIVisibilityType::AOIVisibilityType_Visible);
+	FXAOI::AOISystem::Instance().SetAOIVisibilityType(1, 3, FXAOI::AOIVisibilityType::AOIVisibilityType_Visible);
+	FXAOI::AOISystem::Instance().SetAOIVisibilityType(2, 1, FXAOI::AOIVisibilityType::AOIVisibilityType_Visible);
+	FXAOI::AOISystem::Instance().SetAOIVisibilityType(2, 2, FXAOI::AOIVisibilityType::AOIVisibilityType_Invisible);
+	FXAOI::AOISystem::Instance().SetAOIVisibilityType(2, 3, FXAOI::AOIVisibilityType::AOIVisibilityType_Invisible);
+	FXAOI::AOISystem::Instance().SetAOIVisibilityType(3, 1, FXAOI::AOIVisibilityType::AOIVisibilityType_Visible);
+	FXAOI::AOISystem::Instance().SetAOIVisibilityType(3, 2, FXAOI::AOIVisibilityType::AOIVisibilityType_Visible);
+	FXAOI::AOISystem::Instance().SetAOIVisibilityType(3, 3, FXAOI::AOIVisibilityType::AOIVisibilityType_Visible);
+	FXAOI::AOISystem::Instance().SetAOINodeLimit(1, 1, 100);
 	// FXAOI::AOIUnits::Instance();//.DebugInfo();
 
 	// FXAOI::MapInstance oMapInstance(0, 0, 0, 0);

@@ -10,37 +10,6 @@
 
 namespace FXAOI
 {
-	AOIMap<unsigned int, AOIMap<unsigned int, AOIVisibilityType> > g_mapAOIVisibilityTypes;
-	void SetAOIVisibilityType(unsigned int dwAOIType1, unsigned int dwAOIType2, AOIVisibilityType type)
-	{
-		g_mapAOIVisibilityTypes[dwAOIType1][dwAOIType2] = type;
-	}
-
-	AOIVisibilityType GetAOIVisibilityType(unsigned int dwAOIType1, unsigned int dwAOIType2)
-	{
-		return g_mapAOIVisibilityTypes[dwAOIType1][dwAOIType2];
-	}
-
-	AOIMap<unsigned int, AOIMap<unsigned int, unsigned int> > g_mapAOINodeLimit;
-	void SetAOINodeLimit(unsigned int dwAOIType1, unsigned int dwAOIType2, unsigned int dwNum)
-	{
-		g_mapAOINodeLimit[dwAOIType1][dwAOIType2] = dwNum;
-	}
-
-	unsigned int GetAOINodeLimit(unsigned int dwAOIType1, unsigned int dwAOIType2)
-	{
-		if (g_mapAOINodeLimit.end() == g_mapAOINodeLimit.find(dwAOIType1))
-		{
-			return -1;
-		}
-
-		if (g_mapAOINodeLimit[dwAOIType1].end() == g_mapAOINodeLimit[dwAOIType1].find(dwAOIType2))
-		{
-			return -1;
-		}
-		
-		return g_mapAOINodeLimit[dwAOIType1][dwAOIType2];
-	}
 	void AoiOperatorDefault (NODE_ID lNodeId
 		, AOIMap<unsigned int, AOISet<NODE_ID> >& mapAddWatching
 		, AOIMap<unsigned int, AOISet<NODE_ID> >& mapDelWatching
@@ -77,6 +46,38 @@ namespace FXAOI
 		return true;
 	}
 
+	AOIMap<unsigned int, AOIMap<unsigned int, AOIVisibilityType> > g_mapAOIVisibilityTypes;
+	void AOISystem::SetAOIVisibilityType(unsigned int dwAOIType1, unsigned int dwAOIType2, AOIVisibilityType type)
+	{
+		g_mapAOIVisibilityTypes[dwAOIType1][dwAOIType2] = type;
+	}
+
+	AOIVisibilityType AOISystem::GetAOIVisibilityType(unsigned int dwAOIType1, unsigned int dwAOIType2)
+	{
+		return g_mapAOIVisibilityTypes[dwAOIType1][dwAOIType2];
+	}
+
+	AOIMap<unsigned int, AOIMap<unsigned int, unsigned int> > g_mapAOINodeLimit;
+	void AOISystem::SetAOINodeLimit(unsigned int dwAOIType1, unsigned int dwAOIType2, unsigned int dwNum)
+	{
+		g_mapAOINodeLimit[dwAOIType1][dwAOIType2] = dwNum;
+	}
+
+	unsigned int AOISystem::GetAOINodeLimit(unsigned int dwAOIType1, unsigned int dwAOIType2)
+	{
+		if (g_mapAOINodeLimit.end() == g_mapAOINodeLimit.find(dwAOIType1))
+		{
+			return -1;
+		}
+
+		if (g_mapAOINodeLimit[dwAOIType1].end() == g_mapAOINodeLimit[dwAOIType1].find(dwAOIType2))
+		{
+			return -1;
+		}
+		
+		return g_mapAOINodeLimit[dwAOIType1][dwAOIType2];
+	}
+	
 	void AOISystem::AddNode(NODE_ID lNodeId, unsigned int dwAOIType, unsigned int dwWatchedRadius, unsigned int dwWatchingRadius)
 	{
 		AOINode* pNode = AOINodeMgr::Instance().AddNode(lNodeId, dwAOIType, dwWatchedRadius, dwWatchingRadius);
