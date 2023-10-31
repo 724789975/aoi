@@ -116,11 +116,11 @@ int main()
 				++y;
 				x = 0;
 			}
-			if (1 == i % 5)
-			{
-				FXAOI::AOISystem::Instance().AddChild(i - 1, i);
-			}
-			else
+			//if (1 == i % 5)
+			//{
+			//	FXAOI::AOISystem::Instance().AddChild(i - 1, i);
+			//}
+			//else
 			{
 				FXAOI::AOISystem::Instance().AddNode(i, i % 3 + 1, 1, 1);
 				//FXAOI::AOISystem::Instance().AddNode(i, 1, 1, 1);
@@ -144,7 +144,7 @@ int main()
 				++y;
 				x = 0;
 			}
-			if (1 != i % 5)
+			//if (1 != i % 5)
 			{
 				FXAOI::NodePosition pos = {512, 512, 512};
 				// FXAOI::NodePosition pos = {x, z};
@@ -155,7 +155,7 @@ int main()
 
 		for (size_t i = 0; i < 1024; i++)
 		{
-			if (1 != i % 5)
+			//if (1 != i % 5)
 			{
 				FXAOI::AOISystem::Instance().LeaveMap(i);
 			}

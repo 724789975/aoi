@@ -72,15 +72,13 @@ namespace FXAOI
 			assert(pInstance);
 			pInstance->GetNodeInPos(*it, mapWatchingNodes);
 		}
+		mapWatchingNodes[this->m_dwAOIType].erase(this->m_lNodeId);
 		
-		//获取当前地块中 能被观察到的node
 		AOI_UNIT_SUB_SCRIPT lPos;
 		bool bRet = AOIUnits::Instance().GetMapPos(this->m_oCoordinate, lPos);
 		assert(bRet);
 		MapInstance* pInstance = pMapRoot->GetInstance(this->m_oCoordinate);
 		assert(pInstance);
-
-		mapWatchingNodes[this->m_dwAOIType].erase(this->m_lNodeId);
 
 		//新增进入视野
 		AOIMap<unsigned int, AOISet<NODE_ID> > mapAddWatching;
@@ -169,8 +167,12 @@ namespace FXAOI
 
 		//处理被其他节点观察列表
 		AOIMap<unsigned int, AOISet<NODE_ID> > mapWatchedNodes;
-		pInstance->GetWatchingInPos(lPos, mapWatchedNodes);
-		mapWatchedNodes[this->m_dwAOIType].erase(this->m_lNodeId);
+		//如果这个长度为0 那么是离开地图
+		if (setTemp.size())
+		{
+			pInstance->GetWatchingInPos(lPos, mapWatchedNodes);
+			mapWatchedNodes[this->m_dwAOIType].erase(this->m_lNodeId);
+		}
 		
 		//新增的可以看见当前节点的节点
 		AOIMap<unsigned int, AOISet<NODE_ID>> mapAddWatched;
@@ -200,7 +202,7 @@ namespace FXAOI
 			for (AOISet<NODE_ID>::iterator it2 = it1->second.begin();
 				it2 != it1->second.end(); ++it2)
 			{
-				if (mapWatchedNodes[it1->first].end() == mapWatchedNodes[it1->first].find(*it2))
+				if (mapWatchedNodes[it1->first].end() != mapWatchedNodes[it1->first].find(*it2))
 				{
 					continue;
 				}
@@ -475,7 +477,7 @@ namespace FXAOI
 
 	void AOINode::AfterLeaveMap()
 	{
-		m_dwMapId = -1;
+		this->m_dwMapId = -1;
 		
 		for (AOIMap<unsigned int, AOISet< NODE_ID> >::iterator it1 = this->m_mapWatched.begin()
 			; it1 != this->m_mapWatched.end(); ++it1)

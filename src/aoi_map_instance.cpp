@@ -158,9 +158,6 @@ namespace FXAOI
 						MapInstance* pInstance = this->m_pRoot->GetInstance(lPos);
 
 						assert(pInstance);
-						// assert(pInstance->m_mapWatching[lPos].end() != pInstance->m_mapWatching[lPos].find(lNodeId));
-						// pInstance->m_mapWatching[lPos].erase(lNodeId);
-						// if(0 == pInstance->m_mapWatching[lPos].size()){pInstance->m_mapWatching.erase(lPos);}
 						pInstance->RemoveWatched(lNodeId, lPos);
 					}
 				}
