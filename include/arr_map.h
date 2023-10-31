@@ -29,20 +29,12 @@ namespace FXAOI
 		};
 
 		template<typename T>
-		struct VHasDestruct{
-			template<typename U, void (U::*)()> struct HELPS;
-			template<typename U> static char Check(HELPS<U, &U::~U>*);
-			template<typename U> static int Check(...);
-			const static bool Has = sizeof(Check<T>(0)) == sizeof(char);
-		};
-
-
-		template<typename T>
 		void OnClear(T* p, TrueType t)
 		{
 			for (unsigned int i = 0; i <p->m_dwSize; ++i)
 			{
 				p->m_pKeyStores[i].second.clear();
+				//OnDestruct(&m_pKeyStores[i].second, BooleanType<IsClass<V>::Result>());
 			}
 		}
 		template<typename T>
@@ -103,16 +95,23 @@ namespace FXAOI
 		}
 		~ArrMap()
 		{
+			//for (unsigned int i = 0; i < m_dwSize; ++i)
+			//{
+			//	OnDestruct(&m_pKeyStores[i].second, BooleanType<IsClass<V>::Result>());
+			//}
 			if (m_pKeyStores)
 			{
 				delete[] m_pKeyStores;
 				m_pKeyStores = 0;
 			}
+			m_dwSize = 0;
+			m_dwCapcity = 0;
 		}
 
 		void clear()
 		{
 			OnClear(this, BooleanType<VHasClear<V>::Has>());
+
 			m_dwSize = 0;
 			delete[] m_pKeyStores;
 			m_dwCapcity = 0;
@@ -157,11 +156,11 @@ namespace FXAOI
 			if (dwIndex == m_dwSize - 1)
 			{
 				--m_dwSize;
-				OnDestruct(&m_pKeyStores[dwIndex].second, BooleanType<VHasDestruct<V>::Has>());
+				OnDestruct(&m_pKeyStores[dwIndex].second, BooleanType<IsClass<V>::Result>());
 				memset(&m_pKeyStores[dwIndex], 0, sizeof(KVPair));
 				return (iterator)(m_pKeyStores + dwIndex);
 			}
-			OnDestruct(&m_pKeyStores[dwIndex].second, BooleanType<VHasDestruct<V>::Has>());
+			OnDestruct(&m_pKeyStores[dwIndex].second, BooleanType<IsClass<V>::Result>());
 			memmove(&m_pKeyStores[dwIndex], &m_pKeyStores[dwIndex + 1], (m_dwSize - 1 - dwIndex) * sizeof(KVPair));
 			memset(&m_pKeyStores[m_dwSize - 1], 0, sizeof(KVPair));
 			--m_dwSize;

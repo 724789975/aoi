@@ -21,19 +21,12 @@ namespace FXAOI
 		};
 
 		template<typename T>
-		struct VHasDestruct {
-			template<typename U, void (U::*)()> struct HELPS;
-			template<typename U> static char Check(HELPS<U, &U::~U>*);
-			template<typename U> static int Check(...);
-			const static bool Has = sizeof(Check<T>(0)) == sizeof(char);
-		};
-
-		template<typename T>
 		void OnClear(T* p, TrueType t)
 		{
 			for (int i = 0; i < p->m_dwSize; ++i)
 			{
 				p->m_pKeys[i].clear();
+				//OnDestruct(&m_pKeys[i], BooleanType<IsClass<K>::Has>());
 			}
 		}
 		template<typename T>
@@ -86,11 +79,17 @@ namespace FXAOI
 		}
 		~ArrSet()
 		{
+			//for (unsigned int i = 0; i < m_dwSize; ++i)
+			//{
+			//	OnDestruct(&m_pKeys[i], BooleanType<IsClass<K>::Result>());
+			//}
 			if (m_pKeys)
 			{
 				delete[] m_pKeys;
 				m_pKeys = 0;
 			}
+			m_dwSize = 0;
+			m_dwCapcity = 0;
 		}
 
 		void clear()
@@ -188,11 +187,11 @@ namespace FXAOI
 			if (dwIndex == m_dwSize - 1)
 			{
 				--m_dwSize;
-				OnDestruct(&m_pKeys[dwIndex], BooleanType<VHasDestruct<K>::Has>());
+				OnDestruct(&m_pKeys[dwIndex], BooleanType<IsClass<K>::Result>());
 				memset(m_pKeys + dwIndex, 0, sizeof(K));
 				return m_pKeys + dwIndex;
 			}
-			OnDestruct(&m_pKeys[dwIndex], BooleanType<VHasDestruct<K>::Has>());
+			OnDestruct(&m_pKeys[dwIndex], BooleanType<IsClass<K>::Result>());
 			memmove(m_pKeys + dwIndex, m_pKeys + dwIndex + 1, (m_dwSize - 1 - dwIndex) * sizeof(K));
 			memset(m_pKeys + m_dwSize - 1, 0, sizeof(K));
 			--m_dwSize;
@@ -292,5 +291,6 @@ namespace FXAOI
 		KeyLess m_oLess;
 		Equal<K, KeyLess> m_oEqual;
 	};
+
 };
 #endif // !__ArrSet_H__

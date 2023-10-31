@@ -40,5 +40,22 @@ namespace FXAOI
 	template <>
 	struct BooleanType<true> : public TrueType
 	{};
+
+	template< typename Type >
+	struct IsClass {
+	private:
+
+		template< typename AnswerYes >
+		static char TYesNoTester(void(AnswerYes::*)(void));
+
+		template< typename AnswerNo >
+		static int TYesNoTester(...);
+
+	public:
+
+		enum {
+			Result = sizeof(TYesNoTester<Type>(0)) == sizeof(char)
+		};
+	};
 };
 #endif // !__ArrTreeLess_H__
