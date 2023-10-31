@@ -23,5 +23,22 @@ namespace FXAOI
 		}
 		KeyCompare m_oCompare;
 	};
+
+
+	struct TrueType {
+		enum { Result = true };
+	};
+
+	struct FalseType {
+		enum { Result = false };
+	};
+
+	template <bool val>
+	struct BooleanType : public FalseType
+	{};
+
+	template <>
+	struct BooleanType<true> : public TrueType
+	{};
 };
 #endif // !__ArrTreeLess_H__

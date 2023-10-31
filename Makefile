@@ -16,13 +16,8 @@ C_FLAGS			= -g -O0 -rdynamic -Wall -D_DEBUG -DLINUX -fpic -ldl
 CXX_FLAGS 		= -g -O0 -rdynamic -Wall -Woverloaded-virtual -D_DEBUG -DLINUX -fpic -ldl
 else
 D = 
-C_FLAGS			= -g -rdynamic -Wall -DNDEBUG -DLINUX -fpic -ldl
-CXX_FLAGS 		= -g -rdynamic -Wall -Woverloaded-virtual -DNDEBUG -DLINUX -fpic -ldl
-endif
-
-ifeq ($(SINGLE_THREAD),1)
-C_FLAGS			+= -D__SINGLE_THREAD__
-CXX_FLAGS		+= -D__SINGLE_THREAD__
+C_FLAGS			= -g -O2 -Wall -DNDEBUG -DLINUX -fpic -ldl
+CXX_FLAGS 		= -g -O2 -Wall -Woverloaded-virtual -DNDEBUG -DLINUX -fpic -ldl
 endif
 
 ifeq ($(ASAN),1)
@@ -37,18 +32,12 @@ ARFLAGS			= -rc
 #  Commands
 CODE_DIR = ./ 
 INCLUDE_DIR =./ 
-LIB_FILE = -L./Debug -Lcrypto -lpthread
+LIB_FILE = -L./Debug
 ifeq ($(ASAN),1)
 LIB_FILE	+= -lasan
 endif
 OUTPUT_DIR =./Debug
 OUTPUT = Test
-
-ifeq ($(GPERF),1)
-C_FLAGS		+= -DGPERF
-CXX_FLAGS	+= -DGPERF
-LIB_FILE += -ltcmalloc_and_profiler
-endif
 
 #==========================================================
 

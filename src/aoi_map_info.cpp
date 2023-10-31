@@ -60,13 +60,13 @@ namespace FXAOI
 
 	AOICoordinate MapInfo::GetAOICoordinate(const NodePosition &refPosition)
 	{
-		unsigned int dwX = unsigned int(refPosition.x - m_dOffsetX) / m_dwLengthViweRadius;
+		unsigned int dwX = (unsigned int)(refPosition.x - m_dOffsetX) / m_dwLengthViweRadius;
 		assert(0 == (dwX & AOI_COORDINATE_FLAG_MASK));
 #if AOI_USE_Y_AXIS
-		unsigned int dwY = unsigned int(refPosition.y - m_dOffsetY) / m_dwHightViweRadius;
+		unsigned int dwY = (unsigned int)(refPosition.y - m_dOffsetY) / m_dwHightViweRadius;
 		assert(0 == (dwY & AOI_COORDINATE_FLAG_MASK));
 #endif
-		unsigned int dwZ = unsigned int(refPosition.z - m_dOffsetZ) / m_dwWidthViweRadius;
+		unsigned int dwZ = (unsigned int)(refPosition.z - m_dOffsetZ) / m_dwWidthViweRadius;
 		assert(0 == (dwZ & AOI_COORDINATE_FLAG_MASK));
 		return AOICoordinate((unsigned char)dwX
 #if AOI_USE_Y_AXIS

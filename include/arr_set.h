@@ -3,6 +3,7 @@
 
 #include "arr_tree_less.h"
 #include <exception>
+#include <string.h>
 
 namespace FXAOI
 {
@@ -26,22 +27,6 @@ namespace FXAOI
 			template<typename U> static int Check(...);
 			const static bool Has = sizeof(Check<T>(0)) == sizeof(char);
 		};
-
-		struct TrueType {
-			enum { Result = true };
-		};
-
-		struct FalseType {
-			enum { Result = false };
-		};
-
-		template <bool val>
-		struct BooleanType : public FalseType
-		{};
-
-		template <>
-		struct BooleanType<true> : public TrueType
-		{};
 
 		template<typename T>
 		void OnClear(T* p, TrueType t)
@@ -152,7 +137,7 @@ namespace FXAOI
 			unsigned int dwLeftIndex = 0;
 			unsigned int dwRightIndex = 0;
 
-			int dwIndexTemp = Search(k, dwLeftIndex, dwRightIndex);
+			unsigned int dwIndexTemp = Search(k, dwLeftIndex, dwRightIndex);
 			if (dwIndexTemp != 0XFFFFFFFF)
 			{
 				return &m_pKeys[dwIndexTemp];
@@ -194,9 +179,6 @@ namespace FXAOI
 
 		iterator erase(const K& k)
 		{
-			unsigned int dwLeftIndex = 0;
-			unsigned int dwRightIndex = 0;
-
 			unsigned int dwIndex = Search(k);
 			if (dwIndex == 0XFFFFFFFF)
 			{
