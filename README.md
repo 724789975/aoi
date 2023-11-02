@@ -2,6 +2,8 @@ AOI
 ===
 
 [![C/C++ CI](https://github.com/724789975/aoi/actions/workflows/c-cpp.yml/badge.svg)](https://github.com/724789975/aoi/actions/workflows/c-cpp.yml)
+[![license](http://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/724789975/aoi/blob/259c78b7cb672f9d189714518e0c092b4934db99/LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](https://github.com/724789975/aoi/pulls)
 
 实现了一个四叉树的aoi视野管理  
 3d空间使用八叉树  
