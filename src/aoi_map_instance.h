@@ -4,8 +4,8 @@
 #include "../include/aoi_define.h"
 #include "aoi_node.h"
 #include "aoi_unit.h"
-#include "../include/arr_map.h"
-#include "../include/arr_set.h"
+#include "arr_map.h"
+#include "arr_set.h"
 
 #include <map>
 #include <set>

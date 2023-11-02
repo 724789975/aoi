@@ -4,8 +4,8 @@
 #include "../include/aoi_define.h"
 #include "../include/aoi_system.h"
 
-#include "../include/arr_map.h"
-#include "../include/arr_set.h"
+#include "arr_map.h"
+#include "arr_set.h"
 #include <map>
 #include <assert.h>
 
@@ -410,68 +410,115 @@ namespace FXAOI
 		// mapAddWatched;
 		// //其他节点收到的消失包
 		// mapDelWatched;
-		AOISystem::Instance().GetAoiOperator()(m_lNodeId, mapAddWatching, mapDelWatching, mapAddWatched, mapDelWatched);
+
+		std::vector<AoiOperatorInfo> vecAddWatching;
+		std::vector<AoiOperatorInfo> vecDelWatching;
+		std::vector<AoiOperatorInfo> vecAddWatched;
+		std::vector<AoiOperatorInfo> vecDelWatched;
+
+		class Map2VecOp
+		{
+		public:
+			const Map2VecOp& operator()(std::vector<AoiOperatorInfo>& vecDest, AOIMap<unsigned int, AOISet<NODE_ID> >& mapSrc) const
+			{
+				for (AOIMap<unsigned int, AOISet<NODE_ID> >::iterator it1 = mapSrc.begin()
+					; it1 != mapSrc.end(); ++it1)
+				{
+					vecDest.push_back(AoiOperatorInfo());
+					AoiOperatorInfo& refInfo = vecDest.back();
+					refInfo.m_dwType = it1->first;
+					refInfo.m_vecNodes.reserve(it1->second.size());
+					for (AOISet<NODE_ID>::iterator it2 = it1->second.begin();
+						it2 != it1->second.end(); ++it2)
+					{
+						refInfo.m_vecNodes.push_back(*it2);
+					}
+				}
+				return *this;
+			};
+		};
+		Map2VecOp()(vecAddWatching, mapAddWatching)
+			(vecDelWatching, mapDelWatching)
+			(vecAddWatched, mapAddWatched)
+			(vecDelWatched, mapDelWatched);
+
+		AOISystem::Instance().GetAoiOperator()(m_lNodeId, vecAddWatching, vecDelWatching, vecAddWatched, vecDelWatched);
 		for (std::set<NODE_ID>::iterator it = this->m_setChildrenNode.begin();
 			it != this->m_setChildrenNode.end(); ++it)
 		{
-			AOISystem::Instance().GetAoiOperator()(*it, mapAddWatching, mapDelWatching, mapAddWatched, mapDelWatched);
+			AOISystem::Instance().GetAoiOperator()(*it, vecAddWatching, vecDelWatching, vecAddWatched, vecDelWatched);
 		}
 		
 	}
 
 	void AOINode::AddChild(NODE_ID lNodeId)
 	{
-		AOIMap<unsigned int, AOISet<NODE_ID> > mapAddWatching;
-		AOIMap<unsigned int, AOISet<NODE_ID> > mapDelWatching;
-		AOIMap<unsigned int, AOISet<NODE_ID> > mapAddWatched;
-		AOIMap<unsigned int, AOISet<NODE_ID> > mapDelWatched;
-		for (AOIMap<unsigned int, AOISet< NODE_ID> >::iterator it1 = this->m_mapWatching.begin()
-			; it1 != this->m_mapWatching.end(); ++it1)
+		class Map2VecOp
 		{
-			for (AOISet< NODE_ID>::iterator it2 = it1->second.begin();
-				it2 != it1->second.end(); ++it2)
+		public:
+			const Map2VecOp& operator()(std::vector<AoiOperatorInfo>& vecDest, AOIMap<unsigned int, AOISet<NODE_ID> >& mapSrc) const
 			{
-				mapAddWatching[it1->first].insert(*it2);
-			}
-		}
-		for (AOIMap<unsigned int, AOISet< NODE_ID> >::iterator it1 = this->m_mapWatched.begin()
-			; it1 != this->m_mapWatched.end(); ++it1)
-		{
-			for (AOISet< NODE_ID>::iterator it2 = it1->second.begin();
-				it2 != it1->second.end(); ++it2)
-			{
-				mapAddWatching[it1->first].insert(*it2);
-			}
-		}
-		AOISystem::Instance().GetAoiOperator()(lNodeId, mapAddWatching, mapDelWatched, mapAddWatched, mapDelWatched);
+				for (AOIMap<unsigned int, AOISet<NODE_ID> >::iterator it1 = mapSrc.begin()
+					; it1 != mapSrc.end(); ++it1)
+				{
+					vecDest.push_back(AoiOperatorInfo());
+					AoiOperatorInfo& refInfo = vecDest.back();
+					refInfo.m_dwType = it1->first;
+					refInfo.m_vecNodes.reserve(it1->second.size());
+					for (AOISet<NODE_ID>::iterator it2 = it1->second.begin();
+						it2 != it1->second.end(); ++it2)
+					{
+						refInfo.m_vecNodes.push_back(*it2);
+					}
+				}
+				return *this;
+			};
+		};
+
+		std::vector<AoiOperatorInfo> vecAddWatching;
+		std::vector<AoiOperatorInfo> vecDelWatching;
+		std::vector<AoiOperatorInfo> vecAddWatched;
+		std::vector<AoiOperatorInfo> vecDelWatched;
+
+		Map2VecOp()(vecAddWatching, this->m_mapWatching)
+			(vecAddWatched, this->m_mapWatched);
+		AOISystem::Instance().GetAoiOperator()(lNodeId, vecAddWatching, vecDelWatching, vecAddWatched, vecDelWatched);
 		this->m_setChildrenNode.insert(lNodeId);
 	}
 
 	void AOINode::RemoveChild(NODE_ID lNodeId)
 	{
-		AOIMap<unsigned int, AOISet<NODE_ID> > mapAddWatching;
-		AOIMap<unsigned int, AOISet<NODE_ID> > mapDelWatching;
-		AOIMap<unsigned int, AOISet<NODE_ID> > mapAddWatched;
-		AOIMap<unsigned int, AOISet<NODE_ID> > mapDelWatched;
-		for (AOIMap<unsigned int, AOISet< NODE_ID> >::iterator it1 = this->m_mapWatching.begin()
-			; it1 != this->m_mapWatching.end(); ++it1)
+		class Map2VecOp
 		{
-			for (AOISet< NODE_ID>::iterator it2 = it1->second.begin();
-				it2 != it1->second.end(); ++it2)
+		public:
+			const Map2VecOp& operator()(std::vector<AoiOperatorInfo>& vecDest, AOIMap<unsigned int, AOISet<NODE_ID> >& mapSrc) const
 			{
-				mapDelWatching[it1->first].insert(*it2);
-			}
-		}
-		for (AOIMap<unsigned int, AOISet< NODE_ID> >::iterator it1 = this->m_mapWatched.begin()
-			; it1 != this->m_mapWatched.end(); ++it1)
-		{
-			for (AOISet< NODE_ID>::iterator it2 = it1->second.begin();
-				it2 != it1->second.end(); ++it2)
-			{
-				mapDelWatched[it1->first].insert(*it2);
-			}
-		}
-		AOISystem::Instance().GetAoiOperator()(lNodeId, mapAddWatching, mapDelWatched, mapAddWatched, mapDelWatched);
+				for (AOIMap<unsigned int, AOISet<NODE_ID> >::iterator it1 = mapSrc.begin()
+					; it1 != mapSrc.end(); ++it1)
+				{
+					vecDest.push_back(AoiOperatorInfo());
+					AoiOperatorInfo& refInfo = vecDest.back();
+					refInfo.m_dwType = it1->first;
+					refInfo.m_vecNodes.reserve(it1->second.size());
+					for (AOISet<NODE_ID>::iterator it2 = it1->second.begin();
+						it2 != it1->second.end(); ++it2)
+					{
+						refInfo.m_vecNodes.push_back(*it2);
+					}
+				}
+				return *this;
+			};
+		};
+
+		std::vector<AoiOperatorInfo> vecAddWatching;
+		std::vector<AoiOperatorInfo> vecDelWatching;
+		std::vector<AoiOperatorInfo> vecAddWatched;
+		std::vector<AoiOperatorInfo> vecDelWatched;
+
+		Map2VecOp()(vecDelWatching, this->m_mapWatching)
+			(vecDelWatched, this->m_mapWatched);
+
+		AOISystem::Instance().GetAoiOperator()(lNodeId, vecAddWatching, vecDelWatching, vecAddWatched, vecDelWatched);
 		this->m_setChildrenNode.erase(lNodeId);
 	}
 

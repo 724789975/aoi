@@ -1,8 +1,6 @@
 #include "include/aoi_system.h"
 #include "include/aoi_define.h"
 
-#include "include/arr_map.h"
-#include "include/arr_set.h"
 #include <iostream>
 #include <bitset>
 #include <map>
@@ -11,22 +9,22 @@
 #include <chrono>
 
 void AoiOperatorDefault (NODE_ID lNodeId
-	, FXAOI::AOIMap<unsigned int, FXAOI::AOISet<NODE_ID> >& mapAddWatching
-	, FXAOI::AOIMap<unsigned int, FXAOI::AOISet<NODE_ID> >& mapDelWatching
-	, FXAOI::AOIMap<unsigned int, FXAOI::AOISet<NODE_ID> >& mapAddWatched
-	, FXAOI::AOIMap<unsigned int, FXAOI::AOISet<NODE_ID> >& mapDelWatched
+	, std::vector<FXAOI::AoiOperatorInfo> vecAddWatching
+	, std::vector<FXAOI::AoiOperatorInfo> vecDelWatching
+	, std::vector<FXAOI::AoiOperatorInfo> vecAddWatched
+	, std::vector<FXAOI::AoiOperatorInfo> vecDelWatched
 )
 {
 	return;
 	FXAOI::AOISystem::Instance().DebugNode(lNodeId, std::cout);
 	std::cout << "\n";
-	if (mapAddWatching.size())
+	if (vecAddWatching.size())
 	{
 		std::cout << " add_watching:{";
-		for (auto &&i : mapAddWatching)
+		for (auto &&i : vecAddWatching)
 		{
-			std::cout << "type_" << i.first << " : {";
-			for (auto &&j : i.second)
+			std::cout << "type_" << i.m_dwType << " : {";
+			for (auto &&j : i.m_vecNodes)
 			{
 				std::cout << j << ",";
 			}
@@ -35,13 +33,13 @@ void AoiOperatorDefault (NODE_ID lNodeId
 		std::cout << "}\n";
 	}
 	
-	if (mapDelWatching.size())
+	if (vecDelWatching.size())
 	{
 		std::cout << " del_watching:{";
-		for (auto &&i : mapDelWatching)
+		for (auto &&i : vecDelWatching)
 		{
-			std::cout << "type_" << i.first << " : {";
-			for (auto &&j : i.second)
+			std::cout << "type_" << i.m_dwType << " : {";
+			for (auto &&j : i.m_vecNodes)
 			{
 				std::cout << j << ",";
 			}
@@ -50,13 +48,13 @@ void AoiOperatorDefault (NODE_ID lNodeId
 		std::cout << "}\n";
 	}
 	
-	if (mapAddWatched.size())
+	if (vecAddWatched.size())
 	{
 		std::cout << " add_watched:{";
-		for (auto &&i : mapAddWatched)
+		for (auto &&i : vecAddWatched)
 		{
-			std::cout << "type_" << i.first << ":{";
-			for (auto &&j : i.second)
+			std::cout << "type_" << i.m_dwType << ":{";
+			for (auto &&j : i.m_vecNodes)
 			{
 				std::cout << j << ",";
 			}
@@ -65,13 +63,13 @@ void AoiOperatorDefault (NODE_ID lNodeId
 		std::cout << "}\n";
 	}
 	
-	if (mapDelWatched.size())
+	if (vecDelWatched.size())
 	{
 		std::cout << " del_watched:{";
-		for (auto &&i : mapDelWatched)
+		for (auto &&i : vecDelWatched)
 		{
-			std::cout << "type_" << i.first << " : {";
-			for (auto &&j : i.second)
+			std::cout << "type_" << i.m_dwType << " : {";
+			for (auto &&j : i.m_vecNodes)
 			{
 				std::cout << j << ",";
 			}

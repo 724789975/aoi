@@ -3,7 +3,7 @@
 
 #include "../include/aoi_define.h"
 #include "aoi_node.h"
-#include "../include/arr_map.h"
+#include "arr_map.h"
 
 #include <map>
 

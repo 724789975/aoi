@@ -4,7 +4,7 @@
 #include "../include/aoi_define.h"
 #include "aoi_map_info.h"
 
-#include "../include/arr_map.h"
+#include "arr_map.h"
 #include <map>
 
 namespace FXAOI

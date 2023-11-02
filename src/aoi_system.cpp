@@ -4,17 +4,17 @@
 #include "aoi_node_mgr.h"
 #include "aoi_map_info_mgr.h"
 #include "aoi_unit.h"
-#include "../include/arr_map.h"
+#include "arr_map.h"
 
 #include <assert.h>
 
 namespace FXAOI
 {
 	void AoiOperatorDefault (NODE_ID lNodeId
-		, AOIMap<unsigned int, AOISet<NODE_ID> >& mapAddWatching
-		, AOIMap<unsigned int, AOISet<NODE_ID> >& mapDelWatching
-		, AOIMap<unsigned int, AOISet<NODE_ID> >& mapAddWatched
-		, AOIMap<unsigned int, AOISet<NODE_ID> >& mapDelWatched
+		, std::vector<AoiOperatorInfo> vecAddWatching
+		, std::vector<AoiOperatorInfo> vecDelWatching
+		, std::vector<AoiOperatorInfo> vecAddWatched
+		, std::vector<AoiOperatorInfo> vecDelWatched
 	){}
 	AOISystem AOISystem::s_oInstance;
 
