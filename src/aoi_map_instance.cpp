@@ -28,6 +28,16 @@ namespace FXAOI
 		if (0 == m_pRoot){m_pRoot = this;}
 	}
 
+	MapInstance::~MapInstance()
+	{
+		for (AOIMap<int, MapInstance*>::iterator it = this->m_mapDividedMap.begin();
+			it != this->m_mapDividedMap.end(); ++it)
+		{
+			delete it->second;
+		}
+		this->m_mapDividedMap.clear();
+	}
+
 	MapInstance* MapInstance::GetInstance(const AOICoordinate& refCoordinate)
 	{
 		AOI_UNIT_SUB_SCRIPT lPos;
@@ -47,7 +57,7 @@ namespace FXAOI
 		unsigned int lChunk = (unsigned int)((lPos >> ((AOI_MAX_DIVIDE_NUM - 1 - this->m_dwDivideNum) * AOI_BIT_OFFSET)) & AOI_FLAG_MASK);
 		assert(this->m_mapDividedMap.find(lChunk) != this->m_mapDividedMap.end());
 
-		return this->m_mapDividedMap[lChunk].GetInstance(lPos);
+		return this->m_mapDividedMap[lChunk]->GetInstance(lPos);
 	}
 
 	void MapInstance::Enter(NODE_ID lNodeId, const AOICoordinate& refCoordinate
@@ -133,7 +143,7 @@ namespace FXAOI
 			unsigned int lChunk = (unsigned int)((lPos >> ((AOI_MAX_DIVIDE_NUM - 1 - this->m_dwDivideNum) * AOI_BIT_OFFSET)) & AOI_FLAG_MASK);
 			assert(this->m_mapDividedMap.find(lChunk) != this->m_mapDividedMap.end());
 
-			this->m_mapDividedMap[lChunk].Leave(lNodeId, refCoordinate, dwWatchedRadius, dwWatchingRadius);
+			this->m_mapDividedMap[lChunk]->Leave(lNodeId, refCoordinate, dwWatchedRadius, dwWatchingRadius);
 		}
 		else
 		{
@@ -202,14 +212,14 @@ namespace FXAOI
 		
 		size_t dwNodeCount = 0;
 
-		for (std::map<unsigned int, MapInstance>::iterator it = this->m_mapDividedMap.begin();
+		for (AOIMap<int, MapInstance*>::iterator it = this->m_mapDividedMap.begin();
 			it != this->m_mapDividedMap.end(); ++it)
 		{
-			if (it->second.m_bDivided)
+			if (it->second->m_bDivided)
 			{
 				return;
 			}
-			dwNodeCount += it->second.m_mapNodeChunk.size();
+			dwNodeCount += it->second->m_mapNodeChunk.size();
 		}
 
 		if (dwNodeCount < AOI_THRESHOLD_FOR_MERGE)
@@ -227,8 +237,31 @@ namespace FXAOI
 		pInstance1->Enter(lNodeId, refToCoordinate, dwWatchedRadius, dwWatchingRadius);
 	}
 
-	void MapInstance::GetNodeInPos(AOI_UNIT_SUB_SCRIPT lPos, ArrMap<unsigned int, ArrSet<NODE_ID> > &refWatchingNode)
+	void MapInstance::GetNodeInPos(AOI_UNIT_SUB_SCRIPT lPos, AOIMap<unsigned int, AOISet<NODE_ID> > &refWatchingNode)
 	{
+		class Reserve1
+		{
+		public:
+			void operator()(ArrMap<unsigned int, ArrSet<NODE_ID> >& refNodes, unsigned int dwSize) const
+			{
+				refNodes.reserve(dwSize);
+			}
+			void operator()(std::map<unsigned int, std::set<NODE_ID> >& refNodes, unsigned int dwSize) const
+			{
+			}
+		};
+		class Reserve2
+		{
+		public:
+			void operator()(ArrSet<NODE_ID>& refNodes, unsigned int dwSize)
+			{
+				refNodes.reserve(dwSize);
+			}
+			void operator()(std::set<NODE_ID>& refNodes, unsigned int dwSize)
+			{
+			}
+		};
+		Reserve1()(refWatchingNode, AOI_BIT_OFFSET);
 		for (AOIMap<NODE_ID, AOI_UNIT_SUB_SCRIPT>::iterator it = this->m_mapNodeChunk.begin();
 			it != this->m_mapNodeChunk.end(); ++it)
 		{
@@ -236,24 +269,50 @@ namespace FXAOI
 			{
 				AOINode* pNode = AOINodeMgr::Instance().GetNode(it->first);
 				assert(pNode);
+				Reserve2()(refWatchingNode[pNode->GetAOIType()], 512);
 				refWatchingNode[pNode->GetAOIType()].insert(it->first);
 			}
 		}
 	}
 
-	void MapInstance::GetWatchingInPos(AOI_UNIT_SUB_SCRIPT lPos, ArrMap<unsigned int, ArrSet< NODE_ID> > &refWatchingNode)
+	void MapInstance::GetWatchingInPos(AOI_UNIT_SUB_SCRIPT lPos, AOIMap<unsigned int, AOISet< NODE_ID> > &refWatchingNode)
 	{
+		class Reserve1
+		{
+		public:
+			void operator()(ArrMap<unsigned int, ArrSet<NODE_ID> >& refNodes, unsigned int dwSize) const
+			{
+				refNodes.reserve(dwSize);
+			}
+			void operator()(std::map<unsigned int, std::set<NODE_ID> >& refNodes, unsigned int dwSize) const
+			{
+			}
+		};
+		class Reserve2
+		{
+		public:
+			void operator()(ArrSet<NODE_ID>& refNodes, unsigned int dwSize)
+			{
+				refNodes.reserve(dwSize);
+			}
+			void operator()(std::set<NODE_ID>& refNodes, unsigned int dwSize)
+			{
+			}
+		};
+
 		AOIMap<AOI_UNIT_SUB_SCRIPT, AOISet<NODE_ID> >::iterator it = this->m_mapWatching.find(lPos);
 		if (it == this->m_mapWatching.end())
 		{
 			return;
 		}
 
+		Reserve1()(refWatchingNode, AOI_BIT_OFFSET);
 		for (AOISet<NODE_ID>::iterator it2 = it->second.begin();
 			it2 != it->second.end(); ++it2)
 		{
 			AOINode* pNode = AOINodeMgr::Instance().GetNode(*it2);
 			assert(pNode);
+			Reserve2()(refWatchingNode[pNode->GetAOIType()], 512);
 			refWatchingNode[pNode->GetAOIType()].insert(*it2);
 		}
 	}
@@ -277,15 +336,15 @@ namespace FXAOI
 		}
 		assert(0 == this->m_mapDividedMap.size());
 		
-		this->m_mapDividedMap[AOI_LEFT_DOWN_BOTTOM]		= MapInstance(this->m_dwMapId, this->m_lSubScript | (AOI_LEFT_DOWN_BOTTOM	<< (AOI_MAX_DIVIDE_NUM - m_dwDivideNum - 1) * AOI_BIT_OFFSET), m_dwDivideNum + 1, m_pRoot);
-		this->m_mapDividedMap[AOI_LEFT_UP_BOTTOM]		= MapInstance(this->m_dwMapId, this->m_lSubScript | (AOI_LEFT_UP_BOTTOM		<< (AOI_MAX_DIVIDE_NUM - m_dwDivideNum - 1) * AOI_BIT_OFFSET), m_dwDivideNum + 1, m_pRoot);
-		this->m_mapDividedMap[AOI_RIGHT_DOWN_BOTTOM]	= MapInstance(this->m_dwMapId, this->m_lSubScript | (AOI_RIGHT_DOWN_BOTTOM	<< (AOI_MAX_DIVIDE_NUM - m_dwDivideNum - 1) * AOI_BIT_OFFSET), m_dwDivideNum + 1, m_pRoot);
-		this->m_mapDividedMap[AOI_RIGHT_UP_BOTTOM]		= MapInstance(this->m_dwMapId, this->m_lSubScript | (AOI_RIGHT_UP_BOTTOM	<< (AOI_MAX_DIVIDE_NUM - m_dwDivideNum - 1) * AOI_BIT_OFFSET), m_dwDivideNum + 1, m_pRoot);
+		this->m_mapDividedMap[AOI_LEFT_DOWN_BOTTOM]		= new MapInstance(this->m_dwMapId, this->m_lSubScript | (AOI_LEFT_DOWN_BOTTOM	<< (AOI_MAX_DIVIDE_NUM - m_dwDivideNum - 1) * AOI_BIT_OFFSET), m_dwDivideNum + 1, m_pRoot);
+		this->m_mapDividedMap[AOI_LEFT_UP_BOTTOM]		= new MapInstance(this->m_dwMapId, this->m_lSubScript | (AOI_LEFT_UP_BOTTOM		<< (AOI_MAX_DIVIDE_NUM - m_dwDivideNum - 1) * AOI_BIT_OFFSET), m_dwDivideNum + 1, m_pRoot);
+		this->m_mapDividedMap[AOI_RIGHT_DOWN_BOTTOM]	= new MapInstance(this->m_dwMapId, this->m_lSubScript | (AOI_RIGHT_DOWN_BOTTOM	<< (AOI_MAX_DIVIDE_NUM - m_dwDivideNum - 1) * AOI_BIT_OFFSET), m_dwDivideNum + 1, m_pRoot);
+		this->m_mapDividedMap[AOI_RIGHT_UP_BOTTOM]		= new MapInstance(this->m_dwMapId, this->m_lSubScript | (AOI_RIGHT_UP_BOTTOM	<< (AOI_MAX_DIVIDE_NUM - m_dwDivideNum - 1) * AOI_BIT_OFFSET), m_dwDivideNum + 1, m_pRoot);
 #if AOI_USE_Y_AXIS
-		this->m_mapDividedMap[AOI_LEFT_DOWN_TOP]		= MapInstance(this->m_dwMapId, this->m_lSubScript | (AOI_LEFT_DOWN_TOP		<< (AOI_MAX_DIVIDE_NUM - m_dwDivideNum - 1) * AOI_BIT_OFFSET), m_dwDivideNum + 1, m_pRoot);
-		this->m_mapDividedMap[AOI_LEFT_UP_TOP]			= MapInstance(this->m_dwMapId, this->m_lSubScript | (AOI_LEFT_UP_TOP		<< (AOI_MAX_DIVIDE_NUM - m_dwDivideNum - 1) * AOI_BIT_OFFSET), m_dwDivideNum + 1, m_pRoot);
-		this->m_mapDividedMap[AOI_RIGHT_DOWN_TOP]		= MapInstance(this->m_dwMapId, this->m_lSubScript | (AOI_RIGHT_DOWN_TOP		<< (AOI_MAX_DIVIDE_NUM - m_dwDivideNum - 1) * AOI_BIT_OFFSET), m_dwDivideNum + 1, m_pRoot);
-		this->m_mapDividedMap[AOI_RIGHT_UP_TOP]			= MapInstance(this->m_dwMapId, this->m_lSubScript | (AOI_RIGHT_UP_TOP		<< (AOI_MAX_DIVIDE_NUM - m_dwDivideNum - 1) * AOI_BIT_OFFSET), m_dwDivideNum + 1, m_pRoot);
+		this->m_mapDividedMap[AOI_LEFT_DOWN_TOP]		= new MapInstance(this->m_dwMapId, this->m_lSubScript | (AOI_LEFT_DOWN_TOP		<< (AOI_MAX_DIVIDE_NUM - m_dwDivideNum - 1) * AOI_BIT_OFFSET), m_dwDivideNum + 1, m_pRoot);
+		this->m_mapDividedMap[AOI_LEFT_UP_TOP]			= new MapInstance(this->m_dwMapId, this->m_lSubScript | (AOI_LEFT_UP_TOP		<< (AOI_MAX_DIVIDE_NUM - m_dwDivideNum - 1) * AOI_BIT_OFFSET), m_dwDivideNum + 1, m_pRoot);
+		this->m_mapDividedMap[AOI_RIGHT_DOWN_TOP]		= new MapInstance(this->m_dwMapId, this->m_lSubScript | (AOI_RIGHT_DOWN_TOP		<< (AOI_MAX_DIVIDE_NUM - m_dwDivideNum - 1) * AOI_BIT_OFFSET), m_dwDivideNum + 1, m_pRoot);
+		this->m_mapDividedMap[AOI_RIGHT_UP_TOP]			= new MapInstance(this->m_dwMapId, this->m_lSubScript | (AOI_RIGHT_UP_TOP		<< (AOI_MAX_DIVIDE_NUM - m_dwDivideNum - 1) * AOI_BIT_OFFSET), m_dwDivideNum + 1, m_pRoot);
 #endif // AOI_USE_Y_AXIS
 
 		for (AOIMap<NODE_ID, AOI_UNIT_SUB_SCRIPT>::iterator it = this->m_mapNodeChunk.begin();
@@ -294,7 +353,7 @@ namespace FXAOI
 			unsigned int lChunk = (unsigned int)((it->second >> ((AOI_MAX_DIVIDE_NUM - 1 - this->m_dwDivideNum) * AOI_BIT_OFFSET)) & AOI_FLAG_MASK);
 			assert(this->m_mapDividedMap.find(lChunk) != this->m_mapDividedMap.end());
 
-			this->m_mapDividedMap[lChunk].m_mapNodeChunk[it->first] = it->second;
+			this->m_mapDividedMap[lChunk]->m_mapNodeChunk[it->first] = it->second;
 		}
 		this->m_mapNodeChunk.clear();
 
@@ -304,7 +363,7 @@ namespace FXAOI
 			unsigned int lChunk = (unsigned int)((it->first >> ((AOI_MAX_DIVIDE_NUM - 1 - this->m_dwDivideNum) * AOI_BIT_OFFSET)) & AOI_FLAG_MASK);
 			assert(this->m_mapDividedMap.find(lChunk) != this->m_mapDividedMap.end());
 
-			this->m_mapDividedMap[lChunk].m_mapWatched[it->first].swap(it->second);
+			this->m_mapDividedMap[lChunk]->m_mapWatched[it->first].swap(it->second);
 		}
 		this->m_mapWatched.clear();
 
@@ -314,7 +373,7 @@ namespace FXAOI
 			unsigned int lChunk = (unsigned int)((it->first >> ((AOI_MAX_DIVIDE_NUM - 1 - this->m_dwDivideNum) * AOI_BIT_OFFSET)) & AOI_FLAG_MASK);
 			assert(this->m_mapDividedMap.find(lChunk) != this->m_mapDividedMap.end());
 
-			this->m_mapDividedMap[lChunk].m_mapWatching[it->first].swap(it->second);
+			this->m_mapDividedMap[lChunk]->m_mapWatching[it->first].swap(it->second);
 		}
 		this->m_mapWatching.clear();
 
@@ -325,25 +384,25 @@ namespace FXAOI
 	{
 		assert(AOI_DIVIDE_CHILDREN_NUM == this->m_mapDividedMap.size());
 		
-		for (std::map<unsigned int, MapInstance>::iterator it = this->m_mapDividedMap.begin();
+		for (AOIMap<int, MapInstance*>::iterator it = this->m_mapDividedMap.begin();
 			it != this->m_mapDividedMap.end(); ++it)
 		{
-			for (AOIMap<NODE_ID, AOI_UNIT_SUB_SCRIPT>::iterator it2 = it->second.m_mapNodeChunk.begin();
-				it2 != it->second.m_mapNodeChunk.end(); ++it2)
+			for (AOIMap<NODE_ID, AOI_UNIT_SUB_SCRIPT>::iterator it2 = it->second->m_mapNodeChunk.begin();
+				it2 != it->second->m_mapNodeChunk.end(); ++it2)
 			{
 				this->m_mapNodeChunk[it2->first] = it2->second;
 			}
 			
-			for (AOIMap<AOI_UNIT_SUB_SCRIPT, AOISet<NODE_ID> >::iterator it2 = it->second.m_mapWatched.begin();
-				it2 != it->second.m_mapWatched.end(); ++it2)
+			for (AOIMap<AOI_UNIT_SUB_SCRIPT, AOISet<NODE_ID> >::iterator it2 = it->second->m_mapWatched.begin();
+				it2 != it->second->m_mapWatched.end(); ++it2)
 			{
 				assert(this->m_mapWatched.find(it2->first) == this->m_mapWatched.end());
 
 				this->m_mapWatched[it2->first].swap(it2->second);
 			}
 
-			for (AOIMap<AOI_UNIT_SUB_SCRIPT, AOISet<NODE_ID> >::iterator it2 = it->second.m_mapWatching.begin();
-				it2 != it->second.m_mapWatching.end(); ++it2)
+			for (AOIMap<AOI_UNIT_SUB_SCRIPT, AOISet<NODE_ID> >::iterator it2 = it->second->m_mapWatching.begin();
+				it2 != it->second->m_mapWatching.end(); ++it2)
 			{
 				assert(this->m_mapWatching.find(it2->first) == this->m_mapWatching.end());
 
@@ -351,6 +410,11 @@ namespace FXAOI
 			}
 		}
 
+		for (AOIMap<int, MapInstance*>::iterator it = this->m_mapDividedMap.begin();
+			it != this->m_mapDividedMap.end(); ++it)
+		{
+			delete it->second;
+		}
 		this->m_mapDividedMap.clear();
 		this->m_bDivided = false;
 	}

@@ -151,13 +151,13 @@ namespace FXAOI
 		 * @brief 
 		 * 记录玩家移动或进入地图时能够看到的地块
 		 */
-		std::set<AOI_UNIT_SUB_SCRIPT> m_setTempWatchingMap;
+		AOISet<AOI_UNIT_SUB_SCRIPT> m_setTempWatchingMap;
 
 		/**
 		 * @brief 
 		 * 子节点 共享跟此节点相同的 可见 被观察列表 视野与本节点相同
 		 */
-		std::set<NODE_ID> m_setChildrenNode;
+		AOISet<NODE_ID> m_setChildrenNode;
 	};
 } // namespace FXAOI
 

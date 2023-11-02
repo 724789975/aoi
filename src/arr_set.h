@@ -42,6 +42,15 @@ namespace FXAOI
 		void OnDestruct(T* p, FalseType f)
 		{}
 
+		template<typename T>
+		void InitK(T* p, TrueType t)
+		{
+			p->~T();
+		}
+		template<typename T>
+		void InitK(T* p, FalseType f)
+		{}
+
 	public:
 		typedef const K* iterator;
 
@@ -92,6 +101,34 @@ namespace FXAOI
 			m_dwCapcity = 0;
 		}
 
+		void reserve(unsigned int dwSize)
+		{
+			--dwSize;
+			dwSize = dwSize | (dwSize >> 1);
+			dwSize = dwSize | (dwSize >> 2);
+			dwSize = dwSize | (dwSize >> 4);
+			dwSize = dwSize | (dwSize >> 8);
+			dwSize = dwSize | (dwSize >> 16);
+			dwSize += 1;
+			if (dwSize <= m_dwCapcity)
+			{
+				return;
+			}
+
+			m_dwCapcity = dwSize;
+			K* pTemp = new K[m_dwCapcity];
+			for (unsigned int i = 0; i < m_dwSize; ++i)
+			{
+				pTemp[i] = m_pKeys[i];
+			}
+			//memcpy(pTemp, m_pKeys, m_dwSize * sizeof(K));
+			if (m_pKeys)
+			{
+				delete[] m_pKeys;
+			}
+			m_pKeys = pTemp;
+		}
+
 		void clear()
 		{
 			OnClear(this, BooleanType<KHasClear<K>::Has>());
@@ -105,13 +142,13 @@ namespace FXAOI
 		{
 			if (m_dwSize >= m_dwCapcity)
 			{
-				if (128 > m_dwCapcity)
+				if (AOI_BIT_OFFSET > m_dwCapcity)
 				{
-					m_dwCapcity = 128;
+					m_dwCapcity = AOI_BIT_OFFSET;
 				}
 				else
 				{
-					m_dwCapcity <<= 1;
+					m_dwCapcity <<= 3;
 				}
 				K* pTemp = new K[m_dwCapcity];
 				for (unsigned int i = 0; i < m_dwSize; ++i)
@@ -162,7 +199,7 @@ namespace FXAOI
 			m_pKeys[dwRightIndex] = k;
 			++m_dwSize;
 
-			new (m_pKeys + dwRightIndex)K;
+			//new (m_pKeys + dwRightIndex)K;
 			return m_pKeys + dwRightIndex;
 		}
 
@@ -224,7 +261,6 @@ namespace FXAOI
 
 		void swap(ArrSet<K, KeyLess>& ref)
 		{
-
 			unsigned int dwSize = ref.m_dwSize;
 			ref.m_dwSize = m_dwSize;
 			m_dwSize = dwSize;

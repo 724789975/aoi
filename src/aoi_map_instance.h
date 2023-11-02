@@ -18,6 +18,8 @@ namespace FXAOI
 		MapInstance();
 		MapInstance(unsigned int dwMapId, AOI_UNIT_SUB_SCRIPT lSubScript, unsigned int dwDivideNum, MapInstance* pRoot);
 
+		~MapInstance();
+
 		/**
 		 * @brief Get the Instance object
 		 * 这个函数只能从root地块开始调用
@@ -59,14 +61,14 @@ namespace FXAOI
 		void Move(NODE_ID lNodeId, const AOICoordinate& refFromCoordinate, const AOICoordinate& refToCoordinate
 			, unsigned int dwWatchedRadius, unsigned int dwWatchingRadius);
 
-		void GetNodeInPos(AOI_UNIT_SUB_SCRIPT lPos, ArrMap<unsigned int, ArrSet< NODE_ID> >& refWatchingNode);
+		void GetNodeInPos(AOI_UNIT_SUB_SCRIPT lPos, AOIMap<unsigned int, AOISet< NODE_ID> >& refWatchingNode);
 		/**
 		 * @brief Get the Watching In Pos object
 		 * 获取正在观察某个格子的节点
 		 * @param lPos 
 		 * @param refWatchingNode 
 		 */
-		void GetWatchingInPos(AOI_UNIT_SUB_SCRIPT lPos, ArrMap<unsigned int, ArrSet< NODE_ID> >& refWatchingNode);
+		void GetWatchingInPos(AOI_UNIT_SUB_SCRIPT lPos, AOIMap<unsigned int, AOISet< NODE_ID> >& refWatchingNode);
 		/**
 		 * @brief 
 		 * 目标点是否在节点可见范围内
@@ -116,7 +118,7 @@ namespace FXAOI
 		 * @brief 
 		 * 已分裂地块
 		 */
-		std::map<unsigned int, MapInstance> m_mapDividedMap;
+		AOIMap<int, MapInstance*> m_mapDividedMap;
 		/**
 		 * @brief 
 		 * map<格子坐标,set<节点id>>

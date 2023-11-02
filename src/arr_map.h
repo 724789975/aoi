@@ -190,6 +190,34 @@ namespace FXAOI
 
 		unsigned int size() const { return m_dwSize; }
 
+		void reserve(unsigned int dwSize)
+		{
+			--dwSize;
+			dwSize = dwSize | (dwSize >> 1);
+			dwSize = dwSize | (dwSize >> 2);
+			dwSize = dwSize | (dwSize >> 4);
+			dwSize = dwSize | (dwSize >> 8);
+			dwSize = dwSize | (dwSize >> 16);
+			dwSize += 1;
+			if (dwSize <= m_dwCapcity)
+			{
+				return;
+			}
+
+			m_dwCapcity = dwSize;
+			KVPair* pTemp = new KVPair[m_dwCapcity];
+			for (unsigned int i = 0; i < m_dwSize; ++i)
+			{
+				pTemp[i] = m_pKeyStores[i];
+			}
+			//memcpy(pTemp, m_pKeyStores, m_dwSize * sizeof(KVPair));
+			if (m_pKeyStores)
+			{
+				delete[] m_pKeyStores;
+			}
+			m_pKeyStores = pTemp;
+		}
+
 		void swap(ArrMap<K, V, KeyLess>& ref)
 		{
 			unsigned int dwSize = ref.m_dwSize;
@@ -221,13 +249,13 @@ namespace FXAOI
 		{
 			if (m_dwSize >= m_dwCapcity)
 			{
-				if (128 > m_dwCapcity)
+				if (AOI_BIT_OFFSET > m_dwCapcity)
 				{
-					m_dwCapcity = 128;
+					m_dwCapcity = AOI_BIT_OFFSET;
 				}
 				else
 				{
-					m_dwCapcity <<= 1;
+					m_dwCapcity <<= 3;
 				}
 				KVPair* pTemp = new KVPair[m_dwCapcity];
 				for (unsigned int i = 0; i < m_dwSize; ++i)
@@ -277,7 +305,6 @@ namespace FXAOI
 			m_pKeyStores[dwRightIndex].first = k;
 			++m_dwSize;
 
-			new (&m_pKeyStores[dwRightIndex]) V;
 			return &m_pKeyStores[dwRightIndex];
 		}
 
