@@ -63,23 +63,27 @@ namespace FXAOI
 		class Reserve1
 		{
 		public:
-			void operator()(ArrMap<unsigned int, ArrSet<NODE_ID> >& refNodes, unsigned int dwSize) const
+			const Reserve1& operator()(ArrMap<unsigned int, ArrSet<NODE_ID> >& refNodes, unsigned int dwSize) const
 			{
 				refNodes.reserve(dwSize);
+				return *this;
 			}
-			void operator()(std::map<unsigned int, std::set<NODE_ID> >& refNodes, unsigned int dwSize) const
+			const Reserve1& operator()(std::map<unsigned int, std::set<NODE_ID> >& refNodes, unsigned int dwSize) const
 			{
+				return *this;
 			}
 		};
 		class Reserve2
 		{
 		public:
-			void operator()(ArrSet<NODE_ID>& refNodes, unsigned int dwSize)
+			const Reserve2& operator()(ArrSet<NODE_ID>& refNodes, unsigned int dwSize) const
 			{
 				refNodes.reserve(dwSize);
+				return *this;
 			}
-			void operator()(std::set<NODE_ID>& refNodes, unsigned int dwSize)
+			const Reserve2& operator()(std::set<NODE_ID>& refNodes, unsigned int dwSize) const
 			{
+				return *this;
 			}
 		};
 		AOISet<AOI_UNIT_SUB_SCRIPT> setTemp;
@@ -94,7 +98,10 @@ namespace FXAOI
 			assert(pInstance);
 			pInstance->GetNodeInPos(*it, mapWatchingNodes);
 		}
-		mapWatchingNodes[this->m_dwAOIType].erase(this->m_lNodeId);
+		if (mapWatchingNodes.end() != mapWatchingNodes.find(this->m_dwAOIType))
+		{
+			mapWatchingNodes[this->m_dwAOIType].erase(this->m_lNodeId);
+		}
 		
 		AOI_UNIT_SUB_SCRIPT lPos;
 		bool bRet = AOIUnits::Instance().GetMapPos(this->m_oCoordinate, lPos);
@@ -109,6 +116,10 @@ namespace FXAOI
 		for (AOIMap<unsigned int, AOISet<NODE_ID> >::iterator it1 = mapWatchingNodes.begin()
 			; it1 != mapWatchingNodes.end(); ++it1)
 		{
+			if (!it1->second.size())
+			{
+				continue;
+			}
 			if (AOISystem::Instance().GetAOIVisibilityType(this->m_dwAOIType, it1->first) <= AOIVisibilityType::AOIVisibilityType_Invisible)
 			{
 				continue;
@@ -172,8 +183,12 @@ namespace FXAOI
 		for (AOIMap<unsigned int, AOISet<NODE_ID> >::iterator it1 = this->m_mapWatching.begin()
 			; it1 != this->m_mapWatching.end(); ++it1)
 		{
-			Reserve2()(mapDelWatching[it1->first], it1->second.size());
-			Reserve2()(mapDelMutualWatching[it1->first], it1->second.size());
+			if (!it1->second.size())
+			{
+				continue;
+			}
+			Reserve2()(mapDelWatching[it1->first], it1->second.size())
+				(mapDelMutualWatching[it1->first], it1->second.size());
 			for (AOISet<NODE_ID>::iterator it2 = it1->second.begin()
 				; it2 != it1->second.end(); ++it2)
 			{
@@ -247,14 +262,20 @@ namespace FXAOI
 		for (AOIMap<unsigned int, AOISet<NODE_ID> >::iterator it = mapAddMutualWatching.begin()
 			; it != mapAddMutualWatching.end(); ++it)
 		{
-			mapAddWatching[it->first] = it->second;
-			mapAddWatched[it->first] = it->second;
+			if (it->second.size())
+			{
+				mapAddWatching[it->first] = it->second;
+				mapAddWatched[it->first] = it->second;
+			}
 		}
 		for (AOIMap<unsigned int, AOISet<NODE_ID> >::iterator it = mapDelMutualWatching.begin()
 			; it != mapDelMutualWatching.end(); ++it)
 		{
-			mapDelWatching[it->first] = it->second;
-			mapDelWatched[it->first] = it->second;
+			if (it->second.size())
+			{
+				mapDelWatching[it->first] = it->second;
+				mapDelWatched[it->first] = it->second;
+			}
 		}
 
 		//处理关联视野
