@@ -206,11 +206,12 @@ namespace FXAOI
 
 			m_dwCapcity = dwSize;
 			KVPair* pTemp = new KVPair[m_dwCapcity];
-			for (unsigned int i = 0; i < m_dwSize; ++i)
-			{
-				pTemp[i] = m_pKeyStores[i];
-			}
-			//memcpy(pTemp, m_pKeyStores, m_dwSize * sizeof(KVPair));
+			//for (unsigned int i = 0; i < m_dwSize; ++i)
+			//{
+			//	pTemp[i] = m_pKeyStores[i];
+			//}
+			memcpy(pTemp, m_pKeyStores, m_dwSize * sizeof(KVPair));
+			memset(m_pKeyStores, 0, m_dwSize * sizeof(KVPair));
 			if (m_pKeyStores)
 			{
 				delete[] m_pKeyStores;
@@ -258,11 +259,12 @@ namespace FXAOI
 					m_dwCapcity <<= 3;
 				}
 				KVPair* pTemp = new KVPair[m_dwCapcity];
-				for (unsigned int i = 0; i < m_dwSize; ++i)
-				{
-					pTemp[i] = m_pKeyStores[i];
-				}
-				//memcpy(pTemp, m_pKeyStores, m_dwSize * sizeof(KVPair));
+				//for (unsigned int i = 0; i < m_dwSize; ++i)
+				//{
+				//	pTemp[i] = m_pKeyStores[i];
+				//}
+				memcpy(pTemp, m_pKeyStores, m_dwSize * sizeof(KVPair));
+				memset(m_pKeyStores, 0, m_dwSize * sizeof(KVPair));
 				if (m_pKeyStores)
 				{
 					delete[] m_pKeyStores;
