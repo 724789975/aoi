@@ -50,6 +50,15 @@ namespace FXAOI
 		void OnDestruct(T* p, FalseType f)
 		{}
 
+		template<typename T>
+		void ResetMem(T* p, TrueType t)
+		{
+			memset(p, 0, sizeof(T));
+		}
+		template<typename T>
+		void ResetMem(T* p, FalseType f)
+		{}
+
 	public:
 		typedef class
 		{
@@ -157,14 +166,14 @@ namespace FXAOI
 			{
 				--m_dwSize;
 				OnDestruct(&m_pKeyStores[dwIndex].second, BooleanType<IsClass<V>::Result>());
-				memset(&m_pKeyStores[dwIndex], 0, sizeof(KVPair));
+				ResetMem(&m_pKeyStores[dwIndex], BooleanType<IsClass<V>::Result>());
 				return (iterator)(m_pKeyStores + dwIndex);
 			}
 			OnDestruct(&m_pKeyStores[dwIndex].second, BooleanType<IsClass<V>::Result>());
 			memmove(&m_pKeyStores[dwIndex], &m_pKeyStores[dwIndex + 1], (m_dwSize - 1 - dwIndex) * sizeof(KVPair));
-			memset(&m_pKeyStores[m_dwSize - 1], 0, sizeof(KVPair));
+			ResetMem(&m_pKeyStores[m_dwSize - 1], BooleanType<IsClass<V>::Result>());
 			--m_dwSize;
-			return (iterator)(m_pKeyStores + dwIndex);
+			return (iterator)(&m_pKeyStores[dwIndex]);
 		}
 
 		iterator find(const K& k)

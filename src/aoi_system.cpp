@@ -70,14 +70,15 @@ namespace FXAOI
 
 	const unsigned int& AOISystem::GetAOINodeLimit(unsigned int dwAOIType1, unsigned int dwAOIType2) const
 	{
+		static unsigned int dwLimit = -1;
 		if (g_mapAOINodeLimit.end() == g_mapAOINodeLimit.find(dwAOIType1))
 		{
-			return -1;
+			return dwLimit;
 		}
 
 		if (g_mapAOINodeLimit[dwAOIType1].end() == g_mapAOINodeLimit[dwAOIType1].find(dwAOIType2))
 		{
-			return -1;
+			return dwLimit;
 		}
 		
 		return g_mapAOINodeLimit[dwAOIType1][dwAOIType2];

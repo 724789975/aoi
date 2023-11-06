@@ -51,6 +51,16 @@ namespace FXAOI
 		void InitK(T* p, FalseType f)
 		{}
 
+		template<typename T>
+		void ResetMem(T* p, TrueType t)
+		{
+			memset(p, 0, sizeof(T));
+		}
+		template<typename T>
+		void ResetMem(T* p, FalseType f)
+		{}
+
+
 	public:
 		typedef const K* iterator;
 
@@ -227,14 +237,14 @@ namespace FXAOI
 			{
 				--m_dwSize;
 				OnDestruct(&m_pKeys[dwIndex], BooleanType<IsClass<K>::Result>());
-				memset(m_pKeys + dwIndex, 0, sizeof(K));
+				ResetMem(&m_pKeys[dwIndex], BooleanType<IsClass<K>::Result>());
 				return m_pKeys + dwIndex;
 			}
 			OnDestruct(&m_pKeys[dwIndex], BooleanType<IsClass<K>::Result>());
 			memmove(m_pKeys + dwIndex, m_pKeys + dwIndex + 1, (m_dwSize - 1 - dwIndex) * sizeof(K));
-			memset(m_pKeys + m_dwSize - 1, 0, sizeof(K));
+			ResetMem(&m_pKeys[m_dwSize - 1], BooleanType<IsClass<K>::Result>());
 			--m_dwSize;
-			return m_pKeys + dwIndex;
+			return &(m_pKeys[dwIndex]);
 		}
 
 		iterator find(K k)

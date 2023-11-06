@@ -3,28 +3,6 @@
 
 namespace FXAOI
 {
-	template<typename T>
-	class Less
-	{
-	public:
-		bool operator() (const T& refLeft, const T& refRight)const
-		{
-			return refLeft < refRight;
-		}
-	};
-
-	template<typename T, class KeyCompare = Less<T> >
-	class Equal
-	{
-	public:
-		bool operator() (const T& refLeft, const T& refRight)const
-		{
-			return (!m_oCompare(refLeft, refRight)) && (!m_oCompare(refRight, refLeft));
-		}
-		KeyCompare m_oCompare;
-	};
-
-
 	struct TrueType {
 		enum { Result = true };
 	};
@@ -57,5 +35,39 @@ namespace FXAOI
 			Result = sizeof(TYesNoTester<Type>(0)) == sizeof(char)
 		};
 	};
+
+	template<typename T>
+	class Less
+	{
+	public:
+		inline bool operator() (const T& refLeft, const T& refRight)const
+		{
+			return refLeft < refRight;
+		}
+	};
+
+	template<typename T, class KeyCompare = Less<T> >
+	class Equal
+	{
+	private:
+
+		inline bool eq (const T& refLeft, const T& refRight, TrueType t)const
+		{
+			return (!m_oCompare(refLeft, refRight)) && (!m_oCompare(refRight, refLeft));
+		}
+
+		inline bool eq (const T& refLeft, const T& refRight, FalseType f)const
+		{
+			return refLeft == refRight;
+		}
+	public:
+		inline bool operator() (const T& refLeft, const T& refRight)const
+		{
+			return eq(refLeft, refRight, BooleanType<IsClass<T>::Result >());
+		}
+		KeyCompare m_oCompare;
+	};
+
+
 };
 #endif // !__ArrTreeLess_H__
