@@ -46,13 +46,18 @@ namespace FXAOI
 		return true;
 	}
 
+	void AOISystem::RemoveMap(unsigned int dwMapId)
+	{
+		AOIMapInstanceMgr::Instance().RemoveMap(dwMapId);
+	}
+
 	AOIMap<unsigned int, AOIMap<unsigned int, AOIVisibilityType> > g_mapAOIVisibilityTypes;
 	void AOISystem::SetAOIVisibilityType(unsigned int dwAOIType1, unsigned int dwAOIType2, AOIVisibilityType type)
 	{
 		g_mapAOIVisibilityTypes[dwAOIType1][dwAOIType2] = type;
 	}
 
-	AOIVisibilityType AOISystem::GetAOIVisibilityType(unsigned int dwAOIType1, unsigned int dwAOIType2)
+	const AOIVisibilityType& AOISystem::GetAOIVisibilityType(unsigned int dwAOIType1, unsigned int dwAOIType2) const
 	{
 		return g_mapAOIVisibilityTypes[dwAOIType1][dwAOIType2];
 	}
@@ -63,7 +68,7 @@ namespace FXAOI
 		g_mapAOINodeLimit[dwAOIType1][dwAOIType2] = dwNum;
 	}
 
-	unsigned int AOISystem::GetAOINodeLimit(unsigned int dwAOIType1, unsigned int dwAOIType2)
+	const unsigned int& AOISystem::GetAOINodeLimit(unsigned int dwAOIType1, unsigned int dwAOIType2) const
 	{
 		if (g_mapAOINodeLimit.end() == g_mapAOINodeLimit.find(dwAOIType1))
 		{

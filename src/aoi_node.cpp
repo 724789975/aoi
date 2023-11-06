@@ -213,7 +213,10 @@ namespace FXAOI
 		if (setTemp.size())
 		{
 			pInstance->GetWatchingInPos(lPos, mapWatchedNodes);
-			mapWatchedNodes[this->m_dwAOIType].erase(this->m_lNodeId);
+			if (mapWatchedNodes.end() != mapWatchedNodes.find(this->m_dwAOIType))
+			{
+				mapWatchedNodes[this->m_dwAOIType].erase(this->m_lNodeId);
+			}
 		}
 		
 		//新增的可以看见当前节点的节点
@@ -475,9 +478,14 @@ namespace FXAOI
 		public:
 			const Map2VecOp& operator()(std::vector<AoiOperatorInfo>& vecDest, ArrMap<unsigned int, ArrSet<NODE_ID> >& mapSrc) const
 			{
+				vecDest.reserve(mapSrc.size());
 				for (ArrMap<unsigned int, ArrSet<NODE_ID> >::iterator it1 = mapSrc.begin()
 					; it1 != mapSrc.end(); ++it1)
 				{
+					if (!it1->second.size())
+					{
+						continue;
+					}
 					vecDest.push_back(AoiOperatorInfo());
 					AoiOperatorInfo& refInfo = vecDest.back();
 					refInfo.m_dwType = it1->first;
@@ -489,9 +497,14 @@ namespace FXAOI
 
 			const Map2VecOp& operator()(std::vector<AoiOperatorInfo>& vecDest, std::map<unsigned int, std::set<NODE_ID> >& mapSrc) const
 			{
+				vecDest.reserve(mapSrc.size());
 				for (std::map<unsigned int, std::set<NODE_ID> >::iterator it1 = mapSrc.begin()
 					; it1 != mapSrc.end(); ++it1)
 				{
+					if (!it1->second.size())
+					{
+						continue;
+					}
 					vecDest.push_back(AoiOperatorInfo());
 					AoiOperatorInfo& refInfo = vecDest.back();
 					refInfo.m_dwType = it1->first;

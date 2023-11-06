@@ -9,17 +9,27 @@ namespace FXAOI
 	MapInstance * AOIMapInstanceMgr::AddMap(unsigned int dwMapId)
 	{
 		assert(this->m_mapMaps.end() == this->m_mapMaps.find(dwMapId));
-		return &(this->m_mapMaps[dwMapId] = MapInstance(dwMapId, 0, 0, &this->m_mapMaps[dwMapId]));
+		return this->m_mapMaps[dwMapId] = new MapInstance(dwMapId, 0, 0, 0);
 	}
 
-	MapInstance *AOIMapInstanceMgr::GetMap(unsigned int dwMapId)
+	void AOIMapInstanceMgr::RemoveMap(unsigned int dwMapId)
 	{
-		ArrMap<NODE_ID, MapInstance>::iterator it = this->m_mapMaps.find(dwMapId);
+		assert(this->m_mapMaps.end() != this->m_mapMaps.find(dwMapId));
+		if (this->m_mapMaps.end() != this->m_mapMaps.find(dwMapId))
+		{
+			delete this->m_mapMaps[dwMapId];
+			this->m_mapMaps.erase(dwMapId);
+		}
+	}
+
+	MapInstance* AOIMapInstanceMgr::GetMap(unsigned int dwMapId)
+	{
+		ArrMap<NODE_ID, MapInstance*>::iterator it = this->m_mapMaps.find(dwMapId);
 		if (this->m_mapMaps.end() == it)
 		{
 			return 0;
 		}
 
-		return &it->second;
+		return it->second;
 	}
 } // namespace FXAOI

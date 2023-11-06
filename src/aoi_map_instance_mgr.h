@@ -16,11 +16,13 @@ namespace FXAOI
 
 		MapInstance* AddMap(unsigned int dwMapId);
 
+		void RemoveMap(unsigned int dwMapId);
+
 		MapInstance* GetMap(unsigned int dwMapId);
 	protected:
 	private:
 		static AOIMapInstanceMgr s_oInstance;
-		ArrMap<NODE_ID, MapInstance> m_mapMaps;
+		ArrMap<NODE_ID, MapInstance*> m_mapMaps;
 	};
 } // namespace FXAOI
 
