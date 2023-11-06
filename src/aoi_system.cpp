@@ -57,7 +57,7 @@ namespace FXAOI
 		g_mapAOIVisibilityTypes[dwAOIType1][dwAOIType2] = type;
 	}
 
-	AOIVisibilityType AOISystem::GetAOIVisibilityType(unsigned int dwAOIType1, unsigned int dwAOIType2)
+	const AOIVisibilityType& AOISystem::GetAOIVisibilityType(unsigned int dwAOIType1, unsigned int dwAOIType2)
 	{
 		return g_mapAOIVisibilityTypes[dwAOIType1][dwAOIType2];
 	}
@@ -68,7 +68,7 @@ namespace FXAOI
 		g_mapAOINodeLimit[dwAOIType1][dwAOIType2] = dwNum;
 	}
 
-	unsigned int AOISystem::GetAOINodeLimit(unsigned int dwAOIType1, unsigned int dwAOIType2)
+	const unsigned int& AOISystem::GetAOINodeLimit(unsigned int dwAOIType1, unsigned int dwAOIType2)
 	{
 		static unsigned int dwLimit = -1;
 		if (g_mapAOINodeLimit.end() == g_mapAOINodeLimit.find(dwAOIType1))

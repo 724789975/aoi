@@ -88,6 +88,14 @@ namespace FXAOI
 #endif
 			, double dOffsetZ
 		);
+
+		/**
+		 * @brief
+		 * 删除地图配置
+		 * @param dwMapId 地图id
+		 */
+		void RemoveMap(unsigned int dwMapId);
+
 		/**
 		 * @brief 
 		 * 设置dwAOIType1对dwAOIType2的可见性
@@ -103,7 +111,7 @@ namespace FXAOI
 		 * @param dwAOIType2 
 		 * @return AOIVisibilityType 
 		 */
-		AOIVisibilityType GetAOIVisibilityType(unsigned int dwAOIType1, unsigned int dwAOIType2);
+		const AOIVisibilityType& GetAOIVisibilityType(unsigned int dwAOIType1, unsigned int dwAOIType2);
 		/**
 		 * @brief 
 		 * 设置dwAOIType1可见的dwAOIType2的数量
@@ -119,7 +127,7 @@ namespace FXAOI
 		 * @param dwAOIType2 
 		 * @return unsigned int 
 		 */
-		unsigned int GetAOINodeLimit(unsigned int dwAOIType1, unsigned int dwAOIType2);
+		const unsigned int& GetAOINodeLimit(unsigned int dwAOIType1, unsigned int dwAOIType2);
 		/**
 		 * @brief 
 		 * 添加节点
