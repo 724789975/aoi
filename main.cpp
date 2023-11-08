@@ -129,72 +129,17 @@ int main()
 			++z;
 		}
 
-		x = 11, y = 12, z = 13;
-		for (size_t i = 0; i < 1024; i++)
+		for (int _i = 0; _i < 1000; ++_i)
 		{
-			if (z >= 512)
+			for (size_t i = 0; i < 1024; i += 128)
 			{
-				++x;
-				z = 0;
-			}
-			if (x >= 512)
-			{
-				++y;
-				x = 0;
-			}
-			//if (1 != i % 5)
-			{
-				//FXAOI::NodePosition pos = {512, 512, 512};
-				FXAOI::NodePosition pos = {x >> 1, y >> 1, z >> 1};
+				FXAOI::NodePosition pos = {rand() % 512, rand() % 512, rand() % 512 };
 				// FXAOI::NodePosition pos = {x, z};
-				FXAOI::AOISystem::Instance().Move(i, pos);
+				for (int j = 0; j < 128; ++j)
+				{
+					FXAOI::AOISystem::Instance().Move(i + j, pos);
+				}
 			}
-			++z;
-		}
-
-		for (size_t i = 0; i < 1024; i++)
-		{
-			//if (1 != i % 5)
-			{
-				FXAOI::NodePosition pos = {0, 0, 0};
-				// FXAOI::NodePosition pos = {x, z};
-				FXAOI::AOISystem::Instance().Move(i, pos);
-			}
-			++z;
-		}
-
-		x = 51, y = 12, z = 13;
-		for (size_t i = 0; i < 1024; i++)
-		{
-			if (z >= 512)
-			{
-				++x;
-				z = 0;
-			}
-			if (x >= 512)
-			{
-				++y;
-				x = 0;
-			}
-			//if (1 != i % 5)
-			{
-				//FXAOI::NodePosition pos = {512, 512, 512};
-				FXAOI::NodePosition pos = { x >> 1, y >> 1, z >> 1 };
-				// FXAOI::NodePosition pos = {x, z};
-				FXAOI::AOISystem::Instance().Move(i, pos);
-			}
-			++z;
-		}
-
-		for (size_t i = 0; i < 1024; i++)
-		{
-			//if (1 != i % 5)
-			{
-				FXAOI::NodePosition pos = { 0, 0, 0 };
-				// FXAOI::NodePosition pos = {x, z};
-				FXAOI::AOISystem::Instance().Move(i, pos);
-			}
-			++z;
 		}
 
 		for (size_t i = 0; i < 1024; i++)
