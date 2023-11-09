@@ -128,6 +128,11 @@ namespace FXAOI
 
 	void AOISystem::Move(NODE_ID lNodeId, const NodePosition &refPosition)
 	{
+		//如果这个节点有父节点 那么aoi内的移动是无效的
+		if (this->m_mapNodeParent.end() != this->m_mapNodeParent.find(lNodeId))
+		{
+			return;
+		}
 		AOINode* pNode = AOINodeMgr::Instance().GetNode(lNodeId);
 		assert(pNode);
 
