@@ -98,17 +98,23 @@ namespace FXAOI
 			assert(pInstance);
 			pInstance->GetNodeInPos(*it, mapWatchingNodes);
 		}
-		if (mapWatchingNodes.end() != mapWatchingNodes.find(this->m_dwAOIType))
-		{
-			mapWatchingNodes[this->m_dwAOIType].erase(this->m_lNodeId);
-		}
-		
 		AOI_UNIT_SUB_SCRIPT lPos;
 		bool bRet = AOIUnits::Instance().GetMapPos(this->m_oCoordinate, lPos);
 		assert(bRet);
 		MapInstance* pInstance = pMapRoot->GetInstance(this->m_oCoordinate);
 		assert(pInstance);
 
+		//在地图中
+		if (setTemp.size())
+		{
+			//处理别的节点能被本节点看到
+			pInstance->GetWatchedInPos(lPos, mapWatchingNodes);
+		}
+		if (mapWatchingNodes.end() != mapWatchingNodes.find(this->m_dwAOIType))
+		{
+			mapWatchingNodes[this->m_dwAOIType].erase(this->m_lNodeId);
+		}
+		
 		//新增进入视野
 		AOIMap<unsigned int, AOISet<NODE_ID> > mapAddWatching;
 		AOIMap<unsigned int, AOISet<NODE_ID> > mapAddMutualWatching;	//互相看见的 被观察的就不计算了

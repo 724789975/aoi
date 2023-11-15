@@ -8,6 +8,28 @@
 
 namespace FXAOI
 {
+	class Reserve1
+	{
+	public:
+		void operator()(ArrMap<unsigned int, ArrSet<NODE_ID> >& refNodes, unsigned int dwSize) const
+		{
+			refNodes.reserve(dwSize);
+		}
+		void operator()(std::map<unsigned int, std::set<NODE_ID> >& refNodes, unsigned int dwSize) const
+		{
+		}
+	};
+	class Reserve2
+	{
+	public:
+		void operator()(ArrSet<NODE_ID>& refNodes, unsigned int dwSize)
+		{
+			refNodes.reserve(dwSize);
+		}
+		void operator()(std::set<NODE_ID>& refNodes, unsigned int dwSize)
+		{
+		}
+	};
 	MapInstance::MapInstance()
 		: m_dwMapId(0)
 		, m_pRoot(0)
@@ -168,7 +190,7 @@ namespace FXAOI
 						MapInstance* pInstance = this->m_pRoot->GetInstance(lPos);
 
 						assert(pInstance);
-						pInstance->RemoveWatched(lNodeId, lPos);
+						pInstance->RemoveWatching(lNodeId, lPos);
 					}
 				}
 			}
@@ -196,7 +218,7 @@ namespace FXAOI
 						// assert(pInstance->m_mapWatched[lPos].end() != pInstance->m_mapWatched[lPos].find(lNodeId));
 						// pInstance->m_mapWatched[lPos].erase(lNodeId);
 						// if(0 == pInstance->m_mapWatched[lPos].size()){pInstance->m_mapWatched.erase(lPos);}
-						pInstance->RemoveWatching(lNodeId, lPos);
+						pInstance->RemoveWatched(lNodeId, lPos);
 					}
 				}
 			}
@@ -231,7 +253,7 @@ namespace FXAOI
 	void MapInstance::Move(NODE_ID lNodeId, const AOICoordinate& refFromCoordinate, const AOICoordinate& refToCoordinate
 		, unsigned int dwWatchedRadius, unsigned int dwWatchingRadius)
 	{
-		this->Leave(lNodeId, refFromCoordinate, dwWatchedRadius, dwWatchedRadius);
+		this->Leave(lNodeId, refFromCoordinate, dwWatchedRadius, dwWatchingRadius);
 		MapInstance* pInstance1 = this->GetInstance(refToCoordinate);
 		assert(pInstance1);
 		pInstance1->Enter(lNodeId, refToCoordinate, dwWatchedRadius, dwWatchingRadius);
@@ -239,28 +261,6 @@ namespace FXAOI
 
 	void MapInstance::GetNodeInPos(AOI_UNIT_SUB_SCRIPT lPos, AOIMap<unsigned int, AOISet<NODE_ID> > &refWatchingNode)
 	{
-		class Reserve1
-		{
-		public:
-			void operator()(ArrMap<unsigned int, ArrSet<NODE_ID> >& refNodes, unsigned int dwSize) const
-			{
-				refNodes.reserve(dwSize);
-			}
-			void operator()(std::map<unsigned int, std::set<NODE_ID> >& refNodes, unsigned int dwSize) const
-			{
-			}
-		};
-		class Reserve2
-		{
-		public:
-			void operator()(ArrSet<NODE_ID>& refNodes, unsigned int dwSize)
-			{
-				refNodes.reserve(dwSize);
-			}
-			void operator()(std::set<NODE_ID>& refNodes, unsigned int dwSize)
-			{
-			}
-		};
 		Reserve1()(refWatchingNode, AOI_BIT_OFFSET);
 		for (AOIMap<NODE_ID, AOI_UNIT_SUB_SCRIPT>::iterator it = this->m_mapNodeChunk.begin();
 			it != this->m_mapNodeChunk.end(); ++it)
@@ -277,29 +277,6 @@ namespace FXAOI
 
 	void MapInstance::GetWatchingInPos(AOI_UNIT_SUB_SCRIPT lPos, AOIMap<unsigned int, AOISet< NODE_ID> > &refWatchingNode)
 	{
-		class Reserve1
-		{
-		public:
-			void operator()(ArrMap<unsigned int, ArrSet<NODE_ID> >& refNodes, unsigned int dwSize) const
-			{
-				refNodes.reserve(dwSize);
-			}
-			void operator()(std::map<unsigned int, std::set<NODE_ID> >& refNodes, unsigned int dwSize) const
-			{
-			}
-		};
-		class Reserve2
-		{
-		public:
-			void operator()(ArrSet<NODE_ID>& refNodes, unsigned int dwSize)
-			{
-				refNodes.reserve(dwSize);
-			}
-			void operator()(std::set<NODE_ID>& refNodes, unsigned int dwSize)
-			{
-			}
-		};
-
 		AOIMap<AOI_UNIT_SUB_SCRIPT, AOISet<NODE_ID> >::iterator it = this->m_mapWatching.find(lPos);
 		if (it == this->m_mapWatching.end())
 		{
@@ -314,6 +291,25 @@ namespace FXAOI
 			assert(pNode);
 			Reserve2()(refWatchingNode[pNode->GetAOIType()], 512);
 			refWatchingNode[pNode->GetAOIType()].insert(*it2);
+		}
+	}
+
+	void MapInstance::GetWatchedInPos(AOI_UNIT_SUB_SCRIPT lPos, AOIMap<unsigned int, AOISet< NODE_ID> >& refWatchedNode)
+	{
+		AOIMap<AOI_UNIT_SUB_SCRIPT, AOISet<NODE_ID> >::iterator it = this->m_mapWatched.find(lPos);
+		if (it == this->m_mapWatched.end())
+		{
+			return;
+		}
+
+		Reserve1()(refWatchedNode, AOI_BIT_OFFSET);
+		for (AOISet<NODE_ID>::iterator it2 = it->second.begin();
+			it2 != it->second.end(); ++it2)
+		{
+			AOINode* pNode = AOINodeMgr::Instance().GetNode(*it2);
+			assert(pNode);
+			Reserve2()(refWatchedNode[pNode->GetAOIType()], 512);
+			refWatchedNode[pNode->GetAOIType()].insert(*it2);
 		}
 	}
 

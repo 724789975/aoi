@@ -70,6 +70,13 @@ namespace FXAOI
 		 */
 		void GetWatchingInPos(AOI_UNIT_SUB_SCRIPT lPos, AOIMap<unsigned int, AOISet< NODE_ID> >& refWatchingNode);
 		/**
+		 * @brief Get the Watched In Pos object
+		 * 获取能被各自中节点看到的节点
+		 * @param lPos 
+		 * @param refWatchingNode 
+		 */
+		void GetWatchedInPos(AOI_UNIT_SUB_SCRIPT lPos, AOIMap<unsigned int, AOISet< NODE_ID> >& refWatchedNode);
+		/**
 		 * @brief 
 		 * 目标点是否在节点可见范围内
 		 * @param lNodeId 

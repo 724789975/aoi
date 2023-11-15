@@ -120,7 +120,7 @@ int main()
 			//}
 			//else
 			{
-				FXAOI::AOISystem::Instance().AddNode(i, i % 3 + 1, 1, 1);
+				FXAOI::AOISystem::Instance().AddNode(i, i % 3 + 1, rand() % 2 + 1, rand() % 2 + 1);
 				//FXAOI::AOISystem::Instance().AddNode(i, 1, 1, 1);
 				FXAOI::NodePosition pos = {0, 0, 0};
 				// FXAOI::NodePosition pos = {x, z};
