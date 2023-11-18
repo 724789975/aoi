@@ -132,7 +132,7 @@ namespace FXAOI
 			KVPair* pPair = _Alloc(k);
 			if (!pPair)
 			{
-				return nullptr;
+				return 0;
 			}
 			return &(pPair->second);
 		}
@@ -293,7 +293,7 @@ namespace FXAOI
 
 			if (Search(k, dwLeftIndex, dwRightIndex) != 0XFFFFFFFF)
 			{
-				return nullptr;
+				return 0;
 			}
 			//放到最前面
 			if (m_oLess(k, m_pKeyStores[dwLeftIndex].first))
