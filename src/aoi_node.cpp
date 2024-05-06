@@ -29,7 +29,11 @@ namespace FXAOI
 			, 0
 #endif
 			, 0)
-		, m_oPosition{ 0, 0, 0 }
+		, m_oPosition{ 0
+#if AOI_USE_Y_AXIS
+			, 0
+#endif
+            , 0 }
 		, m_dwWatchedRadius(dwWatchedRadius)
 		, m_dwWatchingRadius(dwWatchingRadius)
 	{}
@@ -43,7 +47,11 @@ namespace FXAOI
 			, 0
 #endif
 			, 0)
-		, m_oPosition{ 0, 0, 0 }
+		, m_oPosition{ 0
+#if AOI_USE_Y_AXIS
+			, 0
+#endif
+            , 0 }
 		, m_dwWatchedRadius(0)
 		, m_dwWatchingRadius(0)
 	{}
