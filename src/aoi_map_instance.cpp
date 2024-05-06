@@ -269,8 +269,9 @@ namespace FXAOI
 			{
 				AOINode* pNode = AOINodeMgr::Instance().GetNode(it->first);
 				assert(pNode);
-				Reserve2()(refWatchingNode[pNode->GetAOIType()], 512);
-				refWatchingNode[pNode->GetAOIType()].insert(it->first);
+				AOISet<NODE_ID>& refSetWatchingNode = refWatchingNode[pNode->GetAOIType()];
+				Reserve2()(refSetWatchingNode, 512);
+				refSetWatchingNode.insert(it->first);
 			}
 		}
 	}
@@ -289,8 +290,9 @@ namespace FXAOI
 		{
 			AOINode* pNode = AOINodeMgr::Instance().GetNode(*it2);
 			assert(pNode);
-			Reserve2()(refWatchingNode[pNode->GetAOIType()], 512);
-			refWatchingNode[pNode->GetAOIType()].insert(*it2);
+			AOISet< NODE_ID>& refSetWatchingNode = refWatchingNode[pNode->GetAOIType()];
+			Reserve2()(refSetWatchingNode, 512);
+			refSetWatchingNode.insert(*it2);
 		}
 	}
 
@@ -308,8 +310,9 @@ namespace FXAOI
 		{
 			AOINode* pNode = AOINodeMgr::Instance().GetNode(*it2);
 			assert(pNode);
-			Reserve2()(refWatchedNode[pNode->GetAOIType()], 512);
-			refWatchedNode[pNode->GetAOIType()].insert(*it2);
+			AOISet< NODE_ID>& refSetWatchedNode = refWatchedNode[pNode->GetAOIType()];
+			Reserve2()(refSetWatchedNode, 512);
+			refSetWatchedNode.insert(*it2);
 		}
 	}
 
